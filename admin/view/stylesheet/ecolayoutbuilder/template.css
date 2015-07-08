@@ -44,3 +44,14 @@ div.modal {
         right: 10px;
     }
 }
+
+
+.zo2-row::before, .zo2-row::after {
+    content: " ";
+    display: table;
+}
+.zo2-row::after {
+    clear: both;
+}
+
+.zo2-add-new-row {margin-left: 15px;}

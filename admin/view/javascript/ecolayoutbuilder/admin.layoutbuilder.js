@@ -29,7 +29,9 @@
             /* Drop able childrend */
             container: "#droppable-container > .zo2-container",
             /* Sortable row */
-            sortableRow: ".sortable-row"
+            sortableRow: ".sortable-row",
+            /* Sortable row in column */
+            containerRow: ".row-container"
         },
         /**
          * Default settings
@@ -87,6 +89,15 @@
                 tolerance: "pointer",
                 helper: 'clone',
                 axis: 'x'
+            });
+
+            $(this._elements.containerRow).sortable({
+                items: '>.sortable-row',
+                handle: '>.row-control>.row-control-container>.row-control-buttons>.row-control-icon.dragger',
+                containment: 'parent',
+                tolerance: "pointer",
+                forcePlaceholderSize: true,
+                axis: 'y'
             });
         },
         /**

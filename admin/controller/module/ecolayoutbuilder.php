@@ -26,8 +26,6 @@ class ControllerModuleecolayoutbuilder extends Controller {
 
 		
 		$this->document->addScript('view/javascript/ecolayoutbuilder/admin.layoutbuilder.js');
-        $this->document->addScript('view/javascript/ecolayoutbuilder/jquery.ui.sortable.min.js');
-
 
 		$this->document->addStyle('view/stylesheet/ecolayoutbuilder/admin.styles.css');
         $this->document->addStyle('view/stylesheet/ecolayoutbuilder/template.css');
@@ -139,8 +137,10 @@ class ControllerModuleecolayoutbuilder extends Controller {
 
         if (isset($this->request->post['name'])) {
             $data['name'] = $this->request->post['name'];
+            $data['status'] = $this->request->post['status'];
         } elseif (!empty($module_info)) {
             $data['name'] = $module_info['name'];
+            $data['status'] = $module_info['status'];
         } else {
             $data['name'] = '';
         }
@@ -151,6 +151,7 @@ class ControllerModuleecolayoutbuilder extends Controller {
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['footer'] = $this->load->controller('common/footer');
         $data['cancel'] = $this->url->link('extension/module', 'token=' . $this->session->data['token'], 'SSL');
+
 
         $template = 'module/ecolayoutbuilder/layout.tpl';
 		$this->response->setOutput($this->load->view($template, $data));
