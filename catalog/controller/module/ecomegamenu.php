@@ -36,11 +36,11 @@ class ControllerModuleEcomegamenu extends Controller {
 		$params = $this->config->get( 'params' );
 	 	
 		$this->load->model('setting/setting');
-		$params = $this->model_setting_setting->getSetting( 'pavmegamenu_params' );
+		$params = $this->model_setting_setting->getSetting( 'ecomegamenu_params' );
 
 		 
-		if( isset($params['pavmegamenu_params']) && !empty($params['pavmegamenu_params']) ){
-	 		$params = json_decode( $params['pavmegamenu_params'] );
+		if( isset($params['ecomegamenu_params']) && !empty($params['ecomegamenu_params']) ){
+	 		$params = json_decode( $params['ecomegamenu_params'] );
 	 	}
 		
 		//get store
@@ -59,35 +59,6 @@ class ControllerModuleEcomegamenu extends Controller {
 		return $this->load->view($template, $this->data);
 	}
 
-	public function ajxgenmenu( ){ 
- 	 	
-	}
-
-	public function renderwidget(){
-
-		$this->load->model( 'menu/widget' );
-		$this->model_menu_widget->loadWidgets();
-
-		if( isset($this->request->post['widgets']) ){
-		
-			
-			$widgets = $this->request->post['widgets'];
-			$widgets = explode( '|wid-', '|'.$widgets );
-			if( !empty($widgets) ){
-				unset( $widgets[0] );
-			
-				$output = '';
-				foreach( $widgets as $wid ){
-					$output .= $this->model_menu_widget->renderButton( $wid );
-				}
-
-				echo $output;
-			}
-		 
-		}
-		exit();
-	}
-	
 
 }
 ?>
