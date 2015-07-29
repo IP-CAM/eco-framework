@@ -16,7 +16,7 @@ class ControllerModuleEcomegamenu extends Controller {
 			
 		$this->load->model('catalog/product'); 
 		$this->load->model('tool/image');
-		$this->load->model( 'menu/megamenu' );
+		$this->load->model( 'menu/ecomegamenu' );
 		
 		$this->language->load('module/ecomegamenu');
 	
@@ -48,7 +48,7 @@ class ControllerModuleEcomegamenu extends Controller {
 		$this->data['store_id'] = $store_id;
 
 		$parent = '1';
-		$this->data['treemenu'] = $this->model_menu_megamenu->getTree( $parent, true, $params, $store_id);
+		$this->data['treemenu'] = $this->model_menu_ecomegamenu->getTree( $parent, true, $params, $store_id);
  
 			
 		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/module/ecomegamenu.tpl')) {
