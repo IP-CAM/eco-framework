@@ -304,7 +304,8 @@ class ModelMenuEcomegamenu extends Model {
                                     $scol .= '</ul>';
 
                                 }else {
-                                    $scol = '<div class="mega-col col-sm-'.$col->colwidth.'"  '.$this->getColumnDataConfig( $col ).'><div class="mega-inner">';
+                                    $scol = '<div class="span'. $colwidth .' mega-col col-sm-'.$col->colwidth.'"  '.$this->getColumnDataConfig( $col ).'><div class="mega-inner">';
+                                    $scol .= $col->module_name;
                                 }
                                 $scol .= '</div></div>';
                                 $output .= $scol;
@@ -343,7 +344,7 @@ class ModelMenuEcomegamenu extends Model {
                 $t .= ' data-subwidth="'.$menu['megaconfig']->subwidth.'" ';
             }
             $t .= ' data-submenu="'.(isset($menu['megaconfig']->submenu)?$menu['megaconfig']->submenu:$this->hasChild($menu['megamenu_id'])).'"';
-            $t .= ' data-align="'.(isset($menu['megaconfig']->align)?$menu['megaconfig']->align:"aligned-left").'"';
+            $t .= ' data-align="'.(isset($menu['megaconfig']->align)?$menu['megaconfig']->align:"left").'"';
         }
         return $t;
     }
