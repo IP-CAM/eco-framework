@@ -253,10 +253,9 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
     };
 
     actions.addRow = function() {
-        console.log(currentSelected);
         if (!currentSelected)
             return;
-        var $row = $('<div class="row-fluid"><div class="span12"><div class="mega-inner"></div></div></div>').appendTo(currentSelected.find('.mega-dropdown-inner:first')),
+        var $row = $('<div class="row-fluid"><div class="span12" data-colwidth="12"><div class="mega-inner"></div></div></div>').appendTo(currentSelected.find('.mega-dropdown-inner:first')),
                 $col = $row.children();
         // bind event
         bindEvents($col);
