@@ -58,7 +58,7 @@ class ControllerModuleEcomegamenu extends Controller {
 
             $this->load->model('setting/setting');
 
-            if( $this->request->post['import_categories']) {
+            if( isset($this->request->post['import_categories']) &&  (string)$this->request->post['import_categories'] != '' ) {
                 $this->model_menu_ecomegamenu->importCategories((int)$this->request->post['store_id']);
             } else {
                 if( isset($this->request->post['menu_config']) ) {
@@ -215,6 +215,8 @@ class ControllerModuleEcomegamenu extends Controller {
 
         $this->load->model('catalog/product');
 
+        $this->load->model('catalog/information');
+
         $data['categories'] = array();
 
         $this->load->model('setting/setting');
@@ -228,11 +230,38 @@ class ControllerModuleEcomegamenu extends Controller {
 
         $data['extensions'] = $this->_modulesInstalled();
 
+        $store_param = isset($this->request->get['store_id'])?'&store_id='.$this->request->get['store_id']:'';
+
+        $data['addmenu'] 	   = $this->url->link('module/ecomegamenu/ajaxmenu', 'root=1'.$store_param.'&token=' . $this->session->data['token'], 'SSL');
+
+        $data['removemenu'] 	   = $this->url->link('module/ecomegamenu/deletemenu', 'root=1'.$store_param.'&token=' . $this->session->data['token'], 'SSL');
+
+        $data['informations'] = $this->model_catalog_information->getInformations();
+
+        $data['token'] = $this->session->data['token'];
+
         $data['treemenu'] = $this->model_menu_ecomegamenu->getTree( 1, true, $params, $store_id );
 
         $this->response->setOutput($this->load->view('module/ecomegamenu/ecomegamenu.tpl', $data));
 	}
-	
+
+    public function ajaxmenu( ){
+
+        $this->load->model('menu/ecomegamenu');
+
+        $megamenu_id = $this->model_menu_ecomegamenu->insertMenu($this->request->post);
+
+        echo $megamenu_id;
+    }
+
+    public function deletemenu( ){
+
+        $this->load->model('menu/ecomegamenu');
+
+        $this->model_menu_ecomegamenu->delete($this->request->post['id'],$this->request->post['store_id']);
+
+        echo '1';
+    }
 	
 
 	protected function hasPermssion(){

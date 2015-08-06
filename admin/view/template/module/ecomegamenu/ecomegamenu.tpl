@@ -66,32 +66,20 @@
                                 <h3><?php echo ('Item Configuration') ?></h3>
                                 <ul>
                                     <li>
+                                        <label class="hasTip" title="<?php echo ('Remove Menu') ?>"><?php echo ('Remove Menu') ?></label>
+                                        <fieldset class="btn-group">
+                                            <a href="" class="btn toolmenu-removemenu toolbox-action" data-action="removeMenu"><i class="fa fa-minus"></i></a>
+                                        </fieldset>
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li>
                                         <label class="hasTip" title="<?php echo ('Submenu') ?>"><?php echo ('Submenu') ?></label>
                                         <fieldset class="radio btn-group toolitem-sub">
                                             <input type="radio" id="toggleSub0" class="toolbox-toggle" data-action="toggleSub" name="toggleSub" value="0"/>
                                             <label for="toggleSub0"><?php echo $objlang->get('text_no') ?></label>
                                             <input type="radio" id="toggleSub1" class="toolbox-toggle" data-action="toggleSub" name="toggleSub" value="1" checked="checked"/>
                                             <label for="toggleSub1"><?php echo $objlang->get('text_yes') ?></label>
-                                        </fieldset>
-                                    </li>
-                                </ul>
-                                <ul>
-                                    <li>
-                                        <label class="hasTip" title="<?php echo ('Group') ?>"><?php echo ('Group') ?></label>
-                                        <fieldset class="radio btn-group toolitem-group">
-                                            <input type="radio" id="toggleGroup0" class="toolbox-toggle" data-action="toggleGroup" name="toggleGroup" value="0"/>
-                                            <label for="toggleGroup0"><?php echo $objlang->get('text_no') ?></label>
-                                            <input type="radio" id="toggleGroup1" class="toolbox-toggle" data-action="toggleGroup" name="toggleGroup" value="1" checked="checked"/>
-                                            <label for="toggleGroup1"><?php echo $objlang->get('text_yes') ?></label>
-                                        </fieldset>
-                                    </li>
-                                </ul>
-                                <ul>
-                                    <li>
-                                        <label class="hasTip" title="<?php echo ('Positions') ?>"><?php echo ('Positions') ?></label>
-                                        <fieldset class="btn-group">
-                                            <a href="" class="btn toolitem-moveleft toolbox-action" data-action="moveItemsLeft" title="<?php echo ('Move Left') ?>"><i class="fa fa-arrow-left"></i></a>
-                                            <a href="" class="btn toolitem-moveright toolbox-action" data-action="moveItemsRight" title="<?php echo ('Move Right') ?>"><i class="fa fa-arrow-right"></i></a>
                                         </fieldset>
                                     </li>
                                 </ul>
@@ -177,6 +165,63 @@
                                 </ul>
                             </div>
 
+                            <div id="zo2-admin-mm-toolmenu" class="admin-toolbox">
+                                <h3><?php echo ('Root Menu') ?></h3>
+                                <ul>
+                                    <li>
+                                        <label class="hasTip" title="<?php echo ('Add/remove Menu') ?>"><?php echo ('Add/remove Menu') ?></label>
+                                        <fieldset class="btn-group">
+                                            <a href="" class="btn toolmenu-addmenu toolbox-action" data-action="addMenu"><i class="fa fa-plus"></i></a>
+                                            <a href="" class="btn toolmenu-removemenu toolbox-action" data-action="removeMenu"><i class="fa fa-minus"></i></a>
+                                        </fieldset>
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li>
+                                        <label class="hasTip" title="<?php echo ('Menu Name') ?>"><?php echo ('Menu Name') ?></label>
+                                        <fieldset class="">
+                                            <input type="text" class="input-medium toolmenu-name toolbox-input" name="toolmenu-name" data-name="name" value="" />
+                                        </fieldset>
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li>
+                                        <label class="hasTip" title="<?php echo ('Type')?>"><?php echo ('Type') ?></label>
+                                        <fieldset class="">
+                                            <select class="toolmenu-type toolbox-input toolbox-select input-medium" name="toolmenu-type" data-name="menu_type" data-placeholder="<?php echo ('Select Type') ?>">
+                                                <option value=""></option>
+                                                <option value="url">URL</option>
+                                                <option value="category">Category</option>
+                                                <option value="information">information</option>
+                                            </select>
+                                        </fieldset>
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li class="admin-hide">
+                                        <label class="hasTip" title="<?php echo ('Url')?>"><?php echo ('Url') ?></label>
+                                        <fieldset>
+                                            <input type="text" class="input-medium toolmenu-url toolbox-input" name="toolmenu-url" data-name="url" value="" />
+                                        </fieldset>
+                                    </li>
+                                    <li class="admin-hide">
+                                        <label class="hasTip" title="<?php echo ('Category')?>"><?php echo ('Category') ?></label>
+                                        <fieldset>
+                                            <input type="text" class="input-medium toolmenu-category toolbox-input" name="toolmenu-category" data-name="category" value="" />
+                                        </fieldset>
+                                    </li>
+                                    <li class="admin-hide">
+                                        <label class="hasTip" title="<?php echo ('Information')?>"><?php echo ('Information') ?></label>
+                                        <fieldset>
+                                            <select class="toolmenu-information toolbox-input toolbox-select input-medium" name="toolmenu-information" data-name="information" data-placeholder="<?php echo ('Select Information') ?>">
+                                                <?php foreach($informations as $info):?>
+                                                <option value="<?php echo $info['information_id'];?>"><?php echo $info['title'];?></option>
+                                                <?php endforeach;?>
+                                            </select>
+                                        </fieldset>
+                                    </li>
+                                </ul>
+                            </div>
                             <div id="zo2-admin-mm-toolcol" class="admin-toolbox">
                                 <h3><?php echo ('Column Configuration') ?></h3>
                                 <ul>
@@ -188,6 +233,7 @@
                                         </fieldset>
                                     </li>
                                 </ul>
+
                                 <ul>
                                     <li>
                                         <label class="hasTip" title="<?php echo ('Hide when collapse') ?>"><?php echo ('Hide when collapse') ?></label>
@@ -222,9 +268,53 @@
                                 </ul>
                                 <ul>
                                     <li>
+                                        <label class="hasTip" title="<?php echo ('Extra Class') ?>"><?php echo ('Extra Class') ?></label>
+                                        <fieldset class="">
+                                            <input type="text" class="input-medium toolcol-exclass toolbox-input" name="toolcol-exclass" data-name="class" value="" />
+                                        </fieldset>
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li>
+                                        <label class="hasTip" title="<?php echo ('Type')?>"><?php echo ('Type') ?></label>
+                                        <fieldset class="">
+                                            <select class="toolmenu-type toolbox-input toolbox-select input-medium" name="toolmenu-type" data-name="menu_type" data-placeholder="<?php echo ('Select Type') ?>">
+                                                <option value=""></option>
+                                                <option value="url">URL</option>
+                                                <option value="category">Category</option>
+                                                <option value="information">Information</option>
+                                                <option value="module">Module</option>
+                                            </select>
+                                        </fieldset>
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li class="admin-hide">
+                                        <label class="hasTip" title="<?php echo ('Url')?>"><?php echo ('Url') ?></label>
+                                        <fieldset>
+                                            <input type="text" class="input-medium toolmenu-url" name="toolmenu-url" data-name="url" value="" />
+                                        </fieldset>
+                                    </li>
+                                    <li class="admin-hide">
+                                        <label class="hasTip" title="<?php echo ('Category')?>"><?php echo ('Category') ?></label>
+                                        <fieldset>
+                                            <input type="text" class="input-medium toolmenu-category" name="toolmenu-category" data-name="category" value="" />
+                                        </fieldset>
+                                    </li>
+                                    <li class="admin-hide">
+                                        <label class="hasTip" title="<?php echo ('Information')?>"><?php echo ('Information') ?></label>
+                                        <fieldset>
+                                            <select class="toolmenu-information toolbox-select input-medium" name="toolmenu-information" data-name="information" data-placeholder="<?php echo ('Select Information') ?>">
+                                                <?php foreach($informations as $info):?>
+                                                <option value="<?php echo $info['information_id'];?>"><?php echo $info['title'];?></option>
+                                                <?php endforeach;?>
+                                            </select>
+                                        </fieldset>
+                                    </li>
+                                    <li class="admin-hide">
                                         <label class="hasTip" title="<?php echo ('Module')?>"><?php echo ('Module') ?></label>
                                         <fieldset class="">
-                                            <select class="toolcol-module toolbox-input toolbox-select input-medium" name="toolcol-module" data-name="module_id" data-placeholder="<?php echo ('Select Module') ?>">
+                                            <select class="toolcol-module toolbox-input toolbox-select input-medium toolmenu-module" name="toolcol-module" data-name="module_id" data-placeholder="<?php echo ('Select Module') ?>">
                                                 <option value=""></option>
                                                 <?php foreach ($extensions as $extension) { ?>
                                                 <?php if (!$extension['module']) { ?>
@@ -245,11 +335,19 @@
                                         </fieldset>
                                     </li>
                                 </ul>
-                                <ul>
+                                <ul class="admin-hide">
                                     <li>
-                                        <label class="hasTip" title="<?php echo ('Extra Class') ?>"><?php echo ('Extra Class') ?></label>
+                                        <label class="hasTip" title="<?php echo ('Menu Name') ?>"><?php echo ('Menu Name') ?></label>
                                         <fieldset class="">
-                                            <input type="text" class="input-medium toolcol-exclass toolbox-input" name="toolcol-exclass" data-name="class" value="" />
+                                            <input type="text" class="input-medium toolmenu-name toolbox-input" name="toolmenu-name" data-name="name" value="" />
+                                        </fieldset>
+                                    </li>
+                                </ul>
+                                <ul class="admin-hide">
+                                    <li>
+                                        <label class="hasTip" title="<?php echo ('Add Menu') ?>"><?php echo ('Add Menu') ?></label>
+                                        <fieldset class="btn-group">
+                                            <a href="#" class="btn toolmenu-addmenu toolbox-action" data-action="addMenu"><i class="fa fa-plus"></i></a>
                                         </fieldset>
                                     </li>
                                 </ul>
@@ -275,15 +373,56 @@
     </div>
 </div>
 <script type="text/javascript">
+    var addmenu = '<?php echo str_replace("&amp;","&", $addmenu); ?>',
+            removemenu = '<?php echo str_replace("&amp;","&", $removemenu); ?>';
+    var options = { 'add_menu': addmenu, 'remove_menu' : removemenu};
+    $(document).ready(function(){
+        ZO2AdminMegamenu.prepare(options);
+    });
+
 // Mutiple Store
 $('#stores').bind('change', function () {
-url = 'index.php?route=module/ecomegamenu&token=<?php echo $token; ?>';
+var url = 'index.php?route=module/ecomegamenu&token=<?php echo $token; ?>';
 var id = $(this).val();
 if (id) {
 url += '&store_id=' + encodeURIComponent(id);
 }
 window.location = url;
 });
-<script>
+
+
+    $('input[name=\'toolmenu-category\']').autocomplete({
+        delay: 500,
+        source: function(request, response) {
+            $.ajax({
+                url: 'index.php?route=catalog/category/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request.term),
+                dataType: 'json',
+                success: function(json) {
+                    json.unshift({
+                        'category_id':  0,
+                        'name':  'None'
+                    });
+
+                    response($.map(json, function(item) {
+                        return {
+                            label: item.name,
+                            value: item.category_id
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            $('input[name=\'toolmenu-category\']').val(ui.item.label);
+            $('input[name=\'toolmenu-category\']').data('id',ui.item.value);
+            event.stopPropagation();
+            return false;
+        },
+        focus: function(event, ui) {
+            return false;
+        }
+    });
+
+</script>
 
 <?php echo $footer; ?>

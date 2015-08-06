@@ -27,6 +27,7 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
         nav_subs = megamenu.find('.menu-child');
         nav_cols = megamenu.find('[class*="span"]');
         nav_all = nav_items.add(nav_subs).add(nav_cols);
+        nav_all = nav_all.add('#zo2-admin-mm-container');
         // hide sub
         nav_items.each(function() {
             var a = $(this),
@@ -50,6 +51,9 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
             event.stopPropagation();
             // return false;
         });
+
+
+
         // deselect when click outside menu
         $(document.body).click(function(event) {
             hide_toolbox(true);
@@ -59,7 +63,8 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
         $('.toolbox-action').click(function(event) {
             var action = $(this).data('action');
             if (action) {
-                actions.datas = $(this).data();
+                actions.data = $(this).data();
+                actions.data = $.extend(options,actions.data);
                 actions[action]();
             }
             event.stopPropagation();
@@ -94,7 +99,6 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
     };
     // Actions
     var actions = {};
-    actions.data = {};
     actions.toggleSub = function() {
         if (!currentSelected)
             return;
@@ -135,6 +139,74 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
         update_toolbox();
     };
 
+    actions.addMenu = function() {
+        if (!currentSelected)
+            return;
+
+        if(currentSelected.attr('id') == 'zo2-admin-mm-container'){
+            var menuInput = $('#zo2-admin-mm-toolmenu'),
+                parentId = 1;
+
+        } else {
+            var menuInput = $('#zo2-admin-mm-toolcol'),
+                parentId = currentSelected.closest('li').data('id');
+        }
+
+        var menuType = menuInput.find('.toolmenu-type:first').val();
+        if(menuInput.find('.toolmenu-name:first').val() == ''){alert('Name cannot be empty'); return ; }
+        if(menuType == ''){  alert('Type cannot be empty'); return ; }
+        switch (menuType)
+        {
+            case 'url':
+                var url = menuInput.find('input[name="toolmenu-url"]').val(),
+                    itemId = null;
+                break;
+            case 'category':
+                var itemId = menuInput.find('input[name="toolmenu-category"]').val(),
+                    url = null;
+                break;
+            case 'information':
+                var itemId = menuInput.find('select[name="toolmenu-information"]').val(),
+                    url = null;
+                break;
+        }
+
+        var menuName = menuInput.find('.toolmenu-name:first').val(),
+            storeId = $('#stores').val();
+
+        $.ajax({
+            url : options.add_menu,
+            data : {name : menuName, item_id : itemId, type: menuType, store_id : storeId, parent_id : parentId, url : url},
+            dataType : 'json',
+            type : 'POST'
+        }).done(function(data){
+            var menuHtml = '<li data-subwidth="" data-align="left" data-level="1" data-cols="1" data-group="0" data-id="' + data + '" class="">'
+                + '<a href="' + url + '" class=""><span class="menu-title">' + menuInput.find('.toolmenu-name:first').val() + '</span></a></li>';
+            var  $menu = $(menuHtml).appendTo(currentSelected.find('ul:first'));
+            bindEvents($menu);
+            // update toolbox status
+            currentSelected = null;
+            show_toolbox($menu);
+        });
+    };
+
+    actions.removeMenu = function() {
+        if (!currentSelected)
+            return;
+        if(confirm('Are you sure want to delete?')){
+
+            $.ajax({
+                url : options.remove_menu,
+                data : {id : currentSelected.closest('li').data('id'), store_id : $('#stores').val()},
+                dataType : 'json',
+                type : 'POST'
+            }).done(function(){
+                currentSelected.closest('li').remove();
+            });
+
+        }
+    };
+
     actions.toggleGroup = function() {
         if (!currentSelected)
             return;
@@ -161,96 +233,6 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
         update_toolbox();
     };
 
-    /* Fallback to old concept */
-    actions.moveItemsLeft = function() {
-        if (!currentSelected)
-            return;
-        var $item = currentSelected.closest('li'),
-            $liparent = $item.parent().closest('li'),
-            level = $liparent.data('level'),
-            $col = $item.closest('[class*="span"]'),
-            $items = $col.find('ul:first > li'),
-            itemidx = $items.index($item),
-            $moveitems = $items.slice(0, itemidx + 1),
-            itemleft = $items.length - $moveitems.length,
-            $rows = $col.parent().parent().children('[class*="row"]'),
-            $cols = $rows.children('[class*="span"]').filter(function() {
-                return !$(this).data('module_id')
-            }),
-            colidx = $cols.index($col);
-        if (!$liparent.length)
-            return; // need make this is mega first
-
-        if (colidx == 0) {
-            // add new col
-            var oldSelected = currentSelected;
-            currentSelected = $col;
-            // add column to first
-            actions.datas.addfirst = true;
-            actions.addColumn();
-            $cols = $rows.children('[class*="span"]').filter(function() {
-                return !$(this).data('module_id')
-            });
-            currentSelected = oldSelected;
-            colidx++;
-        }
-        // move content to right col
-        var $tocol = $($cols[colidx - 1]);
-        var $ul = $tocol.find('ul:first');
-        if (!$ul.length) {
-            $ul = $('<ul class="mega-nav level' + level + '">').appendTo($tocol.children('.mega-inner'));
-        }
-        $moveitems.appendTo($ul);
-        if (itemleft == 0) {
-            $col.find('ul:first').remove();
-        }
-        // update toolbox status
-        update_toolbox();
-    }
-
-    actions.moveItemsRight = function() {
-        if (!currentSelected)
-            return;
-        var $item = currentSelected.closest('li'),
-            $liparent = $item.parent().closest('li'),
-            level = $liparent.data('level'),
-            $col = $item.closest('[class*="span"]'),
-            $items = $col.find('ul:first > li'),
-            itemidx = $items.index($item),
-            $moveitems = $items.slice(itemidx),
-            itemleft = $items.length - $moveitems.length,
-            $rows = $col.parent().parent().children('[class*="row"]'),
-            $cols = $rows.children('[class*="span"]').filter(function() {
-                return !$(this).data('module_id')
-            }),
-            colidx = $cols.index($col);
-        if (!$liparent.length)
-            return; // need make this is mega first
-
-        if (colidx == $cols.length - 1) {
-            // add new col
-            var oldSelected = currentSelected;
-            currentSelected = $col;
-            actions.datas.addfirst = false;
-            actions.addColumn();
-            $cols = $rows.children('[class*="span"]').filter(function() {
-                return !$(this).data('module_id')
-            });
-            currentSelected = oldSelected;
-        }
-        // move content to right col
-        var $tocol = $($cols[colidx + 1]);
-        var $ul = $tocol.find('ul:first');
-        if (!$ul.length) {
-            $ul = $('<ul class="mega-nav level' + level + '">').appendTo($tocol.children('.mega-inner'));
-        }
-        $moveitems.prependTo($ul);
-        if (itemleft == 0) {
-            $col.find('ul:first').remove();
-        }
-        // update toolbox status
-        show_toolbox(currentSelected);
-    };
 
     actions.addRow = function() {
         if (!currentSelected)
@@ -276,7 +258,7 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
             if (currentSelected.data('width'))
                 currentSelected.css('width', currentSelected.data('width'));
         }
-        liitem.data('alignsub', actions.datas.align);
+        liitem.data('align', actions.datas.align);
         update_toolbox();
     };
 
@@ -380,15 +362,17 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
     };
 
     toolbox_type = function() {
+        if(currentSelected.attr('id') == 'zo2-admin-mm-container') return 'menu';
         return currentSelected.hasClass('menu-child ') ? 'sub' : (currentSelected.length > 0 && currentSelected[0].tagName === 'DIV' ? 'col' : 'item');
     };
 
     hide_toolbox = function(show_intro) {
-        $('#zo2-admin-mm-tb .admin-toolbox').hide();
+        $('#zo2-admin-mm-tb .admin-toolbox, #zo2-admin-mm-tb  .admin-hide').hide();
         currentSelected = null;
         if (megamenu && megamenu.data('nav_all'))
             megamenu.data('nav_all').removeClass('selected');
         megamenu.find('li').removeClass('open');
+        $('#zo2-admin-mm-container').removeClass('selected');
         if (show_intro) {
             $('#zo2-admin-mm-intro').show();
         } else {
@@ -398,6 +382,7 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
 
     show_toolbox = function(selected) {
         hide_toolbox(false);
+        console.log(selected);
         if (selected)
             currentSelected = selected;
         // remove class open for other
@@ -473,7 +458,7 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
                     // disable alignment
                     $('.toolitem-alignment').addClass('disabled');
                 } else {
-                    $('.toolsub-width').attr('value', currentSelected.data('width') || '');
+                    $('.toolsub-width').attr('value', liitem.data('subwidth') || '');
                     // if not top level, allow align-left & right only
                     if (liitem.data('level') > 1) {
                         $('.toolsub-align-center').addClass('disabled');
@@ -481,9 +466,9 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
                     }
 
                     // active align button
-                    if (liitem.data('alignsub')) {
-                        $('.toolsub-align-' + liitem.data('alignsub')).addClass('active');
-                        if (liitem.data('alignsub') === 'justify') {
+                    if (liitem.data('align')) {
+                        $('.toolsub-align-' + liitem.data('align')).addClass('active');
+                        if (liitem.data('align') === 'justify') {
                             $('.toolsub-width').addClass('disabled');
                         }
                     }
@@ -550,6 +535,7 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
                     currentSelected.removeClass('span' + currentSelected.data(name)).addClass('span' + value);
                 }
                 currentSelected.data('col'+name, value);
+                currentSelected.parent().data('subwidth', value);
                 break;
             case 'class':
                 if (type === 'item') {
@@ -581,9 +567,20 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
                 if (currentSelected.find('ul[class*="level"]').length === 0) {
                     // get module content
                     var mudule_name = $(input).find("option:selected").text();
+                    if(currentSelected.find('.mega-inner').html() != '') currentSelected.find('.mega-inner').html('');
                     currentSelected.find('.mega-inner').append('<div>'+ mudule_name +'</div>');
                     currentSelected.data(name, value);
                     currentSelected.data('module_name', mudule_name);
+                }
+                break;
+            case 'menu_type':
+                $('#zo2-admin-mm-tb .admin-hide').hide();
+                if(currentSelected.attr('id') != 'zo2-admin-mm-container'){
+                    $('#zo2-admin-mm-toolcol .toolmenu-'+value).closest('li').show();
+                    if(value != 'module'){ $('#zo2-admin-mm-toolcol > ul:last').show(); $('#zo2-admin-mm-toolcol > ul:eq(6)').show();}
+                }
+                else {
+                    $('#zo2-admin-mm-toolmenu .toolmenu-'+value).closest('li').show();
                 }
                 break;
         }
@@ -645,7 +642,7 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
 (function(w, $) {
     $.extend(ZO2AdminMegamenu, {
         // put megamenu admin panel into right place
-        prepare: function() {
+        prepare: function(options) {
             // var panel = $('#jform_params_mm_panel-lbl').closest ('.control-group').find('.controls');
             var panel = $('#jform_params_mm_type').closest('.controls');
             panel.append($('#zo2-admin-megamenu').removeClass('hidden'));
@@ -664,7 +661,7 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
                 });
             }
 
-            $('#zo2-admin-mm-container').megamenuAdmin().find(':input').removeAttr('name');
+            $('#zo2-admin-mm-container').megamenuAdmin(options).find(':input').removeAttr('name');
 
         },
 
@@ -703,13 +700,12 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
             });
         }
     });
-    
-    $(window).load(function() {
-        ZO2AdminMegamenu.prepare();
-    });
+
     
     $(document).ready(function() {
+        //ZO2AdminMegamenu.prepare();
         ZO2AdminMegamenu.initRadioGroup();
+
 
         /**
          * Generate JSON settings
@@ -736,16 +732,6 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
                         var row =  new Object();
                         row.cols = new Array();
                         $cols.each(function() {
-                            var li = $(this).find('ul[class*="level"] > li:first'),
-                                col = [];
-                            if (li.length) {
-                                col['item'] = li.data('id');
-                            } else if ($(this).data('module_id')) {
-                                col['module_id'] = $(this).data('module_id');
-                            } else {
-                                col['item'] = -1;
-                            }
-
                             row.cols.push( $(this).data() );
                         });
                         data.rows.push(row);

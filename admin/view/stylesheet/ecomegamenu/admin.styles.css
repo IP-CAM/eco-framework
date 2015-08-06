@@ -226,7 +226,7 @@ img {
 .zo2-megamenu .span12.mega-col-nav .mega-inner {
   padding: 10px;
 }
-.zo2-megamenu .selected {
+#form-megamenu .selected {
   background: #fffbf0 !important;
   color: #333333 !important;
   border: 1px solid #666666 !important;
@@ -1641,4 +1641,13 @@ textarea {
   top: 50%;
   width: 44px;
   height: 44px;
+}
+
+#zo2-admin-mm-container {
+    background: #eee none repeat scroll 0 0;
+    border-bottom: 1px solid #e6e6e6;
+    border-top: 1px solid #e6e6e6;
+    box-sizing: border-box;
+    margin: 15px 0 20px;
+    padding: 12px;
 }

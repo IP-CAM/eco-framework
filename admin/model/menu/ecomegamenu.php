@@ -50,6 +50,22 @@ class ModelMenuEcomegamenu extends Model {
     }
 
     /**
+     * get get all  Menu Childrens by Id
+     */
+    public function getChild( $id=null, $store_id = 0){
+        $sql = ' SELECT m.*, md.title,md.description FROM ' . DB_PREFIX . 'megamenu m LEFT JOIN '
+            .DB_PREFIX.'megamenu_description md ON m.megamenu_id=md.megamenu_id AND language_id='.(int)$this->config->get('config_language_id') ;
+
+        $sql .= ' WHERE store_id='.(int)$store_id;
+        if( $id != null ) {
+            $sql .= ' AND parent_id='.(int)$id;
+        }
+        $sql .= ' ORDER BY `position`  ';
+        $query = $this->db->query( $sql );
+        return $query->rows;
+    }
+
+    /**
      *
      */
     public function hasChild( $id ){
@@ -64,6 +80,36 @@ class ModelMenuEcomegamenu extends Model {
     }
 
     /**
+     * delete mega menu data by id
+     */
+    public function delete( $id, $store_id){
+        $childs = $this->getChild( null, $store_id );
+        foreach($childs as $child ){
+            $this->children[$child['parent_id']][] = $child;
+        }
+        $this->recursiveDelete($id, $store_id);
+    }
+    /**
+     * recursive delete tree
+     */
+    public function recursiveDelete($parent_id, $store_id)
+    {
+        $sql = " DELETE FROM ".DB_PREFIX ."megamenu_description WHERE megamenu_id=".(int)$parent_id .";";
+        $this->db->query($sql);
+        $sql = " DELETE FROM ".DB_PREFIX ."megamenu WHERE store_id = ".$store_id." AND megamenu_id=".(int)$parent_id .";";
+        $this->db->query($sql);
+
+        if( $this->hasChild($parent_id) ){
+            $data = $this->getNodes( $parent_id );
+            foreach( $data as $menu ){
+                if($menu['megamenu_id'] > 1) {
+                    $this->recursiveDelete( $menu['megamenu_id'], $store_id );
+                }
+            }
+        }
+    }
+
+    /**
      *
      */
     public function getTree( $parent=1 , $edit=false, $params, $store_id = 0 ){
@@ -71,7 +117,7 @@ class ModelMenuEcomegamenu extends Model {
 
         $this->parserMegaConfig( $params );
         if( $edit ){
-            $this->_editString  = ' data-id="%s" data-group="%s"  data-cols="%s" data-level="%s" ';
+            $this->_editString  = ' data-id="%s" data-group="%s"  data-cols="%s" data-level="%s" data-align="%s" data-subwidth="%s" ';
         }
         $this->_editStringCol = ' data-colwidth="%s" data-class="%s" ' ;
 
@@ -86,6 +132,10 @@ class ModelMenuEcomegamenu extends Model {
             if( isset($child['megaconfig']->submenu) && $child['megaconfig']->submenu == 0){
                 $child['menu_class'] = $child['menu_class'] .' disable-menu';
             }
+
+            $child['menu_subwidth'] = isset($child['megaconfig']->subwidth) ? $child['megaconfig']->subwidth : '';
+
+            $child['menu_align'] = isset($child['megaconfig']->align) ? $child['megaconfig']->align : 'left';
 
             $this->children[$child['parent_id']][] = $child;
         }
@@ -102,12 +152,13 @@ class ModelMenuEcomegamenu extends Model {
         $output = '';
         if( $this->hasChild($parent) ){
             $data = $this->getNodes( $parent );
+
             // render menu at level 0
             $output = '<ul class="nav navbar-nav level-top">';
             foreach( $data as $menu ){
 
                 if( isset($menu['megaconfig']->align) ){
-                    $menu['menu_class'] .= ' '.$menu['megaconfig']->align;
+                    $menu['menu_class'] .= ' mega-align-'.$menu['megaconfig']->align;
                 }
                 $menu['menu_level'] = 1;
                 if( $this->hasChild($menu['megamenu_id']) || $menu['type_submenu'] == 'html'){
@@ -304,9 +355,10 @@ class ModelMenuEcomegamenu extends Model {
                                     $scol .= '</ul>';
 
                                 }else {
-                                    $scol = '<div class="span'. $colwidth .' mega-col col-sm-'.$col->colwidth.'"  '.$this->getColumnDataConfig( $col ).'><div class="mega-inner">';
+                                    $scol = '<div class="span'. $col->colwidth .'mega-col col-sm-'.$col->colwidth.'"  '.$this->getColumnDataConfig( $col ).'><div class="mega-inner">';
                                     $scol .= $col->module_name;
                                 }
+
                                 $scol .= '</div></div>';
                                 $output .= $scol;
                             }
@@ -338,14 +390,7 @@ class ModelMenuEcomegamenu extends Model {
      *
      */
     public function renderAttrs( $menu ){
-        $t = sprintf( $this->_editString, $menu['megamenu_id'], $menu['is_group'], $menu['colums'], $menu['menu_level']  );
-        if( $this->_isLiveEdit  ){
-            if( isset($menu['megaconfig']->subwidth) &&  $menu['megaconfig']->subwidth ){
-                $t .= ' data-subwidth="'.$menu['megaconfig']->subwidth.'" ';
-            }
-            $t .= ' data-submenu="'.(isset($menu['megaconfig']->submenu)?$menu['megaconfig']->submenu:$this->hasChild($menu['megamenu_id'])).'"';
-            $t .= ' data-align="'.(isset($menu['megaconfig']->align)?$menu['megaconfig']->align:"left").'"';
-        }
+        $t = sprintf( $this->_editString, $menu['megamenu_id'], $menu['is_group'], $menu['colums'], $menu['menu_level'], $menu['menu_align'], $menu['menu_subwidth']  );
         return $t;
     }
 
@@ -493,6 +538,45 @@ class ModelMenuEcomegamenu extends Model {
             }
         }
     }
+
+    public function insertMenu(array $dataInput = array()){
+        $data = array();
+
+        $data['megamenu']['position'] = 99;
+        $data['megamenu']['item'] = $dataInput['item_id'];
+        $data['megamenu']['published'] = 1;
+        $data['megamenu']['parent_id'] = $dataInput['parent_id'];
+        $data['megamenu']['show_title'] = 1;
+        $data['megamenu']['widget_id'] = 1;
+        $data['megamenu']['type_submenu'] = 'menu';
+        $data['megamenu']['type'] = $dataInput['type'];
+        $data['megamenu']['colums'] = 1;
+        $data['megamenu']['url'] = $dataInput['url'];
+        $data['megamenu']['store_id'] = $dataInput['store_id'];
+        $data['megamenu']['is_group'] = 0;
+
+        $sql = "INSERT INTO ".DB_PREFIX . "megamenu ( `";
+        $tmp = array();
+        $vals = array();
+        foreach( $data["megamenu"] as $key => $value ){
+            $tmp[] = $key;
+            $vals[]=$this->db->escape($value);
+        }
+        $sql .= implode("` , `",$tmp)."`) VALUES ('".implode("','",$vals)."') ";
+        $this->db->query( $sql );
+        $data['megamenu']['megamenu_id'] = $this->db->getLastId();
+
+        $sql = " DELETE FROM ".DB_PREFIX ."megamenu_description WHERE megamenu_id=".(int)$data["megamenu"]['megamenu_id'] ;
+        $this->db->query( $sql );
+
+        $sql = "INSERT INTO ".DB_PREFIX ."megamenu_description(`language_id`, `megamenu_id`,`title`)
+							VALUES('1','".$data['megamenu']['megamenu_id']."','".$this->db->escape($dataInput['name'])."') ";
+        $this->db->query( $sql );
+
+        return $data['megamenu']['megamenu_id'];
+    }
+
+
     public function insertCategory($category = array(), $megamenu_parent_id, $store_id = 0){
         $data = array();
         $data['megamenu']['position'] = 99;
@@ -517,6 +601,8 @@ class ModelMenuEcomegamenu extends Model {
         $sql .= implode("` , `",$tmp)."`) VALUES ('".implode("','",$vals)."') ";
         $this->db->query( $sql );
         $data['megamenu']['megamenu_id'] = $this->db->getLastId();
+
+        $sql = " DELETE FROM ".DB_PREFIX ."megamenu_description WHERE megamenu_id=".(int)$data["megamenu"]['megamenu_id'] ;
 
         $this->load->model('localisation/language');
         $languages = $this->model_localisation_language->getLanguages();
