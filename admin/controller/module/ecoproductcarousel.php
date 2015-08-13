@@ -7,7 +7,7 @@ class ControllerModuleEcoproductcarousel extends Controller {
 
 		$this->language->load('module/ecoproductcarousel');
 
-		$this->document->setTitle($this->language->get('heading_title'));
+		$this->document->setTitle(strip_tags($this->language->get('heading_title')));
 
 		$this->load->model('extension/module');
 
@@ -70,6 +70,33 @@ class ControllerModuleEcoproductcarousel extends Controller {
 			$data['status'] = 1;
 		}
 
+        // STATUS
+        if (isset($this->request->post['carousel'])) {
+            $data['carousel'] = $this->request->post['carousel'];
+        } elseif (!empty($module_info)) {
+            $data['carousel'] = $module_info['carousel'];
+        } else {
+            $data['carousel'] = 1;
+        }
+
+
+        // column
+        if (isset($this->request->post['slideshow'])) {
+            $data['slideshow'] = $this->request->post['slideshow'];
+        } elseif (!empty($module_info)) {
+            $data['slideshow'] = $module_info['slideshow'];
+        } else {
+            $data['slideshow'] = 0;
+        }
+
+        // row
+        if (isset($this->request->post['row'])) {
+            $data['row'] = $this->request->post['row'];
+        } elseif (!empty($module_info)) {
+            $data['row'] = $module_info['row'];
+        } else {
+            $data['row'] = '';
+        }
 
 		// CLASS
 		if (isset($this->request->post['tabs'])) {
@@ -107,14 +134,6 @@ class ControllerModuleEcoproductcarousel extends Controller {
 			$data['itemsperpage'] = '4';
 		}
 
-		// cols
-		if (isset($this->request->post['cols'])) {
-			$data['cols'] = $this->request->post['cols'];
-		} elseif (!empty($module_info)) {
-			$data['cols'] = $module_info['cols'];
-		} else {
-			$data['cols'] = '4';
-		}
 
 		// limit
 		if (isset($this->request->post['limit'])) {

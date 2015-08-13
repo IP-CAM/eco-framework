@@ -1,6 +1,6 @@
 <?php
 // Heading
-$_['heading_title']            = '<strong>Eco Product Carousel</strong>';
+$_['heading_title']            = '<b>Eco Product Carousel</b>';
 
 // Text
 $_['text_module']              = 'Modules';
@@ -46,6 +46,7 @@ $_['label_tooltip_show']       = 'Tooltip Delay Show: ';
 $_['label_tooltip_hide']       = 'Tooltip Delay Hide: ';
 $_['label_btn_view_more']      = 'Button View More: ';
 $_['label_tooltip_img_resize'] = 'Width - Heigh Resize Image On Tooltip:';
+$_['enable_carousel']	       = 'Enable Carousel';
 
 // Entry
 $_['entry_banner']             = 'Banner:';
@@ -55,6 +56,14 @@ $_['entry_position']           = 'Position:';
 $_['entry_status']             = 'Status:';
 $_['entry_sort_order']         = 'Sort Order:';
 $_['entry_carousel']           = 'Max Items - Max Columns - Limit Items In Carousel:';
+$_['entry_column']             = 'Column';
+$_['entry_enablecarousel']             = 'Enable carousel';
+$_['entry_slideshow']             = 'Slide Show';
+$_['entry_width']             = 'Width';
+$_['entry_height']             = 'Height';
+$_['entry_items']             = 'Num of items';
+$_['entry_limit']             = 'Limit';
+$_['entry_row']             = 'Row';
 $_['entry_tabs' ]              = 'Product Types';
 $_['entry_description' ]       = 'Module Description';
 $_['entry_default_store' ]     = 'Filter By Store: ';

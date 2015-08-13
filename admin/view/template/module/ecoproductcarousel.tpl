@@ -54,7 +54,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" for="input-status"><?php echo $entry_status; ?></label>
                                 <div class="col-sm-10">
-                                    <select class="form-control" id="input-status" name="status">
+                                    <select class="form-control" id="input-status" name="status" style="width:55%;">
                                         <?php if ($status) { ?>
                                         <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
                                         <option value="0"><?php echo $text_disabled; ?></option>
@@ -68,7 +68,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" for="input-tabs"><?php echo $entry_tabs;?></label>
                                 <div class="col-sm-10">
-                                    <select class="form-control" id="input-tabs" name="tabs[]" multiple="multiple">
+                                    <select class="form-control" id="input-tabs" name="tabs[]" multiple="multiple" style="width:55%;" size="10">
                                         <?php foreach ($tmptabs as $tab => $tabName) { ?>
                                         <?php if ( in_array($tab,(array)$tabs) ) { ?>
                                         <option value="<?php echo $tab; ?>" selected="selected"><?php echo $tabName; ?></option>
@@ -80,33 +80,55 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="input-width"><?php echo $entry_dimension; ?></label>
+                                <label class="col-sm-2 control-label" for="input-carousel"><?php echo $objlang->get('entry_enablecarousel');; ?></label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" style="width:55%;" id="input-name" placeholder="<?php echo $entry_dimension; ?>" value="<?php echo $width; ?>" name="width">
+                                    <select class="form-control" id="input-carousel" name="carousel" style="width:55%;">
+                                        <?php if ($carousel) { ?>
+                                        <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+                                        <option value="0"><?php echo $text_disabled; ?></option>
+                                        <?php } else { ?>
+                                        <option value="1"><?php echo $text_enabled; ?></option>
+                                        <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+                                        <?php } ?>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="input-height"><?php echo $entry_dimension; ?></label>
+                                <label class="col-sm-2 control-label" for="input-slideshow"><?php echo $objlang->get('entry_slideshow'); ?></label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" style="width:55%;" id="input-name" placeholder="<?php echo $entry_dimension; ?>" value="<?php echo $height; ?>" name="height">
+                                    <input type="text" class="form-control" style="width:55%;" id="input-slideshow" placeholder="<?php echo $objlang->get('entry_slideshow'); ?>" value="<?php echo $slideshow; ?>" name="slideshow">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-row"><?php echo $objlang->get('entry_row'); ?></label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" style="width:55%;" id="input-name" placeholder="<?php echo $objlang->get('entry_row'); ?>" value="<?php echo $row; ?>" name="row">
+                                </div>
+                            </div>
+
 						    <div class="form-group">
-                                <label class="col-sm-2 control-label" for="input-itemsperpage"><?php echo $entry_carousel; ?></label>
+                                <label class="col-sm-2 control-label" for="input-itemsperpage"><?php echo $objlang->get('entry_items'); ?></label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" style="width:55%;" id="input-itemsperpage" placeholder="<?php echo $entry_dimension; ?>" value="<?php echo $itemsperpage; ?>" name="itemsperpage">
+                                    <input type="text" class="form-control" style="width:55%;" id="input-itemsperpage" placeholder="<?php echo $objlang->get('entry_items'); ?>" value="<?php echo $itemsperpage; ?>" name="itemsperpage">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="input-cols"><?php echo $entry_carousel; ?></label>
+                                <label class="col-sm-2 control-label" for="input-limit"><?php echo $objlang->get('entry_limit'); ?></label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" style="width:55%;" id="input-cols" placeholder="<?php echo $entry_dimension; ?>" value="<?php echo $cols; ?>" name="cols">
+                                    <input type="text" class="form-control" style="width:55%;" id="input-limit" placeholder="<?php echo $objlang->get('entry_limit'); ?>" value="<?php echo $limit; ?>" name="limit">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="input-limit"><?php echo $entry_carousel; ?></label>
+                                <label class="col-sm-2 control-label" for="input-width"><?php echo $objlang->get('entry_width'); ?></label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" style="width:55%;" id="input-limit" placeholder="<?php echo $entry_dimension; ?>" value="<?php echo $limit; ?>" name="limit">
+                                    <input type="text" class="form-control" style="width:55%;" id="input-width" placeholder="<?php echo $objlang->get('entry_width'); ?>" value="<?php echo $width; ?>" name="width">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-height"><?php echo $objlang->get('entry_height'); ?></label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" style="width:55%;" id="input-height" placeholder="<?php echo $objlang->get('entry_height'); ?>" value="<?php echo $height; ?>" name="height">
                                 </div>
                             </div>
 						</div>

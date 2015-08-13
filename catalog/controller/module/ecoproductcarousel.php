@@ -30,10 +30,12 @@ class ControllerModuleEcoproductcarousel extends Controller {
 		$data['prefix'] = isset($setting['prefix'])?$setting['prefix']:'';
 		$data['width'] = $setting['width'];
 		$data['height'] = $setting['height'];
+        $data['row'] = $setting['row'];
+        $data['carousel'] = $setting['carousel'];
+        $data['slideshow'] = $setting['slideshow'];
 		$data['auto_play'] = $setting['auto_play']?"true":"false";
 		$data['auto_play_mode'] = $setting['auto_play'];
 		$data['interval'] = (int)$setting['interval'];
-		$data['cols']   = (int)$setting['cols'];
 		$data['itemsperpage']   = (int)$setting['itemsperpage'];
 
 		$data['tooltip']   = isset($setting['tooltip'])?(int)$setting['tooltip']:0;
@@ -87,47 +89,38 @@ class ControllerModuleEcoproductcarousel extends Controller {
 
 		 $setting['tabs'] = array_flip(  $setting['tabs'] );
 
-		$tabs = array(
-			'latest' 	 => array(),
-			'featured'   => array( ),
-			'bestseller' => array(),
-			'special'    => array(),
-			'mostviewed' => array(),
-			'toprating' => array()
-		);
+
 		if( isset($setting['description'][$this->config->get('config_language_id')]) ) {
 			$data['message'] = html_entity_decode($setting['description'][$this->config->get('config_language_id')], ENT_QUOTES, 'UTF-8');
 		}else {
 			$data['message'] = '';
 		}
-		if(isset($setting['tabs']['featured'])){
-			$products = $this->getProducts( $this->getFeatured($sortData), $setting );
-			$data['heading_title'] = $this->language->get('text_featured');
+
+        if(isset($setting['tabs']['featured'])){
+            $tabs['featured'] = $this->getProducts( $this->getFeatured($sortData), $setting );
+        }
+        if( isset($setting['tabs']['latest']) ){
+            $tabs['latest'] = $this->getProducts( $this->model_catalog_product->getProducts( $sortData ), $setting );
+        }
+        if( isset($setting['tabs']['bestseller']) ){
+            $tabs['bestseller'] = $this->getProducts( $this->model_catalog_product->getBestSellerProducts( $sortData['limit'] ), $setting );
+        }
+        if( isset($setting['tabs']['special']) ){
+            $tabs['special'] = $this->getProducts( $this->model_catalog_product->getProductSpecials( $sortData ), $setting );
+        }
+        if( isset($setting['tabs']['mostviewed']) ){
+            $sortData['sort'] = 'p.viewed';
+            $tabs['mostviewed'] = $this->getProducts( $this->model_catalog_product->getProducts( $sortData ), $setting );
+        }
+        if( isset($setting['tabs']['toprating']) ){
+            $tabs['toprating'] = $this->getProducts( $this->model_ecoproductcarousel_product->getTopRatingProducts( $sortData['limit'] ), $setting );
 		}
-		if( isset($setting['tabs']['latest']) ){
-			$products = $this->getProducts( $this->model_catalog_product->getProducts( $sortData ), $setting );
-			$data['heading_title'] = $this->language->get('text_latest');
-	 	}
-		if( isset($setting['tabs']['bestseller']) ){
-			$products = $this->getProducts( $this->model_catalog_product->getBestSellerProducts( $sortData['limit'] ), $setting );
-			$data['heading_title'] = $this->language->get('text_bestseller');
-	 	}
-		if( isset($setting['tabs']['special']) ){
-			$products = $this->getProducts( $this->model_catalog_product->getProductSpecials( $sortData ), $setting );
-			$data['heading_title'] = $this->language->get('text_special');
-		}
-		if( isset($setting['tabs']['mostviewed']) ){
-			$products = $this->getProducts( $this->model_ecoproductcarousel_product->getMostviewedProducts( $sortData['limit'] ), $setting );
-			$data['heading_title'] = $this->language->get('text_mostviewed');
-		}
-		if( isset($setting['tabs']['toprating']) ){
-			$products = $this->getProducts( $this->model_ecoproductcarousel_product->getTopRatingProducts( $sortData['limit'] ), $setting );
-			$data['heading_title'] = $this->language->get('text_toprating');
-		}
+
+        $data['tabs'] = $tabs;
+
 
 		$data['objlang'] = $this->language;
 
-		$data['products'] = $products;
 		$data['module'] = $module++;
 
 		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/module/ecoproductcarousel.tpl')) {
@@ -151,9 +144,6 @@ class ControllerModuleEcoproductcarousel extends Controller {
 	}
 	private function getProducts( $results, $setting ){
 		$products = array();
-		$tooltip_width = isset($setting['tooltip_width'])?(int)$setting['tooltip_width']:200;
-		$tooltip_height = isset($setting['tooltip_height'])?(int)$setting['tooltip_height']:200;
-		//$tooltip_image = '';
 		foreach ($results as $result) {
 			if ($result['image']) {
 				$image = $this->model_tool_image->resize($result['image'], $setting['width'], $setting['height']);
