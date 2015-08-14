@@ -76,6 +76,11 @@
 		</div>
 	</div>
 </div>
-<script type="text/javascript"><!--
-	$('#productcarousel<?php echo $id;?>').carousel({interval:<?php echo ( $auto_play_mode?$interval:'false') ;?>,auto:<?php echo $auto_play;?>,pause:'hover'});
---></script>
+<script type="text/javascript">
+	$('#productcarousel<?php echo $id;?>').owlCarousel({items: 4,
+        autoPlay: 3000,
+        singleItem: true,
+        navigation: true,
+        navigationText: ['<i class="fa fa-chevron-left fa-5x"></i>', '<i class="fa fa-chevron-right fa-5x"></i>'],
+        pagination: true});
+</script>

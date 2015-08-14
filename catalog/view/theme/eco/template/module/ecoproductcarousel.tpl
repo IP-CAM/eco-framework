@@ -1,6 +1,5 @@
 <?php
 $id = rand(1,9)+rand();
-
 ?>
 <div class="box box-normal <?php echo count($tabs) > 1 ? 'producttabs' : '' ?>">
     <div class="box-heading">
@@ -73,6 +72,9 @@ $id = rand(1,9)+rand();
                                             <button type="button" onclick="cart.add('<?php echo $product['product_id']; ?>');"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md"><?php echo $button_cart; ?></span></button>
                                             <button type="button" data-toggle="tooltip" title="<?php echo $button_wishlist; ?>" onclick="wishlist.add('<?php echo $product['product_id']; ?>');"><i class="fa fa-heart"></i></button>
                                             <button type="button" data-toggle="tooltip" title="<?php echo $button_compare; ?>" onclick="compare.add('<?php echo $product['product_id']; ?>');"><i class="fa fa-exchange"></i></button>
+                                            <div class="quickview">
+                                                <a class="btn btn-default iframe-link dark options-cart" data-toggle="tooltip" data-placement="right" href="<?php echo $url->link('module/ecotheme','product_id='.$product['product_id']);?>"  title="<?php echo $objlang->get('quick_view'); ?>" ><i class="fa fa-eye"></i></a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -89,8 +91,8 @@ $id = rand(1,9)+rand();
             </div>
             <script type="text/javascript"><!--
                 $('#product<?php echo $module.$cid; ?>').owlCarousel({
-                    items: <?php echo (int)$itemsperpage; ?>,
-                autoPlay: <?php echo (int)$slideshow > 0 ? $slideshow : false; ?>,
+                items: <?php echo (int)$itemsperpage; ?>,
+                autoPlay: <?php echo (int)$slideshow > 0 ? $slideshow : 'false'; ?>,
                 singleItem: false,
                         navigation: true,
                         navigationText: ['<i class="fa fa-chevron-left fa-5x"></i>', '<i class="fa fa-chevron-right fa-5x"></i>'],
@@ -105,5 +107,25 @@ $id = rand(1,9)+rand();
 <script type="text/javascript">
     $(document).ready(function(){
         $('#producttabs<?php echo $id;?> a:first').tab('show');
+
+
+        $('.options-cart').colorbox({
+            iframe: true,
+            href:this.href,
+            opacity:	0.5,
+            speed:		300,
+            close:      "close",
+            innerWidth:'780px',
+            innerHeight:'650px',
+            onOpen: function(){
+                $('#cboxLoadingGraphic').addClass('box-loading');
+            },
+            onComplete: function(){
+                setTimeout(function(){
+                    $('#cboxLoadingGraphic').removeClass('box-loading');
+                },1300);
+            }
+        });
+
     });
 </script>
