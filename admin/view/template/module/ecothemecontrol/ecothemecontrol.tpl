@@ -1,1432 +1,616 @@
-<?php echo $header; ?><?php echo $column_left; ?>
-<div id="content">
+<?php echo $header; ?>
+<?php global $config;?>
+<!-- <script type="text/javascript" src="view/javascript/colorpicker/colorpicker-color.js"></script>
+<script type="text/javascript" src="view/javascript/colorpicker/colorpicker.js"></script> -->
+<link rel="stylesheet" href="view/javascript/colorpicker/bootstrap-3.0.0.min.css">
+<link rel="stylesheet" type="text/css" href="view/javascript/colorpicker/css/colorpicker.css" />
+<script type="text/javascript" src="view/javascript/colorpicker/js/colorpicker.js"></script>
 
+
+<?php echo $column_left; ?>
+<div id="content">
 <div class="page-header">
     <div class="container-fluid">
         <div class="pull-right">
-            <div class="pull-right">
-                <button type="submit" form="form-banner" data-toggle="tooltip" title="" class="btn btn-primary" data-original-title="Save"><i class="fa fa-save"></i></button>
-                <a class="btn btn-danger" href="<?php echo $cancel; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>"><i class="fa fa-reply"></i></a>
-            </div>
-        </div>
+            <button type="submit" form="form-eco" data-toggle="tooltip" title="<?php echo $button_save; ?>" class="btn btn-primary"><i class="fa fa-save"></i></button>
+            <a href="<?php echo $cancel; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
         <h1><?php echo $heading_title; ?></h1>
-        <ul class="breadcrumb clearfix">
+        <ul class="breadcrumb">
             <?php foreach ($breadcrumbs as $breadcrumb) { ?>
             <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
             <?php } ?>
         </ul>
     </div>
 </div>
-<div id="page-content" class="container-fluid">
-    <?php if ($error_warning) { ?>
-    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i>
-        <?php echo $error_warning; ?>
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-    </div>
-    <?php } ?>
-    <?php if (isset($success) && !empty($success)) { ?>
-    <div class="alert alert-success"><i class="fa fa-check-circle"></i> <?php echo $success; ?>
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-    </div>
-    <?php } ?>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title"><i class="fa fa-pencil"></i> <?php echo $heading_title; ?></h3>
-        </div>
-        <div class="panel-body">
-			<form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form">
-				<ul class="nav nav-tabs" id="mainTabs">
-                    <li class="active"><a data-toggle="tab" href="#ThemeSetting"><?php echo $tab_setting; ?></a></li>
-                    <li><a data-toggle="tab" href="#ThemeFonts"><?php echo $tab_font; ?></a></li>
-                    <li><a data-toggle="tab" href="#ThemeColors"><?php echo $tab_color; ?></a></li>
-                    <li><a data-toggle="tab" href="#customcode"><?php echo $tab_css; ?></a></li>
-                    <li><a data-toggle="tab" href="#customlayout"><?php echo $tab_layout; ?></a></li>
-				</ul> <!-- End .mainTabs -->
-				<!-- CUSTOM THEME SETTING -->
-                <div class="tab-content">
-				<div id="ThemeSetting" class="htabs-content tab-pane">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label" for="input-name"><?php echo $entry_show; ?></label>
-                        <div class="col-sm-10">
-                            <select name="b_General_Show" class="form-control">
-                                <?php if ($b_General_Show) { ?>
-                                <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
-                                <option value="0"><?php echo $text_disabled; ?></option>
-                                <?php } else { ?>
-                                <option value="1"><?php echo $text_enabled; ?></option>
-                                <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label" for="input-name"><?php echo $entry_modecss; ?></label>
-                        <div class="col-sm-10">
-                            <input type="radio" value="boxed" class="form-control" name="b_Mode_CSS" <?php if ($b_Mode_CSS == 'boxed') echo ' checked="checked"'; ?> /> <?php echo $entry_box; ?>
-                            <input type="radio" value="wide" class="form-control" name="b_Mode_CSS" <?php if ($b_Mode_CSS == 'wide') echo ' checked="checked"'; ?> /> <?php echo $entry_wide; ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label" for="input-name"><?php echo $entry_respon_allow; ?></label>
-                        <div class="col-sm-10">
-                            <select name="b_General_Respon" class="form-control">
-                                <?php if ($b_General_Respon) { ?>
-                                <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
-                                <option value="0"><?php echo $text_disabled; ?></option>
-                                <?php } else { ?>
-                                <option value="1"><?php echo $text_enabled; ?></option>
-                                <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label" for="input-name"><?php echo $entry_product_allow; ?></label>
-                        <div class="col-sm-10">
-                            <select name="b_General_P_Display" class="form-control">
-                                <?php if ($b_General_P_Display=='grid') { ?>
-                                <option value="grid" selected="selected"><?php echo $text_grid; ?></option>
-                                <option value="list"><?php echo $text_list; ?></option>
-                                <?php } else { ?>
-                                <option value="grid"><?php echo $text_grid; ?></option>
-                                <option value="list" selected="selected"><?php echo $text_list; ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label" for="input-name"><?php echo $entry_menu_allow; ?></label>
-                        <div class="col-sm-10">
-                            <select name="b_General_Menu" class="form-control">
-                                <?php if ($b_General_Menu) { ?>
-                                <option value="1" selected="selected"><?php echo $text_menu_mega; ?></option>
-                                <option value="0"><?php echo $text_menu_default; ?></option>
-                                <?php } else { ?>
-                                <option value="1"><?php echo $text_menu_mega; ?></option>
-                                <option value="0" selected="selected"><?php echo $text_menu_default; ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                    </div>
-                    <input type="hidden" name="boss_editorthemes_module[0][layout_id]" value="9999" />
-                    <input type="hidden" name="boss_editorthemes_module[0][position]" value="footer" />
-                    <input type="hidden" name="boss_editorthemes_module[0][sort_order]" value="0" />
-                    <input type="hidden" name="boss_editorthemes_module[0][status]" value="1" />
-				</div>
-				<!-- END CUSTOM THEME SETTING -->
-				
-				<!-- CUSTOM THEME FONTS -->
-				<div id="ThemeFonts" class="htabs-content tab-pane">
-
-                                <ul class="nav nav-tabs" id="tabs2">
-                                    <li class="active"><a data-toggle="tab" href="#tab_general_font"><?php echo $tab_general_font; ?></a></li>
-                                    <li><a data-toggle="tab" href="#tab_header_font"><?php echo $tab_header_font; ?></a></li>
-                                    <li><a data-toggle="tab" href="#tab_footer_font"><?php echo $tab_footer_font; ?></a></li>
-                                    <li><a data-toggle="tab" href="#tab_menu_font"><?php echo $tab_menu_font; ?></a></li>
-                                    <li><a data-toggle="tab" href="#tab_slide_font"><?php echo $tab_slide_font; ?></a></li>
-                                    <li><a data-toggle="tab" href="#tab_product_font"><?php echo $tab_product_font; ?></a></li>
-                                    <li><a data-toggle="tab" href="#tab_title_font"><?php echo $tab_title_font; ?></a></li>
-                                    <li><input type="button" class="button" onclick="ResetFont();" value="<?php echo $text_reset; ?>" /></li>
-                                </ul>
-								<?php
-									$json = file_get_contents("view/font/webfonts.json", true);
-									$decode = json_decode($json, true);
-									$webfonts = array();
-									foreach ($decode['items'] as $key => $value) {
-										// FONT FAMILY
-										$item_family = $decode['items'][$key]['family'];
-										$item_family_trunc =  str_replace(' ','+',$item_family);
-										$webfonts[$item_family_trunc] = $item_family;
-									}
-									//print_r ($default);
-									$defaultFont = array( 
-										'Arial', 
-										'Verdana', 
-										'Helvetica', 
-										'Lucida Grande', 
-										'Trebuchet MS', 
-										'Times New Roman', 
-										'Tahoma', 
-										'Georgia'
-										);
-									$FontWeight = array( 'default','normal', 'bold' );
-									
-								?>
-								<?php $FontsSizes = array( 
-									'default', '10px', '11px', '12px', '13px', '14px', '15px', '16px', '17px', '18px', '19px', '20px', '21px', '22px', '23px', '24px', '25px', 
-									'26px', '27px', '28px', '29px', '30px', '31px', '32px', '33px',
-									'34px', '35px', '36px', '37px', '38px', '39px', '40px', '41px',
-									'42px', '43px', '44px', '45px', '46px', '47px', '48px', '49px', '50px'
-								); ?>
-								<?php $FontsTransform = array( 'default', 'capitalize', 'lowercase', 'uppercase' ); ?>
-								
-								<!-- CUSTOM GENERAL FONTS -->
-								<?php $objXML = simplexml_load_file("../config_xml/font_setting.xml"); ?>
-                                <div class="tab-content">
-                                    <div id="tab_general_font" class="vtabs-content tab-pane">
-                                        <h3><?php echo $entry_g_font; ?></h3>
-                                        <table class="form">
-                                            <?php foreach ($objXML->children() as $child) {
-                                                if($child->getName()=='general'){
-                                                    foreach($child->children() as $childOFchild){ ?>
-                                                    <tr>
-                                                        <td><h3><strong><?php echo $childOFchild->text; ?></strong></h3></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><?php echo $text_font_style; ?></td>
-                                                        <td>
-                                                            <select id="<?php echo $childOFchild->style; ?>" name="b_Font_Data[<?php echo $childOFchild->style; ?>]" onchange="selectedFontStyle('#<?php echo $childOFchild->style; ?>','#span_<?php echo $childOFchild->style; ?>')">
-                                                                <option><?php echo $text_default; ?></option>
-                                                                <optgroup label="HTML default fonts">
-                                                                <?php foreach ($defaultFont as $key) { ?>
-                                                                    <?php ($key ==  $b_Font_Data[''.$childOFchild->style.'']) ? $selected = 'selected' : $selected = ''; ?>
-                                                                    <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $key; ?></option>
-                                                                <?php } ?>
-                                                                </optgroup>
-                                                                <optgroup label="Google fonts">
-                                                                <?php foreach ($webfonts as $key => $face ) { ?>
-                                                                    <?php ($key ==  $b_Font_Data[''.$childOFchild->style.'']) ? $selected = 'selected' : $selected=''; ?>
-                                                                    <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $face; ?></option>
-                                                                <?php } ?>
-                                                                </optgroup>
-                                                            </select><br /><br />
-                                                            <span id="span_<?php echo $childOFchild->style; ?>" style="font-family:<?php echo $b_Font_Data[''.$childOFchild->style.'']; ?>"><?php echo $text_test; ?></span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                    <td><?php echo $text_font_size; ?></td>
-                                                    <td>
-                                                        <select id="<?php echo $childOFchild->size; ?>" name="b_Font_Data[<?php echo $childOFchild->size; ?>]" onchange="selectedFontSize('#<?php echo $childOFchild->size; ?>','#span_<?php echo $childOFchild->style; ?>')">
-                                                            <?php foreach ($FontsSizes as $key) { ?>
-                                                                <?php ($key ==  $b_Font_Data[''.$childOFchild->size.'']) ? $selected = 'selected' : $selected=''; ?>
-                                                                <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $key; ?></option>
-                                                            <?php } ?>
-                                                        </select>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td><?php echo $text_font_weight; ?></td>
-                                                    <td>
-                                                        <select id="<?php echo $childOFchild->weight; ?>" name="b_Font_Data[<?php echo $childOFchild->weight; ?>]" onchange="selectedFontWeight('#<?php echo $childOFchild->weight; ?>','#span_<?php echo $childOFchild->style; ?>')">
-                                                            <?php foreach ($FontWeight as $key) { ?>
-                                                                <?php ($key ==  $b_Font_Data[''.$childOFchild->weight.'']) ? $selected = 'selected' : $selected=''; ?>
-                                                                <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $key; ?></option>
-                                                            <?php } ?>
-                                                        </select>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td><?php echo $text_transform; ?></td>
-                                                    <td>
-                                                        <select id="<?php echo $childOFchild->transform; ?>" name="b_Font_Data[<?php echo $childOFchild->transform; ?>]" onchange="selectedFontTrans('#<?php echo $childOFchild->transform; ?>','#span_<?php echo $childOFchild->style; ?>')">
-                                                            <?php foreach ($FontsTransform as $key) { ?>
-                                                                <?php ($key ==  $b_Font_Data[''.$childOFchild->transform.'']) ? $selected = 'selected' : $selected=''; ?>
-                                                                <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $key; ?></option>
-                                                            <?php } ?>
-                                                        </select>
-                                                    </td>
-                                                </tr>
-                                                <script type="text/javascript"><!--
-                                                    $(document).ready(function() {
-                                                        selectedFontStyle('#<?php echo $childOFchild->style; ?>','#span_<?php echo $childOFchild->style; ?>');
-                                                        selectedFontSize('#<?php echo $childOFchild->size; ?>','#span_<?php echo $childOFchild->style; ?>');
-                                                        selectedFontWeight('#<?php echo $childOFchild->weight; ?>','#span_<?php echo $childOFchild->style; ?>');
-                                                        selectedFontTrans('#<?php echo $childOFchild->transform; ?>','#span_<?php echo $childOFchild->style; ?>')
-                                                    });
-                                                //--></script>
-                                            <?php } } } ?>
-                                        </table>
-                                    </div>
-                                    <!-- END CUSTOM GENERAL FONTS -->
-
-                                    <!-- CUSTOM HEADER FONTS -->
-                                    <div id="tab_header_font" class="vtabs-content tab-pane">
-                                        <h3><?php echo $entry_h_font; ?></h3>
-                                        <table class="form">
-                                            <?php foreach ($objXML->children() as $child) {
-                                            if($child->getName()=='header'){
-                                                foreach($child->children() as $childOFchild){ ?>
-                                                <tr>
-                                                    <td><h3><strong><?php echo $childOFchild->text; ?></strong></h3></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><?php echo $text_font_style; ?></td>
-                                                    <td>
-                                                        <select id="<?php echo $childOFchild->style; ?>" name="b_Font_Data[<?php echo $childOFchild->style; ?>]" onchange="selectedFontStyle('#<?php echo $childOFchild->style; ?>','#span_<?php echo $childOFchild->style; ?>')">
-                                                            <option><?php echo $text_default; ?></option>
-                                                            <optgroup label="HTML default fonts">
-                                                            <?php foreach ($defaultFont as $key) { ?>
-                                                                <?php ($key ==  $b_Font_Data[''.$childOFchild->style.'']) ? $selected = 'selected' : $selected = ''; ?>
-                                                                <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $key; ?></option>
-                                                            <?php } ?>
-                                                            </optgroup>
-                                                            <optgroup label="Google fonts">
-                                                            <?php foreach ($webfonts as $key => $face ) { ?>
-                                                                <?php ($key ==  $b_Font_Data[''.$childOFchild->style.'']) ? $selected = 'selected' : $selected=''; ?>
-                                                                <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $face; ?></option>
-                                                            <?php } ?>
-                                                            </optgroup>
-                                                        </select><br /><br />
-                                                        <span id="span_<?php echo $childOFchild->style; ?>" style="font-family:<?php echo $b_Font_Data[''.$childOFchild->style.'']; ?>"><?php echo $text_test; ?></span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                <td><?php echo $text_font_size; ?></td>
-                                                <td>
-                                                    <select id="<?php echo $childOFchild->size; ?>" name="b_Font_Data[<?php echo $childOFchild->size; ?>]" onchange="selectedFontSize('#<?php echo $childOFchild->size; ?>','#span_<?php echo $childOFchild->style; ?>')">
-                                                        <?php foreach ($FontsSizes as $key) { ?>
-                                                            <?php ($key ==  $b_Font_Data[''.$childOFchild->size.'']) ? $selected = 'selected' : $selected=''; ?>
-                                                            <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $key; ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><?php echo $text_font_weight; ?></td>
-                                                <td>
-                                                    <select id="<?php echo $childOFchild->weight; ?>" name="b_Font_Data[<?php echo $childOFchild->weight; ?>]" onchange="selectedFontWeight('#<?php echo $childOFchild->weight; ?>','#span_<?php echo $childOFchild->style; ?>')">
-                                                        <?php foreach ($FontWeight as $key) { ?>
-                                                            <?php ($key ==  $b_Font_Data[''.$childOFchild->weight.'']) ? $selected = 'selected' : $selected=''; ?>
-                                                            <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $key; ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><?php echo $text_transform; ?></td>
-                                                <td>
-                                                    <select id="<?php echo $childOFchild->transform; ?>" name="b_Font_Data[<?php echo $childOFchild->transform; ?>]" onchange="selectedFontTrans('#<?php echo $childOFchild->transform; ?>','#span_<?php echo $childOFchild->style; ?>')">
-                                                        <?php foreach ($FontsTransform as $key) { ?>
-                                                            <?php ($key ==  $b_Font_Data[''.$childOFchild->transform.'']) ? $selected = 'selected' : $selected=''; ?>
-                                                            <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $key; ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <script type="text/javascript"><!--
-                                                $(document).ready(function() {
-                                                    selectedFontStyle('#<?php echo $childOFchild->style; ?>','#span_<?php echo $childOFchild->style; ?>');
-                                                    selectedFontSize('#<?php echo $childOFchild->size; ?>','#span_<?php echo $childOFchild->style; ?>');
-                                                    selectedFontWeight('#<?php echo $childOFchild->weight; ?>','#span_<?php echo $childOFchild->style; ?>');
-                                                    selectedFontTrans('#<?php echo $childOFchild->transform; ?>','#span_<?php echo $childOFchild->style; ?>')
-                                                });
-                                            //--></script>
-                                        <?php } } } ?>
-                                        </table>
-                                    </div>
-                                    <!-- END CUSTOM HEADER FONTS -->
-
-                                    <!-- CUSTOM FOOTER FONTS -->
-                                    <div id="tab_footer_font" class="vtabs-content tab-pane">
-                                        <h3><?php echo $entry_f_font; ?></h3>
-                                        <table class="form">
-                                            <?php foreach ($objXML->children() as $child) {
-                                            if($child->getName()=='footer'){
-                                                foreach($child->children() as $childOFchild){ ?>
-                                                <tr>
-                                                    <td><h3><strong><?php echo $childOFchild->text; ?></strong></h3></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><?php echo $text_font_style; ?></td>
-                                                    <td>
-                                                        <select id="<?php echo $childOFchild->style; ?>" name="b_Font_Data[<?php echo $childOFchild->style; ?>]" onchange="selectedFontStyle('#<?php echo $childOFchild->style; ?>','#span_<?php echo $childOFchild->style; ?>')">
-                                                            <option><?php echo $text_default; ?></option>
-                                                            <optgroup label="HTML default fonts">
-                                                            <?php foreach ($defaultFont as $key) { ?>
-                                                                <?php ($key ==  $b_Font_Data[''.$childOFchild->style.'']) ? $selected = 'selected' : $selected = ''; ?>
-                                                                <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $key; ?></option>
-                                                            <?php } ?>
-                                                            </optgroup>
-                                                            <optgroup label="Google fonts">
-                                                            <?php foreach ($webfonts as $key => $face ) { ?>
-                                                                <?php ($key ==  $b_Font_Data[''.$childOFchild->style.'']) ? $selected = 'selected' : $selected=''; ?>
-                                                                <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $face; ?></option>
-                                                            <?php } ?>
-                                                            </optgroup>
-                                                        </select><br /><br />
-                                                        <span id="span_<?php echo $childOFchild->style; ?>" style="font-family:<?php echo $b_Font_Data[''.$childOFchild->style.'']; ?>"><?php echo $text_test; ?></span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                <td><?php echo $text_font_size; ?></td>
-                                                <td>
-                                                    <select id="<?php echo $childOFchild->size; ?>" name="b_Font_Data[<?php echo $childOFchild->size; ?>]" onchange="selectedFontSize('#<?php echo $childOFchild->size; ?>','#span_<?php echo $childOFchild->style; ?>')">
-                                                        <?php foreach ($FontsSizes as $key) { ?>
-                                                            <?php ($key ==  $b_Font_Data[''.$childOFchild->size.'']) ? $selected = 'selected' : $selected=''; ?>
-                                                            <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $key; ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><?php echo $text_font_weight; ?></td>
-                                                <td>
-                                                    <select id="<?php echo $childOFchild->weight; ?>" name="b_Font_Data[<?php echo $childOFchild->weight; ?>]" onchange="selectedFontWeight('#<?php echo $childOFchild->weight; ?>','#span_<?php echo $childOFchild->style; ?>')">
-                                                        <?php foreach ($FontWeight as $key) { ?>
-                                                            <?php ($key ==  $b_Font_Data[''.$childOFchild->weight.'']) ? $selected = 'selected' : $selected=''; ?>
-                                                            <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $key; ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><?php echo $text_transform; ?></td>
-                                                <td>
-                                                    <select id="<?php echo $childOFchild->transform; ?>" name="b_Font_Data[<?php echo $childOFchild->transform; ?>]" onchange="selectedFontTrans('#<?php echo $childOFchild->transform; ?>','#span_<?php echo $childOFchild->style; ?>')">
-                                                        <?php foreach ($FontsTransform as $key) { ?>
-                                                            <?php ($key ==  $b_Font_Data[''.$childOFchild->transform.'']) ? $selected = 'selected' : $selected=''; ?>
-                                                            <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $key; ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <script type="text/javascript"><!--
-                                                $(document).ready(function() {
-                                                    selectedFontStyle('#<?php echo $childOFchild->style; ?>','#span_<?php echo $childOFchild->style; ?>');
-                                                    selectedFontSize('#<?php echo $childOFchild->size; ?>','#span_<?php echo $childOFchild->style; ?>');
-                                                    selectedFontWeight('#<?php echo $childOFchild->weight; ?>','#span_<?php echo $childOFchild->style; ?>');
-                                                    selectedFontTrans('#<?php echo $childOFchild->transform; ?>','#span_<?php echo $childOFchild->style; ?>')
-                                                });
-                                            //--></script>
-                                        <?php } } } ?>
-                                        </table>
-                                    </div>
-                                    <!-- END CUSTOM FOOTER FONTS -->
-
-                                    <!-- CUSTOM MENU FONTS -->
-                                    <div id="tab_menu_font" class="vtabs-content tab-pane">
-                                        <h3><?php echo $entry_m_font; ?></h3>
-                                        <table class="form">
-                                            <?php foreach ($objXML->children() as $child) {
-                                            if($child->getName()=='menu'){
-                                                foreach($child->children() as $childOFchild){ ?>
-                                                <tr>
-                                                    <td><h3><strong><?php echo $childOFchild->text; ?></strong></h3></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><?php echo $text_font_style; ?></td>
-                                                    <td>
-                                                        <select id="<?php echo $childOFchild->style; ?>" name="b_Font_Data[<?php echo $childOFchild->style; ?>]" onchange="selectedFontStyle('#<?php echo $childOFchild->style; ?>','#span_<?php echo $childOFchild->style; ?>')">
-                                                            <option><?php echo $text_default; ?></option>
-                                                            <optgroup label="HTML default fonts">
-                                                            <?php foreach ($defaultFont as $key) { ?>
-                                                                <?php ($key ==  $b_Font_Data[''.$childOFchild->style.'']) ? $selected = 'selected' : $selected = ''; ?>
-                                                                <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $key; ?></option>
-                                                            <?php } ?>
-                                                            </optgroup>
-                                                            <optgroup label="Google fonts">
-                                                            <?php foreach ($webfonts as $key => $face ) { ?>
-                                                                <?php ($key ==  $b_Font_Data[''.$childOFchild->style.'']) ? $selected = 'selected' : $selected=''; ?>
-                                                                <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $face; ?></option>
-                                                            <?php } ?>
-                                                            </optgroup>
-                                                        </select><br /><br />
-                                                        <span id="span_<?php echo $childOFchild->style; ?>" style="font-family:<?php echo $b_Font_Data[''.$childOFchild->style.'']; ?>"><?php echo $text_test; ?></span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                <td><?php echo $text_font_size; ?></td>
-                                                <td>
-                                                    <select id="<?php echo $childOFchild->size; ?>" name="b_Font_Data[<?php echo $childOFchild->size; ?>]" onchange="selectedFontSize('#<?php echo $childOFchild->size; ?>','#span_<?php echo $childOFchild->style; ?>')">
-                                                        <?php foreach ($FontsSizes as $key) { ?>
-                                                            <?php ($key ==  $b_Font_Data[''.$childOFchild->size.'']) ? $selected = 'selected' : $selected=''; ?>
-                                                            <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $key; ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><?php echo $text_font_weight; ?></td>
-                                                <td>
-                                                    <select id="<?php echo $childOFchild->weight; ?>" name="b_Font_Data[<?php echo $childOFchild->weight; ?>]" onchange="selectedFontWeight('#<?php echo $childOFchild->weight; ?>','#span_<?php echo $childOFchild->style; ?>')">
-                                                        <?php foreach ($FontWeight as $key) { ?>
-                                                            <?php ($key ==  $b_Font_Data[''.$childOFchild->weight.'']) ? $selected = 'selected' : $selected=''; ?>
-                                                            <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $key; ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><?php echo $text_transform; ?></td>
-                                                <td>
-                                                    <select id="<?php echo $childOFchild->transform; ?>" name="b_Font_Data[<?php echo $childOFchild->transform; ?>]" onchange="selectedFontTrans('#<?php echo $childOFchild->transform; ?>','#span_<?php echo $childOFchild->style; ?>')">
-                                                        <?php foreach ($FontsTransform as $key) { ?>
-                                                            <?php ($key ==  $b_Font_Data[''.$childOFchild->transform.'']) ? $selected = 'selected' : $selected=''; ?>
-                                                            <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $key; ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <script type="text/javascript"><!--
-                                                $(document).ready(function() {
-                                                    selectedFontStyle('#<?php echo $childOFchild->style; ?>','#span_<?php echo $childOFchild->style; ?>');
-                                                    selectedFontSize('#<?php echo $childOFchild->size; ?>','#span_<?php echo $childOFchild->style; ?>');
-                                                    selectedFontWeight('#<?php echo $childOFchild->weight; ?>','#span_<?php echo $childOFchild->style; ?>');
-                                                    selectedFontTrans('#<?php echo $childOFchild->transform; ?>','#span_<?php echo $childOFchild->style; ?>')
-                                                });
-                                            //--></script>
-                                        <?php } } } ?>
-                                        </table>
-                                    </div>
-                                    <!-- END CUSTOM MENU FONTS -->
-
-                                    <!-- CUSTOM SLIDESHOW FONTS -->
-                                    <div id="tab_slide_font" class="vtabs-content tab-pane">
-                                        <h3><?php echo $entry_s_font; ?></h3>
-                                        <table class="form">
-                                            <?php foreach ($objXML->children() as $child) {
-                                            if($child->getName()=='slideshow'){
-                                                foreach($child->children() as $childOFchild){ ?>
-                                                <tr>
-                                                    <td><h3><strong><?php echo $childOFchild->text; ?></strong></h3></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><?php echo $text_font_style; ?></td>
-                                                    <td>
-                                                        <select id="<?php echo $childOFchild->style; ?>" name="b_Font_Data[<?php echo $childOFchild->style; ?>]" onchange="selectedFontStyle('#<?php echo $childOFchild->style; ?>','#span_<?php echo $childOFchild->style; ?>')">
-                                                            <option><?php echo $text_default; ?></option>
-                                                            <optgroup label="HTML default fonts">
-                                                            <?php foreach ($defaultFont as $key) { ?>
-                                                                <?php ($key ==  $b_Font_Data[''.$childOFchild->style.'']) ? $selected = 'selected' : $selected = ''; ?>
-                                                                <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $key; ?></option>
-                                                            <?php } ?>
-                                                            </optgroup>
-                                                            <optgroup label="Google fonts">
-                                                            <?php foreach ($webfonts as $key => $face ) { ?>
-                                                                <?php ($key ==  $b_Font_Data[''.$childOFchild->style.'']) ? $selected = 'selected' : $selected=''; ?>
-                                                                <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $face; ?></option>
-                                                            <?php } ?>
-                                                            </optgroup>
-                                                        </select><br /><br />
-                                                        <span id="span_<?php echo $childOFchild->style; ?>" style="font-family:<?php echo $b_Font_Data[''.$childOFchild->style.'']; ?>"><?php echo $text_test; ?></span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                <td><?php echo $text_font_size; ?></td>
-                                                <td>
-                                                    <select id="<?php echo $childOFchild->size; ?>" name="b_Font_Data[<?php echo $childOFchild->size; ?>]" onchange="selectedFontSize('#<?php echo $childOFchild->size; ?>','#span_<?php echo $childOFchild->style; ?>')">
-                                                        <?php foreach ($FontsSizes as $key) { ?>
-                                                            <?php ($key ==  $b_Font_Data[''.$childOFchild->size.'']) ? $selected = 'selected' : $selected=''; ?>
-                                                            <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $key; ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><?php echo $text_font_weight; ?></td>
-                                                <td>
-                                                    <select id="<?php echo $childOFchild->weight; ?>" name="b_Font_Data[<?php echo $childOFchild->weight; ?>]" onchange="selectedFontWeight('#<?php echo $childOFchild->weight; ?>','#span_<?php echo $childOFchild->style; ?>')">
-                                                        <?php foreach ($FontWeight as $key) { ?>
-                                                            <?php ($key ==  $b_Font_Data[''.$childOFchild->weight.'']) ? $selected = 'selected' : $selected=''; ?>
-                                                            <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $key; ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><?php echo $text_transform; ?></td>
-                                                <td>
-                                                    <select id="<?php echo $childOFchild->transform; ?>" name="b_Font_Data[<?php echo $childOFchild->transform; ?>]" onchange="selectedFontTrans('#<?php echo $childOFchild->transform; ?>','#span_<?php echo $childOFchild->style; ?>')">
-                                                        <?php foreach ($FontsTransform as $key) { ?>
-                                                            <?php ($key ==  $b_Font_Data[''.$childOFchild->transform.'']) ? $selected = 'selected' : $selected=''; ?>
-                                                            <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $key; ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <script type="text/javascript"><!--
-                                                $(document).ready(function() {
-                                                    selectedFontStyle('#<?php echo $childOFchild->style; ?>','#span_<?php echo $childOFchild->style; ?>');
-                                                    selectedFontSize('#<?php echo $childOFchild->size; ?>','#span_<?php echo $childOFchild->style; ?>');
-                                                    selectedFontWeight('#<?php echo $childOFchild->weight; ?>','#span_<?php echo $childOFchild->style; ?>');
-                                                    selectedFontTrans('#<?php echo $childOFchild->transform; ?>','#span_<?php echo $childOFchild->style; ?>')
-                                                });
-                                            //--></script>
-                                        <?php } } } ?>
-                                        </table>
-                                    </div>
-                                    <!-- END CUSTOM SLIDESHOW FONTS -->
-
-                                    <!-- CUSTOM PRODUCT FONTS -->
-                                    <div id="tab_product_font" class="vtabs-content tab-pane">
-                                        <h3><?php echo $entry_p_font; ?></h3>
-                                        <table class="form">
-                                            <?php foreach ($objXML->children() as $child) {
-                                            if($child->getName()=='product'){
-                                                foreach($child->children() as $childOFchild){ ?>
-                                                <tr>
-                                                    <td><h3><strong><?php echo $childOFchild->text; ?></strong></h3></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><?php echo $text_font_style; ?></td>
-                                                    <td>
-                                                        <select id="<?php echo $childOFchild->style; ?>" name="b_Font_Data[<?php echo $childOFchild->style; ?>]" onchange="selectedFontStyle('#<?php echo $childOFchild->style; ?>','#span_<?php echo $childOFchild->style; ?>')">
-                                                            <option><?php echo $text_default; ?></option>
-                                                            <optgroup label="HTML default fonts">
-                                                            <?php foreach ($defaultFont as $key) { ?>
-                                                                <?php ($key ==  $b_Font_Data[''.$childOFchild->style.'']) ? $selected = 'selected' : $selected = ''; ?>
-                                                                <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $key; ?></option>
-                                                            <?php } ?>
-                                                            </optgroup>
-                                                            <optgroup label="Google fonts">
-                                                            <?php foreach ($webfonts as $key => $face ) { ?>
-                                                                <?php ($key ==  $b_Font_Data[''.$childOFchild->style.'']) ? $selected = 'selected' : $selected=''; ?>
-                                                                <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $face; ?></option>
-                                                            <?php } ?>
-                                                            </optgroup>
-                                                        </select><br /><br />
-                                                        <span id="span_<?php echo $childOFchild->style; ?>" style="font-family:<?php echo $b_Font_Data[''.$childOFchild->style.'']; ?>"><?php echo $text_test; ?></span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                <td><?php echo $text_font_size; ?></td>
-                                                <td>
-                                                    <select id="<?php echo $childOFchild->size; ?>" name="b_Font_Data[<?php echo $childOFchild->size; ?>]" onchange="selectedFontSize('#<?php echo $childOFchild->size; ?>','#span_<?php echo $childOFchild->style; ?>')">
-                                                        <?php foreach ($FontsSizes as $key) { ?>
-                                                            <?php ($key ==  $b_Font_Data[''.$childOFchild->size.'']) ? $selected = 'selected' : $selected=''; ?>
-                                                            <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $key; ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><?php echo $text_font_weight; ?></td>
-                                                <td>
-                                                    <select id="<?php echo $childOFchild->weight; ?>" name="b_Font_Data[<?php echo $childOFchild->weight; ?>]" onchange="selectedFontWeight('#<?php echo $childOFchild->weight; ?>','#span_<?php echo $childOFchild->style; ?>')">
-                                                        <?php foreach ($FontWeight as $key) { ?>
-                                                            <?php ($key ==  $b_Font_Data[''.$childOFchild->weight.'']) ? $selected = 'selected' : $selected=''; ?>
-                                                            <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $key; ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><?php echo $text_transform; ?></td>
-                                                <td>
-                                                    <select id="<?php echo $childOFchild->transform; ?>" name="b_Font_Data[<?php echo $childOFchild->transform; ?>]" onchange="selectedFontTrans('#<?php echo $childOFchild->transform; ?>','#span_<?php echo $childOFchild->style; ?>')">
-                                                        <?php foreach ($FontsTransform as $key) { ?>
-                                                            <?php ($key ==  $b_Font_Data[''.$childOFchild->transform.'']) ? $selected = 'selected' : $selected=''; ?>
-                                                            <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $key; ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <script type="text/javascript"><!--
-                                                $(document).ready(function() {
-                                                    selectedFontStyle('#<?php echo $childOFchild->style; ?>','#span_<?php echo $childOFchild->style; ?>');
-                                                    selectedFontSize('#<?php echo $childOFchild->size; ?>','#span_<?php echo $childOFchild->style; ?>');
-                                                    selectedFontWeight('#<?php echo $childOFchild->weight; ?>','#span_<?php echo $childOFchild->style; ?>');
-                                                    selectedFontTrans('#<?php echo $childOFchild->transform; ?>','#span_<?php echo $childOFchild->style; ?>')
-                                                });
-                                            //--></script>
-                                        <?php } } } ?>
-                                        </table>
-                                    </div>
-                                    <!-- END CUSTOM PRODUCT FONTS -->
-
-                                    <!-- CUSTOM TITLE FONTS -->
-                                    <div id="tab_title_font" class="vtabs-content tab-pane">
-                                        <h3><?php echo $entry_t_font; ?></h3>
-                                        <table class="form">
-                                            <?php foreach ($objXML->children() as $child) {
-                                            if($child->getName()=='title'){
-                                                foreach($child->children() as $childOFchild){ ?>
-                                                <tr>
-                                                    <td><h3><strong><?php echo $childOFchild->text; ?></strong></h3></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><?php echo $text_font_style; ?></td>
-                                                    <td>
-                                                        <select id="<?php echo $childOFchild->style; ?>" name="b_Font_Data[<?php echo $childOFchild->style; ?>]" onchange="selectedFontStyle('#<?php echo $childOFchild->style; ?>','#span_<?php echo $childOFchild->style; ?>')">
-                                                            <option><?php echo $text_default; ?></option>
-                                                            <optgroup label="HTML default fonts">
-                                                            <?php foreach ($defaultFont as $key) { ?>
-                                                                <?php ($key ==  $b_Font_Data[''.$childOFchild->style.'']) ? $selected = 'selected' : $selected = ''; ?>
-                                                                <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $key; ?></option>
-                                                            <?php } ?>
-                                                            </optgroup>
-                                                            <optgroup label="Google fonts">
-                                                            <?php foreach ($webfonts as $key => $face ) { ?>
-                                                                <?php ($key ==  $b_Font_Data[''.$childOFchild->style.'']) ? $selected = 'selected' : $selected=''; ?>
-                                                                <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $face; ?></option>
-                                                            <?php } ?>
-                                                            </optgroup>
-                                                        </select><br /><br />
-                                                        <span id="span_<?php echo $childOFchild->style; ?>" style="font-family:<?php echo $b_Font_Data[''.$childOFchild->style.'']; ?>"><?php echo $text_test; ?></span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                <td><?php echo $text_font_size; ?></td>
-                                                <td>
-                                                    <select id="<?php echo $childOFchild->size; ?>" name="b_Font_Data[<?php echo $childOFchild->size; ?>]" onchange="selectedFontSize('#<?php echo $childOFchild->size; ?>','#span_<?php echo $childOFchild->style; ?>')">
-                                                        <?php foreach ($FontsSizes as $key) { ?>
-                                                            <?php ($key ==  $b_Font_Data[''.$childOFchild->size.'']) ? $selected = 'selected' : $selected=''; ?>
-                                                            <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $key; ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><?php echo $text_font_weight; ?></td>
-                                                <td>
-                                                    <select id="<?php echo $childOFchild->weight; ?>" name="b_Font_Data[<?php echo $childOFchild->weight; ?>]" onchange="selectedFontWeight('#<?php echo $childOFchild->weight; ?>','#span_<?php echo $childOFchild->style; ?>')">
-                                                        <?php foreach ($FontWeight as $key) { ?>
-                                                            <?php ($key ==  $b_Font_Data[''.$childOFchild->weight.'']) ? $selected = 'selected' : $selected=''; ?>
-                                                            <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $key; ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><?php echo $text_transform; ?></td>
-                                                <td>
-                                                    <select id="<?php echo $childOFchild->transform; ?>" name="b_Font_Data[<?php echo $childOFchild->transform; ?>]" onchange="selectedFontTrans('#<?php echo $childOFchild->transform; ?>','#span_<?php echo $childOFchild->style; ?>')">
-                                                        <?php foreach ($FontsTransform as $key) { ?>
-                                                            <?php ($key ==  $b_Font_Data[''.$childOFchild->transform.'']) ? $selected = 'selected' : $selected=''; ?>
-                                                            <option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $key; ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <script type="text/javascript"><!--
-                                                $(document).ready(function() {
-                                                    selectedFontStyle('#<?php echo $childOFchild->style; ?>','#span_<?php echo $childOFchild->style; ?>');
-                                                    selectedFontSize('#<?php echo $childOFchild->size; ?>','#span_<?php echo $childOFchild->style; ?>');
-                                                    selectedFontWeight('#<?php echo $childOFchild->weight; ?>','#span_<?php echo $childOFchild->style; ?>');
-                                                    selectedFontTrans('#<?php echo $childOFchild->transform; ?>','#span_<?php echo $childOFchild->style; ?>')
-                                                });
-                                            //--></script>
-                                        <?php } } } ?>
-                                        </table>
-                                    </div>
-								<!-- END CUSTOM TITLE FONTS -->
-								</div>
-				</div>
-				<!-- END CUSTOM THEME FONTS -->
-				
-				<!-- CUSTOM THEME COLORS -->
-				<div id="ThemeColors" class="htabs-content tab-pane">
-					<table cellpadding="0" cellspacing="0" width="100%" border="0">
-						<tr>
-							<td valign="top" >
-								<div id="tabs1" class="vtabs">
-									<a href="#tab_general_color"><?php echo $tab_general_color; ?></a>
-									<a href="#tab_header_color"><?php echo $tab_header_color; ?></a>
-									<a href="#tab_footer_color"><?php echo $tab_footer_color; ?></a>
-									<a href="#tab_menu_color"><?php echo $tab_menu_color; ?></a>
-									<a href="#tab_slide_color"><?php echo $tab_slide_color; ?></a>
-									<a href="#tab_product_color"><?php echo $tab_product_color; ?></a>
-									<a href="#tab_title_color"><?php echo $tab_title_color; ?></a>
-									<input type="button" class="button" onclick="ResetColor();" value="<?php echo $text_reset; ?>"/>
-								</div> <!-- End #tabs1 -->
-								
-								<!-- CUSTOM TEAMPLATE SETTING -->
-								<div id="template_setting" class="vtabs-content">
-									<h3><?php echo $entry_template_set; ?></h3>
-									<table class="form">
-										<tr>
-											<td><label><?php echo $entry_template; ?></label></td>
-											<td>
-												<select id="temp_setting" name="b_Setting[temp_setting]" onchange="changeTemplate();">
-													<option value="custom" <?php ($b_Setting['temp_setting']) =='custom' ? $selected = 'selected' : $selected = ''; ?>><?php echo $text_custom; ?></option>
-													<?php foreach ($temp_setting_arr as $key => $value){ ?>
-														<?php if ($key == $b_Setting['temp_setting']){ ?>
-															<option value="<?php echo $key; ?>" selected="selected"><?php echo $temp_name_arr[$key]; ?></option>
-														<?php } else{ ?>
-															<option value="<?php echo $key; ?>"><?php echo $temp_name_arr[$key]; ?></option>
-														<?php } ?>
-													 <?php } ?>
-												</select>
-											</td>
-										</tr>
-									</table>
-								</div>
-								<!-- END CUSTOM TEAMPLATE SETTING -->
-								
-								<!-- CUSTOM GENERAL COLORS -->
-								<?php $objXML = simplexml_load_file("../config_xml/color_setting.xml"); ?>
-
-								<div id="tab_general_color" class="vtabs-content">
-									<h3><?php echo $entry_g_color; ?></h3>
-									<table class="form">
-										<tr>
-											<td><label><?php echo $entry_back_image; ?></label></td>
-											<td>
-												<div class="bg_image">
-													<span class="g_bg_image" style="background:url('view/image/background/back_0.png') repeat;float:left;margin:0 10px 10px 0">
-														<input type="radio" name="b_Color_Data[g_bg_image]" value="default" <?php if ($b_Color_Data['g_bg_image'] == 'default') echo ' checked="checked"'; ?> />
-													</span>
-													<?php foreach ($bg_images as $image => $settings) {?>
-														<span class="g_bg_image" style="background:url('view/image/background/<?php echo $settings; ?>') repeat;float:left;margin:0 10px 10px 0">
-														<input type="radio" name="b_Color_Data[g_bg_image]" value="<?php echo$settings; ?>" <?php if ($b_Color_Data['g_bg_image'] == $settings) echo ' checked="checked"'; ?> /> </span>
-													<?php }?>
-													<span><input type="radio" name="b_Color_Data[g_bg_image]" value="g_upload_bg_image" <?php if ($b_Color_Data['g_bg_image'] == 'g_upload_bg_image') echo ' checked="checked"'; ?> /><?php echo $text_upload_image; ?></span>
-												</div>
-												<div class="upload_image">
-													<?php if(($b_Color_Data['g_upload_bg_image'])!=''){ ?>
-														<img src="../image/<?php echo $b_Color_Data['g_upload_bg_image']; ?>" width="100px" height="50px" alt="" id="g_thumb" />
-													<?php } ?>
-													<?php if($b_Color_Data['g_upload_bg_image']==''){ ?>
-														<img src="<?php echo $no_image; ?>" id="g_thumb" />
-													<?php } ?>
-													<input type="hidden" name="b_Color_Data[g_upload_bg_image]" value="<?php echo $b_Color_Data['g_upload_bg_image']; ?>" id="g_image" />
-													  <br />
-													<a onclick="image_upload('g_image', 'g_thumb');"><?php echo $text_browse; ?></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a onclick="$('#g_thumb').attr('src', '<?php echo $no_image; ?>'); $('#g_image').attr('value', '');"><?php echo $text_clear; ?></a>
-												</div>
-												<div class="image_repeat" style="clear:both;">
-													<span><?php echo $entry_repeat; ?></span>
-													<select name="b_Color_Data[g_bg_image_repeat]">
-														<option value="repeat"<?php if ($b_Color_Data['g_bg_image_repeat'] == 'repeat') echo ' selected="selected"'; ?>><?php echo $text_repeat; ?></option>
-														<option value="no-repeat"<?php if ($b_Color_Data['g_bg_image_repeat'] == 'no-repeat') echo ' selected="selected"'; ?>><?php echo $text_no_repeat; ?></option>
-														<option value="repeat-x"<?php if ($b_Color_Data['g_bg_image_repeat'] == 'repeat-x') echo ' selected="selected"'; ?>><?php echo $text_repeat_x; ?></option>
-														<option value="repeat-y"<?php if ($b_Color_Data['g_bg_image_repeat'] == 'repeat-y') echo ' selected="selected"'; ?>><?php echo $text_repeat_y; ?></option>
-														
-													</select>
-												</div><br />
-												<div class="image_repeat" style="clear:both;">
-													<span><?php echo $entry_position_image; ?></span>
-													<select name="b_Color_Data[g_bg_image_position]">
-														<option value="left top"<?php if ($b_Color_Data['g_bg_image_position'] == 'left top') echo ' selected="selected"'; ?>><?php echo $text_left_top; ?></option>
-														<option value="right top"<?php if ($b_Color_Data['g_bg_image_position'] == 'right top') echo ' selected="selected"'; ?>><?php echo $text_right_top; ?></option>
-														<option value="center top"<?php if ($b_Color_Data['g_bg_image_position'] == 'center top') echo ' selected="selected"'; ?>><?php echo $text_center_top; ?></option>
-														<option value="center center"<?php if ($b_Color_Data['g_bg_image_position'] == 'center center') echo ' selected="selected"'; ?>><?php echo $text_center_center; ?></option>
-													</select>
-												</div>
-											</td>
-										</tr>
-										<?php foreach ($objXML->children() as $child) {	
-											if($child->getName()=='general'){
-												foreach($child->children() as $childOFchild){ ?>
-												<tr> 
-													<td><label><?php echo $childOFchild->text; ?></label></td>
-													<td>
-												<?php foreach($childOFchild->children() as $childOF){ ?>
-													
-													<?php if($childOF->text){ ?>
-														<span><?php echo $childOF->text; ?></span>
-													<?php } ?>
-													<?php if($childOF->name){ ?>
-														<?php if(isset($b_Color_Data[''.$childOF->name.''])) { ?>
-															<input size=6 type="text" class="hex" name="b_Color_Data[<?php echo $childOF->name; ?>]" id="<?php echo $childOF->name; ?>" value="<?php echo $b_Color_Data[''.$childOF->name.''] ?>">
-														<?php } else{ ?>
-															<input size=6 type="text" class="hex" name="b_Color_Data[<?php echo $childOF->name; ?>]" id="<?php echo $childOF->name; ?>" value="">
-														<?php } ?>
-													
-													<?php } ?>
-												<?php	} ?>
-													</td>
-												</tr> 
-										<?php } } } ?>
-									</table>
-								</div>
-								<!-- END CUSTOM GENERAL COLORS -->
-								
-								<!-- CUSTOM HEADER COLORS -->
-								<div id="tab_header_color" class="vtabs-content">
-									<h3><?php echo $entry_h_color; ?></h3>
-									<table class="form">
-										<tr>
-											<td><label><?php echo $entry_back_image; ?></label></td>
-											<td>
-												<div class="bg_image">
-													<span class="h_bg_image" style="background:url('view/image/background/back_0.png') repeat;float:left;margin:0 10px 10px 0">
-													<input type="radio" name="b_Color_Data[h_bg_image]" value="default" <?php if ($b_Color_Data['h_bg_image'] == 'default') echo ' checked="checked"'; ?> />
-													</span>
-												<?php foreach ($bg_images as $image => $settings) {?>
-													<span class="h_bg_image" style="background:url('view/image/background/<?php echo $settings; ?>') repeat;float:left;margin:0 10px 10px 0">
-													<input type="radio" name="b_Color_Data[h_bg_image]" value="<?php echo$settings; ?>" <?php if ($b_Color_Data['h_bg_image'] == $settings) echo ' checked="checked"'; ?> /> </span>
-												<?php }?>
-													<span><input type="radio" name="b_Color_Data[h_bg_image]" value="h_upload_bg_image" <?php if ($b_Color_Data['h_bg_image'] == 'h_upload_bg_image') echo ' checked="checked"'; ?> /><?php echo $text_upload_image; ?></span>
-												</div>
-												<div class="upload_image">
-													<?php if($b_Color_Data['h_upload_bg_image']!=''){ ?>
-														<img src="../image/<?php echo $b_Color_Data['h_upload_bg_image']; ?>" width="100px" height="50px" alt="" id="h_thumb" />
-													<?php } ?>
-													<?php if($b_Color_Data['h_upload_bg_image']==''){ ?>
-														<img src="<?php echo $no_image; ?>" id="h_thumb" />
-													<?php } ?>
-													<input type="hidden" name="b_Color_Data[h_upload_bg_image]" value="<?php echo $b_Color_Data['h_upload_bg_image']; ?>" id="h_image" />
-													  <br />
-													<a onclick="image_upload('h_image', 'h_thumb');"><?php echo $text_browse; ?></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a onclick="$('#h_thumb').attr('src', '<?php echo $no_image; ?>'); $('#h_image').attr('value', '');"><?php echo $text_clear; ?></a>
-												</div>
-												<div class="image_repeat" style="clear:both;">
-													<span><?php echo $entry_repeat; ?></span>
-													<select name="b_Color_Data[h_bg_image_repeat]">
-														<option value="repeat"<?php if ($b_Color_Data['h_bg_image_repeat'] == 'repeat') echo ' selected="selected"'; ?>><?php echo $text_repeat; ?></option>
-														<option value="no-repeat"<?php if ($b_Color_Data['h_bg_image_repeat'] == 'no-repeat') echo ' selected="selected"'; ?>><?php echo $text_no_repeat; ?></option>
-														<option value="repeat-x"<?php if ($b_Color_Data['h_bg_image_repeat'] == 'repeat-x') echo ' selected="selected"'; ?>><?php echo $text_repeat_x; ?></option>
-														<option value="repeat-y"<?php if ($b_Color_Data['h_bg_image_repeat'] == 'repeat-y') echo ' selected="selected"'; ?>><?php echo $text_repeat_y; ?></option>
-													</select>
-												</div><br />
-												<div class="image_repeat" style="clear:both;">
-													<span><?php echo $entry_position_image; ?></span>
-													<select name="b_Color_Data[h_bg_image_position]">
-														<option value="left top"<?php if ($b_Color_Data['h_bg_image_position'] == 'left top') echo ' selected="selected"'; ?>><?php echo $text_left_top; ?></option>
-														<option value="right top"<?php if ($b_Color_Data['h_bg_image_position'] == 'right top') echo ' selected="selected"'; ?>><?php echo $text_right_top; ?></option>
-														<option value="center top"<?php if ($b_Color_Data['h_bg_image_position'] == 'center top') echo ' selected="selected"'; ?>><?php echo $text_center_top; ?></option>
-														<option value="center center"<?php if ($b_Color_Data['h_bg_image_position'] == 'center center') echo ' selected="selected"'; ?>><?php echo $text_center_center; ?></option>
-													</select>
-												</div>
-											</td>
-										</tr>
-																	
-										<?php foreach ($objXML->children() as $child) {	
-											if($child->getName()=='header'){
-												foreach($child->children() as $childOFchild){ ?>
-												<tr> 
-													<td><label><?php echo $childOFchild->text; ?></label></td>
-													<td>
-												<?php foreach($childOFchild->children() as $childOF){ ?>
-													
-													<?php if($childOF->text){ ?>
-														<span><?php echo $childOF->text; ?></span>
-													<?php } ?>
-													<?php if($childOF->name){ ?>
-														<?php if(isset($b_Color_Data[''.$childOF->name.''])) { ?>
-															<input size=6 type="text" class="hex" name="b_Color_Data[<?php echo $childOF->name; ?>]" id="<?php echo $childOF->name; ?>" value="<?php echo $b_Color_Data[''.$childOF->name.''] ?>">
-														<?php } else{ ?>
-															<input size=6 type="text" class="hex" name="b_Color_Data[<?php echo $childOF->name; ?>]" id="<?php echo $childOF->name; ?>" value="">
-														<?php } ?>
-													
-													<?php } ?>
-												<?php	} ?>
-													</td>
-												</tr> 
-										<?php } } } ?>
-									</table>
-								</div>
-								<!-- END CUSTOM HEADER COLORS -->
-								
-								<!-- CUSTOM FOOTER COLORS -->
-								<div id="tab_footer_color" class="vtabs-content">
-									<h3><?php echo $entry_f_color; ?></h3>
-									<table class="form">
-										<tr>
-											<td><label><?php echo $entry_back_image; ?></label></td>
-											<td>
-												<div class="bg_image">
-													<span class="f_bg_image" style="background:url('view/image/background/back_0.png') repeat;float:left;margin:0 10px 10px 0">
-													<input type="radio" name="b_Color_Data[f_bg_image]" value="default" <?php if ($b_Color_Data['f_bg_image'] == 'default') echo ' checked="checked"'; ?> />
-													</span>
-												<?php foreach ($bg_images as $image => $settings) {?>
-													<span class="f_bg_image" style="background:url('view/image/background/<?php echo $settings; ?>') repeat;float:left;margin:0 10px 10px 0">
-													<input type="radio" name="b_Color_Data[f_bg_image]" value="<?php echo$settings; ?>" <?php if ($b_Color_Data['f_bg_image'] == $settings) echo ' checked="checked"'; ?> /> </span>
-												<?php }?>
-													<span><input type="radio" name="b_Color_Data[f_bg_image]" value="f_upload_bg_image" <?php if ($b_Color_Data['f_bg_image'] == 'f_upload_bg_image') echo ' checked="checked"'; ?> /><?php echo $text_upload_image; ?></span>
-												</div>
-												<div class="upload_image">
-													<?php if($b_Color_Data['f_upload_bg_image']!=''){ ?>
-														<img src="../image/<?php echo $b_Color_Data['f_upload_bg_image']; ?>" width="100px" height="50px" alt="" id="f_thumb" />
-													<?php } ?>
-													<?php if($b_Color_Data['f_upload_bg_image']==''){ ?>
-														<img src="<?php echo $no_image; ?>" id="f_thumb" />
-													<?php } ?>
-													<input type="hidden" name="b_Color_Data[f_upload_bg_image]" value="<?php echo $b_Color_Data['f_upload_bg_image']; ?>" id="f_image" />
-													  <br />
-													<a onclick="image_upload('f_image', 'f_thumb');"><?php echo $text_browse; ?></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a onclick="$('#f_thumb').attr('src', '<?php echo $no_image; ?>'); $('#f_image').attr('value', '');"><?php echo $text_clear; ?></a>
-												</div>
-												<div class="image_repeat" style="clear:both;">
-													<span><?php echo $entry_repeat; ?></span>
-													<select name="b_Color_Data[f_bg_image_repeat]">
-														<option value="repeat"<?php if ($b_Color_Data['f_bg_image_repeat'] == 'repeat') echo ' selected="selected"'; ?>><?php echo $text_repeat; ?></option>
-														<option value="no-repeat"<?php if ($b_Color_Data['f_bg_image_repeat'] == 'no-repeat') echo ' selected="selected"'; ?>><?php echo $text_no_repeat; ?></option>
-														<option value="repeat-x"<?php if ($b_Color_Data['f_bg_image_repeat'] == 'repeat-x') echo ' selected="selected"'; ?>><?php echo $text_repeat_x; ?></option>
-														<option value="repeat-y"<?php if ($b_Color_Data['f_bg_image_repeat'] == 'repeat-y') echo ' selected="selected"'; ?>><?php echo $text_repeat_y; ?></option>
-													</select>
-												</div><br />
-												<div class="image_repeat" style="clear:both;">
-													<span><?php echo $entry_position_image; ?></span>
-													<select name="b_Color_Data[f_bg_image_position]">
-														<option value="left top"<?php if ($b_Color_Data['f_bg_image_position'] == 'left top') echo ' selected="selected"'; ?>><?php echo $text_left_top; ?></option>
-														<option value="right top"<?php if ($b_Color_Data['f_bg_image_position'] == 'right top') echo ' selected="selected"'; ?>><?php echo $text_right_top; ?></option>
-														<option value="center top"<?php if ($b_Color_Data['f_bg_image_position'] == 'center top') echo ' selected="selected"'; ?>><?php echo $text_center_top; ?></option>
-														<option value="center center"<?php if ($b_Color_Data['f_bg_image_position'] == 'center center') echo ' selected="selected"'; ?>><?php echo $text_center_center; ?></option>
-													</select>
-												</div>
-											</td>
-										</tr>
-																	
-										<?php foreach ($objXML->children() as $child) {	
-											if($child->getName()=='footer'){
-												foreach($child->children() as $childOFchild){ ?>
-												<tr> 
-													<td><label><?php echo $childOFchild->text; ?></label></td>
-													<td>
-												<?php foreach($childOFchild->children() as $childOF){ ?>
-													
-													<?php if($childOF->text){ ?>
-														<span><?php echo $childOF->text; ?></span>
-													<?php } ?>
-													<?php if($childOF->name){ ?>
-														<?php if(isset($b_Color_Data[''.$childOF->name.''])) { ?>
-															<input size=6 type="text" class="hex" name="b_Color_Data[<?php echo $childOF->name; ?>]" id="<?php echo $childOF->name; ?>" value="<?php echo $b_Color_Data[''.$childOF->name.''] ?>">
-														<?php } else{ ?>
-															<input size=6 type="text" class="hex" name="b_Color_Data[<?php echo $childOF->name; ?>]" id="<?php echo $childOF->name; ?>" value="">
-														<?php } ?>
-													
-													<?php } ?>
-												<?php	} ?>
-													</td>
-												</tr> 
-										<?php } } } ?>
-									</table>
-								</div>
-								<!-- END CUSTOM FOOTER COLORS -->
-								
-								<!-- CUSTOM MENU COLORS -->
-								<div id="tab_menu_color" class="vtabs-content">
-									<h3><?php echo $entry_m_color; ?></h3>
-									<table class="form">
-										<tr>
-											<td><label><?php echo $entry_back_image; ?></label></td>
-											<td>
-												<div class="bg_image">
-													<span class="m_bg_image" style="background:url('view/image/background/back_0.png') repeat;float:left;margin:0 10px 10px 0">
-													<input type="radio" name="b_Color_Data[m_bg_image]" value="default" <?php if ($b_Color_Data['m_bg_image'] == 'default') echo ' checked="checked"'; ?> />
-													</span>
-												<?php foreach ($bg_images as $image => $settings) {?>
-													<span class="m_bg_image" style="background:url('view/image/background/<?php echo $settings; ?>') repeat;float:left;margin:0 10px 10px 0">
-													<input type="radio" name="b_Color_Data[m_bg_image]" value="<?php echo$settings; ?>" <?php if ($b_Color_Data['m_bg_image'] == $settings) echo ' checked="checked"'; ?> /> </span>
-												<?php }?>
-													<span><input type="radio" name="b_Color_Data[m_bg_image]" value="m_upload_bg_image" <?php if ($b_Color_Data['m_bg_image'] == 'm_upload_bg_image') echo ' checked="checked"'; ?> /><?php echo $text_upload_image; ?></span>
-												</div>
-												<div class="upload_image">
-													<?php if($b_Color_Data['m_upload_bg_image']!=''){ ?>
-														<img src="../image/<?php echo $b_Color_Data['m_upload_bg_image']; ?>" width="100px" height="50px" alt="" id="m_thumb" />
-													<?php } ?>
-													<?php if($b_Color_Data['m_upload_bg_image']==''){ ?>
-														<img src="<?php echo $no_image; ?>" id="m_thumb" />
-													<?php } ?>
-													
-													<input type="hidden" name="b_Color_Data[m_upload_bg_image]" value="<?php echo $b_Color_Data['m_upload_bg_image']; ?>" id="m_image" />
-													  <br />
-													<a onclick="image_upload('m_image', 'm_thumb');"><?php echo $text_browse; ?></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a onclick="$('#m_thumb').attr('src', '<?php echo $no_image; ?>'); $('#m_image').attr('value', '');"><?php echo $text_clear; ?></a>
-												</div>
-												<div class="image_repeat" style="clear:both;">
-													<span><?php echo $entry_repeat; ?></span>
-													<select name="b_Color_Data[m_bg_image_repeat]">
-														<option value="repeat"<?php if ($b_Color_Data['m_bg_image_repeat'] == 'repeat') echo ' selected="selected"'; ?>><?php echo $text_repeat; ?></option>
-														<option value="no-repeat"<?php if ($b_Color_Data['m_bg_image_repeat'] == 'no-repeat') echo ' selected="selected"'; ?>><?php echo $text_no_repeat; ?></option>
-														<option value="repeat-x"<?php if ($b_Color_Data['m_bg_image_repeat'] == 'repeat-x') echo ' selected="selected"'; ?>><?php echo $text_repeat_x; ?></option>
-														<option value="repeat-y"<?php if ($b_Color_Data['m_bg_image_repeat'] == 'repeat-y') echo ' selected="selected"'; ?>><?php echo $text_repeat_y; ?></option>
-														
-													</select>
-												</div><br />
-												<div class="image_repeat" style="clear:both;">
-													<span><?php echo $entry_position_image; ?></span>
-													<select name="b_Color_Data[m_bg_image_position]">
-														<option value="left top"<?php if ($b_Color_Data['m_bg_image_position'] == 'left top') echo ' selected="selected"'; ?>><?php echo $text_left_top; ?></option>
-														<option value="right top"<?php if ($b_Color_Data['m_bg_image_position'] == 'right top') echo ' selected="selected"'; ?>><?php echo $text_right_top; ?></option>
-														<option value="center top"<?php if ($b_Color_Data['m_bg_image_position'] == 'center top') echo ' selected="selected"'; ?>><?php echo $text_center_top; ?></option>
-														<option value="center center"<?php if ($b_Color_Data['m_bg_image_position'] == 'center center') echo ' selected="selected"'; ?>><?php echo $text_center_center; ?></option>
-													</select>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td><label><?php echo $entry_back_image_drop; ?></label></td>
-											<td>
-												<div class="bg_image">
-													<span class="mdrop_bg_image" style="background:url('view/image/background/back_0.png') repeat;float:left;margin:0 10px 10px 0">
-													<input type="radio" name="b_Color_Data[mdrop_bg_image]" value="default" <?php if ($b_Color_Data['mdrop_bg_image'] == 'default') echo ' checked="checked"'; ?> />
-													</span>
-												<?php foreach ($bg_images as $image => $settings) {?>
-													<span class="mdrop_bg_image" style="background:url('view/image/background/<?php echo $settings; ?>') repeat;float:left;margin:0 10px 10px 0">
-													<input type="radio" name="b_Color_Data[mdrop_bg_image]" value="<?php echo$settings; ?>" <?php if ($b_Color_Data['mdrop_bg_image'] == $settings) echo ' checked="checked"'; ?> /> </span>
-												<?php }?>
-													<span><input type="radio" name="b_Color_Data[mdrop_bg_image]" value="mdrop_upload_bg_image" <?php if ($b_Color_Data['mdrop_bg_image'] == 'mdrop_upload_bg_image') echo ' checked="checked"'; ?> /><?php echo $text_upload_image; ?></span>
-												</div>
-												<div class="upload_image">
-													<?php if($b_Color_Data['mdrop_upload_bg_image']!=''){ ?>
-														<img src="../image/<?php echo $b_Color_Data['mdrop_upload_bg_image']; ?>" width="100px" height="50px" alt="" id="m_drop_thumb" />
-													<?php } ?>
-													<?php if($b_Color_Data['mdrop_upload_bg_image']==''){ ?>
-														<img src="<?php echo $no_image; ?>" id="m_drop_thumb" />
-													<?php } ?>
-													<input type="hidden" name="b_Color_Data[mdrop_upload_bg_image]" value="<?php echo $b_Color_Data['mdrop_upload_bg_image']; ?>" id="m_drop_image" />
-													  <br />
-													<a onclick="image_upload('m_drop_image', 'm_drop_thumb');"><?php echo $text_browse; ?></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a onclick="$('#m_drop_thumb').attr('src', '<?php echo $no_image; ?>'); $('#m_drop_image').attr('value', '');"><?php echo $text_clear; ?></a>
-												</div>
-												<div class="image_repeat" style="clear:both;">
-													<span><?php echo $entry_repeat; ?></span>
-													<select name="b_Color_Data[mdrop_bg_image_repeat]">
-														<option value="repeat"<?php if ($b_Color_Data['mdrop_bg_image_repeat'] == 'repeat') echo ' selected="selected"'; ?>><?php echo $text_repeat; ?></option>
-														<option value="no-repeat"<?php if ($b_Color_Data['mdrop_bg_image_repeat'] == 'no-repeat') echo ' selected="selected"'; ?>><?php echo $text_no_repeat; ?></option>
-														<option value="repeat-x"<?php if ($b_Color_Data['mdrop_bg_image_repeat'] == 'repeat-x') echo ' selected="selected"'; ?>><?php echo $text_repeat_x; ?></option>
-														<option value="repeat-y"<?php if ($b_Color_Data['mdrop_bg_image_repeat'] == 'repeat-y') echo ' selected="selected"'; ?>><?php echo $text_repeat_y; ?></option>
-														
-													</select>
-												</div><br />
-												<div class="image_repeat" style="clear:both;">
-													<span><?php echo $entry_position_image; ?></span>
-													<select name="b_Color_Data[mdrop_bg_image_position]">
-														<option value="left top"<?php if ($b_Color_Data['mdrop_bg_image_position'] == 'left top') echo ' selected="selected"'; ?>><?php echo $text_left_top; ?></option>
-														<option value="right top"<?php if ($b_Color_Data['mdrop_bg_image_position'] == 'right top') echo ' selected="selected"'; ?>><?php echo $text_right_top; ?></option>
-														<option value="center top"<?php if ($b_Color_Data['mdrop_bg_image_position'] == 'center top') echo ' selected="selected"'; ?>><?php echo $text_center_top; ?></option>
-														<option value="center center"<?php if ($b_Color_Data['mdrop_bg_image_position'] == 'center center') echo ' selected="selected"'; ?>><?php echo $text_center_center; ?></option>
-													</select>
-												</div>
-											</td>
-										</tr>
-										<?php foreach ($objXML->children() as $child) {	
-											if($child->getName()=='menu'){
-												foreach($child->children() as $childOFchild){ ?>
-												<tr> 
-													<td><label><?php echo $childOFchild->text; ?></label></td>
-													<td>
-												<?php foreach($childOFchild->children() as $childOF){ ?>
-													
-													<?php if($childOF->text){ ?>
-														<span><?php echo $childOF->text; ?></span>
-													<?php } ?>
-													<?php if($childOF->name){ ?>
-														<?php if(isset($b_Color_Data[''.$childOF->name.''])) { ?>
-															<input size=6 type="text" class="hex" name="b_Color_Data[<?php echo $childOF->name; ?>]" id="<?php echo $childOF->name; ?>" value="<?php echo $b_Color_Data[''.$childOF->name.''] ?>">
-														<?php } else{ ?>
-															<input size=6 type="text" class="hex" name="b_Color_Data[<?php echo $childOF->name; ?>]" id="<?php echo $childOF->name; ?>" value="">
-														<?php } ?>
-													
-													<?php } ?>
-												<?php	} ?>
-													</td>
-												</tr> 
-										<?php } } } ?>
-									</table>
-								</div>
-								<!-- END CUSTOM MENU COLORS -->
-								
-								<!-- CUSTOM SLIDESHOW COLORS -->
-								<div id="tab_slide_color" class="vtabs-content">
-									<h3><?php echo $entry_s_color; ?></h3>
-									<table class="form">
-										<?php foreach ($objXML->children() as $child) {	
-											if($child->getName()=='slideshow'){
-												foreach($child->children() as $childOFchild){ ?>
-												<tr> 
-													<td><label><?php echo $childOFchild->text; ?></label></td>
-													<td>
-												<?php foreach($childOFchild->children() as $childOF){ ?>
-													
-													<?php if($childOF->text){ ?>
-														<span><?php echo $childOF->text; ?></span>
-													<?php } ?>
-													<?php if($childOF->name){ ?>
-														<?php if(isset($b_Color_Data[''.$childOF->name.''])) { ?>
-															<input size=6 type="text" class="hex" name="b_Color_Data[<?php echo $childOF->name; ?>]" id="<?php echo $childOF->name; ?>" value="<?php echo $b_Color_Data[''.$childOF->name.''] ?>">
-														<?php } else{ ?>
-															<input size=6 type="text" class="hex" name="b_Color_Data[<?php echo $childOF->name; ?>]" id="<?php echo $childOF->name; ?>" value="">
-														<?php } ?>
-													
-													<?php } ?>
-												<?php	} ?>
-													</td>
-												</tr> 
-										<?php } } } ?>
-									</table>
-								</div>
-								<!-- END CUSTOM SLIDESHOW COLORS -->
-								
-								<!-- CUSTOM PRODUCT COLORS -->
-								<div id="tab_product_color" class="vtabs-content">
-									<h3><?php echo $entry_p_color; ?></h3>
-									<table class="form">
-										<?php foreach ($objXML->children() as $child) {	
-											if($child->getName()=='product'){
-												foreach($child->children() as $childOFchild){ ?>
-												<tr> 
-													<td><label><?php echo $childOFchild->text; ?></label></td>
-													<td>
-												<?php foreach($childOFchild->children() as $childOF){ ?>
-													
-													<?php if($childOF->text){ ?>
-														<span><?php echo $childOF->text; ?></span>
-													<?php } ?>
-													<?php if($childOF->name){ ?>
-														<?php if(isset($b_Color_Data[''.$childOF->name.''])) { ?>
-															<input size=6 type="text" class="hex" name="b_Color_Data[<?php echo $childOF->name; ?>]" id="<?php echo $childOF->name; ?>" value="<?php echo $b_Color_Data[''.$childOF->name.''] ?>">
-														<?php } else{ ?>
-															<input size=6 type="text" class="hex" name="b_Color_Data[<?php echo $childOF->name; ?>]" id="<?php echo $childOF->name; ?>" value="">
-														<?php } ?>
-													
-													<?php } ?>
-												<?php	} ?>
-													</td>
-												</tr> 
-										<?php } } } ?>
-									</table>
-								</div>
-								<!-- END CUSTOM PRODUCT COLORS -->
-								
-								<!-- CUSTOM TITLE COLORS -->
-								<div id="tab_title_color" class="vtabs-content">
-									<h3><?php echo $entry_t_color; ?></h3>
-									<table class="form">
-										<?php foreach ($objXML->children() as $child) {	
-											if($child->getName()=='title'){
-												foreach($child->children() as $childOFchild){ ?>
-												<tr> 
-													<td><label><?php echo $childOFchild->text; ?></label></td>
-													<td>
-												<?php foreach($childOFchild->children() as $childOF){ ?>
-													
-													<?php if($childOF->text){ ?>
-														<span><?php echo $childOF->text; ?></span>
-													<?php } ?>
-													<?php if($childOF->name){ ?>
-														<?php if(isset($b_Color_Data[''.$childOF->name.''])) { ?>
-															<input size=6 type="text" class="hex" name="b_Color_Data[<?php echo $childOF->name; ?>]" id="<?php echo $childOF->name; ?>" value="<?php echo $b_Color_Data[''.$childOF->name.''] ?>">
-														<?php } else{ ?>
-															<input size=6 type="text" class="hex" name="b_Color_Data[<?php echo $childOF->name; ?>]" id="<?php echo $childOF->name; ?>" value="">
-														<?php } ?>
-													
-													<?php } ?>
-												<?php	} ?>
-													</td>
-												</tr> 
-										<?php } } } ?>
-									</table>
-								</div>
-								<!-- END CUSTOM TITLE COLORS -->
-							</td>
-						</tr>
-						<input type="hidden" id="colors_data" name="colors_data" value='<?php echo $colors_data; ?>' />
-					</table>
-				</div>
-				
-				<!-- END CUSTOM THEME COLORS -->
-				
-				<!-- CUSTOMIZE CODE -->
-				<div id="customcode" class="htabs-content tab-pane">
-					<table cellpadding="0" cellspacing="0" width="100%" border="0">
-						<tr>
-							<td valign="top" >
-								<div id="tabscode" class="vtabs">
-									<a href="#tab_custom_css"><?php echo $tab_custom_css; ?></a>
-									<a href="#tab_custom_java"><?php echo $tab_custom_java; ?></a>
-								</div> <!-- End #tabscode -->
-								<!-- CUSTOM CSS -->
-								<div id="tab_custom_css" class="vtabs-content">
-									<h3><?php echo $entry_custom_css; ?></h3>
-									<p><span>This is advanded feature for who having knowledge of CSS Language. You put css rules in below</span></p><br />
-									<textarea name="customcode[custom_css]" rows="16" cols="80"><?php echo ($customcode!='')?$customcode['custom_css']:''; ?></textarea>
-								</div>
-								
-								<!-- CUSTOM Javascript -->
-								<div id="tab_custom_java" class="vtabs-content">
-									<h3><?php echo $entry_custom_java; ?></h3>
-									<p><span>Add javascript code. Please be carefull</span></p><br />
-									<textarea name="customcode[custom_java]" rows="16" cols="80"><?php echo ($customcode!='')?$customcode['custom_java']:''; ?></textarea>
-								</div>
-							</td>
-						</tr>
-					</table>
-				</div>
-				
-				<!-- END CUSTOMIZE CODE -->
-				
-				<!-- CUSTOM POSITION MODUlE-->
-				<div id="customlayout" class="htabs-content tab-pane">
-					<?php include( "boss_editorthemes_layout.tpl" ); ?>
-				</div>
-                </div>
-				<!-- END CUSTOM POSITION MODUlE -->
-			</form>
-            </div>
-		</div> <!-- End .content -->
-	</div> <!-- End .box -->
+<div class="container-fluid">
+<?php if ($error_warning) { ?>
+<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> <?php echo $error_warning; ?>
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
 </div>
-<script type="text/javascript" src="view/javascript/bossthemes/colorpicker.js"></script>
-<script type="text/javascript" src="view/javascript/bossthemes/eye.js"></script>
-<script type="text/javascript" src="view/javascript/bossthemes/layout.js"></script>
-<link rel="stylesheet" type="text/css" href="view/stylesheet/bossthemes/colorpicker.css" />
-<link rel="stylesheet" type="text/css" href="view/stylesheet/bossthemes/layout.css" />
-<link rel="stylesheet" type="text/css" href="view/stylesheet/bossthemes/bossthemes.css" />
-<script type="text/javascript"><!--
-<?php
-$objXML_font = simplexml_load_file("../config_xml/font_setting.xml");
-$code_font = array();
-foreach ($objXML_font->children() as $child){
-	foreach($child->children() as $childOFchild){
-		$code_font[] = $childOFchild->style;
-			
-	}	
-}
-?>
-var id_Font_List = Array(<?php foreach ($code_font as $font) {
-								if($font==end($code_font))
-									echo "'".$font."'";
-								else
-									echo "'".$font."'".", ";
-								
-								} ?>);
-								
-<?php
-$objXML = simplexml_load_file("../config_xml/color_setting.xml");
-$code_color = array();
-foreach ($objXML->children() as $child){
-	foreach($child->children() as $childOFchild){
-		foreach($childOFchild->children() as $childOF){ 
-			if($childOF->name!=''){
-				$code_color[] = $childOF->name;
-			}
-		}
-	}	
-}
-?>
-var id_Color_List = Array(<?php foreach ($code_color as $color) {
-								if($color==end($code_color))
-									echo "'".$color."'";
-								else
-									echo "'".$color."'".", ";
-								
-								} ?>);
-var colorsData = jQuery.parseJSON($("#colors_data").val());
-function changeTemplate() {
-	themeName = $("#temp_setting").val();
-    themeData = colorsData[themeName];
-	for(var i = 0 ; i < id_Color_List.length; i++ ){
-		var idName = id_Color_List[i];
-		$("#" + id_Color_List[i]).css('background', '#' + themeData[idName]);
-		$("#" + id_Color_List[i]).val(themeData[idName]);
-	};
-};
-//--></script>
-<script type="text/javascript"><!--
-function selectedFontStyle($id,$span){
-	var span = $($span);
-	var idSelect = $($id);
-	if(idSelect.val() == 'Arial'){
-		span.css("font-family",'Arial');
-		span.css("display",'');
-	}else if(idSelect.val() == 'Verdana'){
-		span.css("font-family",'Verdana');
-		span.css("display",'');
-	}else if(idSelect.val() == 'Helvetica'){
-		span.css("font-family",'Helvetica');
-		span.css("display",'');
-	}else if(idSelect.val() == 'Lucida Grande'){
-		span.css("font-family",'Lucida Grande');
-		span.css("display",'');
-	}else if(idSelect.val() == 'Trebuchet MS'){
-		span.css("font-family",'Trebuchet MS');
-		span.css("display",'');
-	}else if(idSelect.val() == 'Times New Roman'){
-		span.css("font-family",'Times New Roman');
-		span.css("display",'');
-	}else if(idSelect.val() == 'Tahoma'){
-		span.css("font-family",'Tahoma');
-		span.css("display",'');
-	}else if(idSelect.val() == 'Georgia'){
-		span.css("font-family",'Georgia');
-		span.css("display",'');
-	}else if(idSelect.val() == 'default'){
-		span.css("font-family",'');
-		span.css("display",'none');
-	}else {
-		var font = 	idSelect.val().replace(/\+/g," ");
-		
-		$('head').append('<link id="link_' + idSelect + '" rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=' + font + '">');
-		span.css("font-family",'"'+ font +'"');
-		span.css("display",'');
-	}
-}
-function selectedFontWeight($id,$span){
-	var span = $($span);
-	var idSelect = $($id);
-	if(idSelect.val() == 'default'){
-		span.css("font-weight",'');	
-	}else {
-		span.css("font-weight",idSelect.val());
-	}
-}
+<?php } ?>
+<div class="panel panel-default">
+<div class="panel-heading">
+    <h3 class="panel-title"><i class="fa fa-pencil"></i> <?php echo $heading_title; ?></h3>
+</div>
+<div class="panel-body">
+<form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-eco" class="form-horizontal">
 
-function selectedFontSize($id,$span){
-	var span = $($span);
-	var idSelect = $($id);
-	if(idSelect.val() == 'default'){
-		span.css("font-size",'');	
-	}else {
-		span.css("font-size",idSelect.val());
-	}
-}
 
-function selectedFontTrans($id,$span){
-	var span = $($span);
-	var idSelect = $($id);
-	if(idSelect.val() == 'default'){
-		span.css("text-transform",'');	
-	}else {
-		span.css("text-transform",idSelect.val());
-	}
-}
-$(document).ready( function(){		
-		$(".button-action").click( function(){
-			$('#action_type').val( $(this).attr("rel") );
-			var string = 'rand='+Math.random();
-			var hook = '';
-			$(".ui-sortable").each( function(){
-				if( $(this).attr("data-position") && $(".module-pos",this).length>0) {
-					var position = $(this).attr("data-position");
-					$(".module-pos",this).each( function(){
-						if( $(this).attr("data-id") != "" ){
-							hook += "modules["+position+"][]="+$(this).attr("data-id")+"&";
-						}				
-					} );
-					string = string.replace(/\,$/,"");
-					hook = hook.replace(/\,$/,"");
-				}	
-			} );
-			var unhook = '';
+<ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+    <li class="active"><a href="#general" data-toggle="tab">General</a></li>
+    <li><a href="#colors" data-toggle="tab">Colors</a></li>
+    <li><a href="#fonts" data-toggle="tab">Fonts</a></li>
+</ul>
+<div id="my-tab-content" class="tab-content">
+<div class="tab-pane active" id="general">
+<br>
+<b class="heading">GENERAL THEME SETTINGS</b><hr>
 
-			$.ajax({
-			  type: 'POST',
-			  url: '<?php echo str_replace("&amp;","&",$ajax_modules_position);?>',
-			  data: string+"&"+hook+unhook,
-			  success: function(){
-				$('#sform').submit();
-			  }
-			});
-		return false; 
-	} );
-} );
 
-//--></script>
-<script type="text/javascript"><!--
-<!-- TABS -->
-$('#mainTabs a').tabs();
-$('#tabs0 a').tabs();
-$('#tabscode a').tabs();
-$('#tabs01 a').tabs();
-$('#tabs1 a').tabs();
-$('#tabs2 a').tabs();
-$('#languages a').tabs(); 
-//--></script>
-<script type="text/javascript"><!--
-function image_upload(field,thumb) {
-	$('#dialog').remove();
-	
-	$('#content').prepend('<div id="dialog" style="padding: 3px 0px 0px 0px;"><iframe src="index.php?route=common/filemanager&token=<?php echo $token; ?>&field=' + encodeURIComponent(field) + '" style="padding:0; margin: 0; display: block; width: 100%; height: 100%;" frameborder="no" scrolling="auto"></iframe></div>');
-	
-	$('#dialog').dialog({
-		title: '<?php echo $text_image_manager; ?>',
-		close: function (event, ui) {
-			if ($('#' + field).attr('value')) {
-				$.ajax({
-					url: 'index.php?route=common/filemanager/image&token=<?php echo $token; ?>&image=' + encodeURIComponent($('#' + field).attr('value')),
-					dataType: 'text',
-					success: function(data) {
-						$('#' + thumb).replaceWith('<img src="' + data + '" alt="" id="' + thumb + '" />');
-					}
-				});
-			}
-		},	
-		bgiframe: false,
-		width: 700,
-		height: 400,
-		resizable: false,
-		modal: false
-	});
-};
-//--></script> 
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-eco_home_option">Home option in menu:</label>
+    <div class="col-sm-10">
+        <select name="eco_home_option" id="input-eco_home_option" class="form-control">
+            <?php if ($eco_home_option) { ?>
+            <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+            <option value="0"><?php echo $text_disabled; ?></option>
+            <?php } else { ?>
+            <option value="1"><?php echo $text_enabled; ?></option>
+            <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+            <?php } ?>
+        </select>
+    </div>
+</div>
+
+
+
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-eco_quickview_button">Product's Quick View:</label>
+    <div class="col-sm-10">
+        <select name="eco_quickview_button" id="input-eco_quickview_button" class="form-control">
+            <?php if ($eco_quickview_button) { ?>
+            <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+            <option value="0"><?php echo $text_disabled; ?></option>
+            <?php } else { ?>
+            <option value="1"><?php echo $text_enabled; ?></option>
+            <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+            <?php } ?>
+        </select>
+    </div>
+</div>
+
+
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-eco_scroll_totop">Show scroll to top button:</label>
+    <div class="col-sm-10">
+        <select name="eco_scroll_totop" id="input-eco_scroll_totop" class="form-control">
+            <?php if ($eco_scroll_totop) { ?>
+            <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+            <option value="0"><?php echo $text_disabled; ?></option>
+            <?php } else { ?>
+            <option value="1"><?php echo $text_enabled; ?></option>
+            <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+            <?php } ?>
+        </select>
+    </div>
+</div>
+
+</div>
+<div class="tab-pane" id="colors">
+<br>
+<b class="heading">THEME COLORS</b><br>
+In this section, you can change theme colors. To change the color of element just click inside text field and use color picker.
+
+<hr><b class="thead">MAIN</b><hr>
+
+<?php if(empty($eco_body_bg)) { $eco_body_bg="#FFFFFF"; }  ?>
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-eco_body_bg">Body background:</label>
+    <div class="col-sm-2">
+        <select name="eco_body_bg_ed" id="input-eco_body_bg_ed" class="form-control">
+            <?php if ($eco_body_bg_ed) { ?>
+            <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+            <option value="0"><?php echo $text_disabled; ?></option>
+            <?php } else { ?>
+            <option value="1"><?php echo $text_enabled; ?></option>
+            <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+            <?php } ?>
+        </select>
+    </div>
+    <div class="col-sm-1">
+        <input name="eco_body_bg" cols="40" rows="5" placeholder="<?php echo $entry_code; ?>" value="<?php echo $eco_body_bg; ?>" class="pick-a-color form-control"/>
+    </div>
+</div>
+
+<?php if(empty($eco_fontcolor)) { $eco_fontcolor="#333333"; }  ?>
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-eco_fontcolor">Body font color:</label>
+    <div class="col-sm-2">
+        <select name="eco_fontcolor_ed" id="input-eco_fontcolor_ed" class="form-control">
+            <?php if ($eco_fontcolor_ed) { ?>
+            <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+            <option value="0"><?php echo $text_disabled; ?></option>
+            <?php } else { ?>
+            <option value="1"><?php echo $text_enabled; ?></option>
+            <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+            <?php } ?>
+        </select>
+    </div>
+    <div class="col-sm-1">
+        <input name="eco_fontcolor" cols="40" rows="5" placeholder="<?php echo $entry_code; ?>" value="<?php echo $eco_fontcolor; ?>" class="pick-a-color form-control"/>
+    </div>
+</div>
+
+
+<?php if(empty($eco_linkcolor)) { $eco_linkcolor="#333333"; }  ?>
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-eco_linkcolor">Link color:</label>
+    <div class="col-sm-2">
+        <select name="eco_linkcolor_ed" id="input-eco_linkcolor_ed" class="form-control">
+            <?php if ($eco_linkcolor_ed) { ?>
+            <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+            <option value="0"><?php echo $text_disabled; ?></option>
+            <?php } else { ?>
+            <option value="1"><?php echo $text_enabled; ?></option>
+            <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+            <?php } ?>
+        </select>
+    </div>
+    <div class="col-sm-1">
+        <input name="eco_linkcolor" cols="40" rows="5" placeholder="<?php echo $entry_code; ?>" value="<?php echo $eco_linkcolor; ?>" class="pick-a-color form-control"/>
+    </div>
+</div>
+
+
+<?php if(empty($eco_linkhovercolor)) { $eco_linkhovercolor="#da2c2a"; }  ?>
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-eco_linkhovercolor">Link hover color:</label>
+    <div class="col-sm-2">
+        <select name="eco_linkhovercolor_ed" id="input-eco_linkhovercolor_ed" class="form-control">
+            <?php if ($eco_linkhovercolor_ed) { ?>
+            <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+            <option value="0"><?php echo $text_disabled; ?></option>
+            <?php } else { ?>
+            <option value="1"><?php echo $text_enabled; ?></option>
+            <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+            <?php } ?>
+        </select>
+    </div>
+    <div class="col-sm-1">
+        <input name="eco_linkhovercolor" cols="40" rows="5" placeholder="<?php echo $entry_code; ?>" value="<?php echo $eco_linkhovercolor; ?>" class="pick-a-color form-control"/>
+    </div>
+</div>
+
+<hr><b class="thead">HEADER</b><hr>
+
+
+<?php if(empty($eco_headerbg)) { $eco_headerbg="#000000"; }  ?>
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-eco_headerbg">Header background:</label>
+    <div class="col-sm-2">
+        <select name="eco_headerbg_ed" id="input-eco_headerbg_ed" class="form-control">
+            <?php if ($eco_headerbg_ed) { ?>
+            <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+            <option value="0"><?php echo $text_disabled; ?></option>
+            <?php } else { ?>
+            <option value="1"><?php echo $text_enabled; ?></option>
+            <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+            <?php } ?>
+        </select>
+    </div>
+    <div class="col-sm-1">
+        <input name="eco_headerbg" cols="40" rows="5" placeholder="<?php echo $entry_code; ?>" value="<?php echo $eco_headerbg; ?>" class="pick-a-color form-control"/>
+    </div>
+</div>
+
+<?php if(empty($eco_headerlinkcolor)) { $eco_headerlinkcolor="#aaaaaa"; }  ?>
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-eco_headerlinkcolor">Header link color:</label>
+    <div class="col-sm-2">
+        <select name="eco_headerlinkcolor_ed" id="input-eco_headerlinkcolor_ed" class="form-control">
+            <?php if ($eco_headerlinkcolor_ed) { ?>
+            <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+            <option value="0"><?php echo $text_disabled; ?></option>
+            <?php } else { ?>
+            <option value="1"><?php echo $text_enabled; ?></option>
+            <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+            <?php } ?>
+        </select>
+    </div>
+    <div class="col-sm-1">
+        <input name="eco_headerlinkcolor" cols="40" rows="5" placeholder="<?php echo $entry_code; ?>" value="<?php echo $eco_headerlinkcolor; ?>" class="pick-a-color form-control"/>
+    </div>
+</div>
+
+
+<?php if(empty($eco_headerlinkhovercolor)) { $eco_headerlinkhovercolor="#FFFFFF"; }  ?>
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-eco_headerlinkhovercolor">Header link hover color:</label>
+    <div class="col-sm-2">
+        <select name="eco_headerlinkhovercolor_ed" id="input-eco_headerlinkhovercolor_ed" class="form-control">
+            <?php if ($eco_headerlinkhovercolor_ed) { ?>
+            <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+            <option value="0"><?php echo $text_disabled; ?></option>
+            <?php } else { ?>
+            <option value="1"><?php echo $text_enabled; ?></option>
+            <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+            <?php } ?>
+        </select>
+    </div>
+    <div class="col-sm-1">
+        <input name="eco_headerlinkhovercolor" cols="40" rows="5" placeholder="<?php echo $entry_code; ?>" value="<?php echo $eco_headerlinkhovercolor; ?>" class="pick-a-color form-control"/>
+    </div>
+</div>
+
+<?php /* ?>
+<?php if(empty($eco_headerclcolor)) { $eco_headerclcolor="#BED6E2"; }  ?>
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-eco_headerclcolor">Header currency/language links color:</label>
+    <div class="col-sm-2">
+        <select name="eco_headerclcolor_ed" id="input-eco_headerclcolor_ed" class="form-control">
+            <?php if ($eco_headerclcolor_ed) { ?>
+            <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+            <option value="0"><?php echo $text_disabled; ?></option>
+            <?php } else { ?>
+            <option value="1"><?php echo $text_enabled; ?></option>
+            <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+            <?php } ?>
+        </select>
+    </div>
+    <div class="col-sm-1">
+        <input name="eco_headerclcolor" cols="40" rows="5" placeholder="<?php echo $entry_code; ?>" value="<?php echo $eco_headerclcolor; ?>" class="pick-a-color form-control"/>
+    </div>
+</div>
+<?php */ ?>
+<hr><b class="thead">MAIN MENU</b><hr>
+
+
+<?php if(empty($eco_mmbgcolor)) { $eco_mmbgcolor="#000000"; }  ?>
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-eco_mmbgcolor">Main menu background color:</label>
+    <div class="col-sm-2">
+        <select name="eco_mmbgcolor_ed" id="input-eco_mmbgcolor_ed" class="form-control">
+            <?php if ($eco_mmbgcolor_ed) { ?>
+            <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+            <option value="0"><?php echo $text_disabled; ?></option>
+            <?php } else { ?>
+            <option value="1"><?php echo $text_enabled; ?></option>
+            <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+            <?php } ?>
+        </select>
+    </div>
+    <div class="col-sm-1">
+        <input name="eco_mmbgcolor" cols="40" rows="5" placeholder="<?php echo $entry_code; ?>" value="<?php echo $eco_mmbgcolor; ?>" class="pick-a-color form-control"/>
+    </div>
+</div>
+
+
+<?php if(empty($eco_mmlinkscolor)) { $eco_mmlinkscolor="#FFFFFF"; }  ?>
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-eco_mmlinkscolor">Main menu links color:</label>
+    <div class="col-sm-2">
+        <select name="eco_mmlinkscolor_ed" id="input-eco_mmlinkscolor_ed" class="form-control">
+            <?php if ($eco_mmlinkscolor_ed) { ?>
+            <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+            <option value="0"><?php echo $text_disabled; ?></option>
+            <?php } else { ?>
+            <option value="1"><?php echo $text_enabled; ?></option>
+            <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+            <?php } ?>
+        </select>
+    </div>
+    <div class="col-sm-1">
+        <input name="eco_mmlinkscolor" cols="40" rows="5" placeholder="<?php echo $entry_code; ?>" value="<?php echo $eco_mmlinkscolor; ?>" class="pick-a-color form-control"/>
+    </div>
+</div>
+
+
+<?php if(empty($eco_mmlinkshovercolor)) { $eco_mmlinkshovercolor="#ffffff"; }  ?>
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-eco_mmlinkshovercolor">Main menu links Hover color:</label>
+    <div class="col-sm-2">
+        <select name="eco_mmlinkshovercolor_ed" id="input-eco_mmlinkshovercolor_ed" class="form-control">
+            <?php if ($eco_mmlinkshovercolor_ed) { ?>
+            <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+            <option value="0"><?php echo $text_disabled; ?></option>
+            <?php } else { ?>
+            <option value="1"><?php echo $text_enabled; ?></option>
+            <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+            <?php } ?>
+        </select>
+    </div>
+    <div class="col-sm-1">
+        <input name="eco_mmlinkshovercolor" cols="40" rows="5" placeholder="<?php echo $entry_code; ?>" value="<?php echo $eco_mmlinkshovercolor; ?>" class="pick-a-color form-control"/>
+    </div>
+</div>
+
+
+<?php if(empty($eco_mmslinkscolor)) { $eco_mmslinkscolor="#000000"; }  ?>
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-eco_mmslinkscolor">Main menu sublinks color:</label>
+    <div class="col-sm-2">
+        <select name="eco_mmslinkscolor_ed" id="input-eco_mmslinkscolor_ed" class="form-control">
+            <?php if ($eco_mmslinkscolor_ed) { ?>
+            <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+            <option value="0"><?php echo $text_disabled; ?></option>
+            <?php } else { ?>
+            <option value="1"><?php echo $text_enabled; ?></option>
+            <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+            <?php } ?>
+        </select>
+    </div>
+    <div class="col-sm-1">
+        <input name="eco_mmslinkscolor" cols="40" rows="5" placeholder="<?php echo $entry_code; ?>" value="<?php echo $eco_mmslinkscolor; ?>" class="pick-a-color form-control"/>
+    </div>
+</div>
+
+<?php if(empty($eco_mmslinkshovercolor)) { $eco_mmslinkshovercolor="#000000"; }  ?>
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-eco_mmslinkshovercolor">Main menu sublinks Hover color:</label>
+    <div class="col-sm-2">
+        <select name="eco_mmslinkshovercolor_ed" id="input-eco_mmslinkshovercolor_ed" class="form-control">
+            <?php if ($eco_mmslinkshovercolor_ed) { ?>
+            <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+            <option value="0"><?php echo $text_disabled; ?></option>
+            <?php } else { ?>
+            <option value="1"><?php echo $text_enabled; ?></option>
+            <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+            <?php } ?>
+        </select>
+    </div>
+    <div class="col-sm-1">
+        <input name="eco_mmslinkshovercolor" cols="40" rows="5" placeholder="<?php echo $entry_code; ?>" value="<?php echo $eco_mmslinkshovercolor; ?>" class="pick-a-color form-control"/>
+    </div>
+</div>
+
+
+<hr><b class="thead">BUTTONS</b><hr>
+
+
+<?php if(empty($eco_buttoncolor)) { $eco_buttoncolor="#dddddd"; }  ?>
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-eco_buttoncolor">Button color:</label>
+    <div class="col-sm-2">
+        <select name="eco_buttoncolor_ed" id="input-eco_buttoncolor_ed" class="form-control">
+            <?php if ($eco_buttoncolor_ed) { ?>
+            <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+            <option value="0"><?php echo $text_disabled; ?></option>
+            <?php } else { ?>
+            <option value="1"><?php echo $text_enabled; ?></option>
+            <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+            <?php } ?>
+        </select>
+    </div>
+    <div class="col-sm-1">
+        <input name="eco_buttoncolor" cols="40" rows="5" placeholder="<?php echo $entry_code; ?>" value="<?php echo $eco_buttoncolor; ?>" class="pick-a-color form-control"/>
+    </div>
+</div>
+
+<?php if(empty($eco_buttonhovercolor)) { $eco_buttonhovercolor="#da2c2a"; }  ?>
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-eco_buttonhovercolor">Button Hover color:</label>
+    <div class="col-sm-2">
+        <select name="eco_buttonhovercolor_ed" id="input-eco_buttonhovercolor_ed" class="form-control">
+            <?php if ($eco_buttonhovercolor_ed) { ?>
+            <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+            <option value="0"><?php echo $text_disabled; ?></option>
+            <?php } else { ?>
+            <option value="1"><?php echo $text_enabled; ?></option>
+            <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+            <?php } ?>
+        </select>
+    </div>
+    <div class="col-sm-1">
+        <input name="eco_buttonhovercolor" cols="40" rows="5" placeholder="<?php echo $entry_code; ?>" value="<?php echo $eco_buttonhovercolor; ?>" class="pick-a-color form-control"/>
+    </div>
+</div>
+
+
+<hr><b class="thead">PRODUCT</b><hr>
+
+
+<?php if(empty($eco_pricecolor)) { $eco_pricecolor="#FF0000"; }  ?>
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-eco_pricecolor">Price color:</label>
+    <div class="col-sm-2">
+        <select name="eco_pricecolor_ed" id="input-eco_pricecolor_ed" class="form-control">
+            <?php if ($eco_pricecolor_ed) { ?>
+            <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+            <option value="0"><?php echo $text_disabled; ?></option>
+            <?php } else { ?>
+            <option value="1"><?php echo $text_enabled; ?></option>
+            <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+            <?php } ?>
+        </select>
+    </div>
+    <div class="col-sm-1">
+        <input name="eco_pricecolor" cols="40" rows="5" placeholder="<?php echo $entry_code; ?>" value="<?php echo $eco_pricecolor; ?>" class="pick-a-color form-control"/>
+    </div>
+</div>
+
+<?php if(empty($eco_oldpricecolor)) { $eco_oldpricecolor="#777777"; }  ?>
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-eco_oldpricecolor">Old Price color:</label>
+    <div class="col-sm-2">
+        <select name="eco_oldpricecolor_ed" id="input-eco_oldpricecolor_ed" class="form-control">
+            <?php if ($eco_oldpricecolor_ed) { ?>
+            <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+            <option value="0"><?php echo $text_disabled; ?></option>
+            <?php } else { ?>
+            <option value="1"><?php echo $text_enabled; ?></option>
+            <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+            <?php } ?>
+        </select>
+    </div>
+    <div class="col-sm-1">
+        <input name="eco_oldpricecolor" cols="40" rows="5" placeholder="<?php echo $entry_code; ?>" value="<?php echo $eco_oldpricecolor; ?>" class="pick-a-color form-control"/>
+    </div>
+</div>
+
+
+<?php if(empty($eco_newpricecolor)) { $eco_newpricecolor="#FF0000"; }  ?>
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-eco_newpricecolor">New Price color:</label>
+    <div class="col-sm-2">
+        <select name="eco_newpricecolor_ed" id="input-eco_newpricecolor_ed" class="form-control">
+            <?php if ($eco_newpricecolor_ed) { ?>
+            <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+            <option value="0"><?php echo $text_disabled; ?></option>
+            <?php } else { ?>
+            <option value="1"><?php echo $text_enabled; ?></option>
+            <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+            <?php } ?>
+        </select>
+    </div>
+    <div class="col-sm-1">
+        <input name="eco_newpricecolor" cols="40" rows="5" placeholder="<?php echo $entry_code; ?>" value="<?php echo $eco_newpricecolor; ?>" class="pick-a-color form-control"/>
+    </div>
+</div>
+
+
+<hr><b class="thead">FOOTER</b><hr>
+
+
+<?php if(empty($eco_footerbg)) { $eco_footerbg="#171717"; }  ?>
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-eco_footerbg">Footer background:</label>
+    <div class="col-sm-2">
+        <select name="eco_footerbg_ed" id="input-eco_footerbg_ed" class="form-control">
+            <?php if ($eco_footerbg_ed) { ?>
+            <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+            <option value="0"><?php echo $text_disabled; ?></option>
+            <?php } else { ?>
+            <option value="1"><?php echo $text_enabled; ?></option>
+            <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+            <?php } ?>
+        </select>
+    </div>
+    <div class="col-sm-1">
+        <input name="eco_footerbg" cols="40" rows="5" placeholder="<?php echo $entry_code; ?>" value="<?php echo $eco_footerbg; ?>" class="pick-a-color form-control"/>
+    </div>
+</div>
+
+<?php if(empty($eco_footerlinkcolor)) { $eco_footerlinkcolor="#aaaaaa"; }  ?>
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-eco_footerlinkcolor">Footer links color:</label>
+    <div class="col-sm-2">
+        <select name="eco_footerlinkcolor_ed" id="input-eco_footerlinkcolor_ed" class="form-control">
+            <?php if ($eco_footerlinkcolor_ed) { ?>
+            <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+            <option value="0"><?php echo $text_disabled; ?></option>
+            <?php } else { ?>
+            <option value="1"><?php echo $text_enabled; ?></option>
+            <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+            <?php } ?>
+        </select>
+    </div>
+    <div class="col-sm-1">
+        <input name="eco_footerlinkcolor" cols="40" rows="5" placeholder="<?php echo $entry_code; ?>" value="<?php echo $eco_footerlinkcolor; ?>" class="pick-a-color form-control"/>
+    </div>
+</div>
+
+
+<?php if(empty($eco_footerlinkhovercolor)) { $eco_footerlinkhovercolor="#FFFFFF"; }  ?>
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-eco_footerlinkhovercolor">Footer links hover color:</label>
+    <div class="col-sm-2">
+        <select name="eco_footerlinkhovercolor_ed" id="input-eco_footerlinkhovercolor_ed" class="form-control">
+            <?php if ($eco_footerlinkhovercolor_ed) { ?>
+            <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+            <option value="0"><?php echo $text_disabled; ?></option>
+            <?php } else { ?>
+            <option value="1"><?php echo $text_enabled; ?></option>
+            <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+            <?php } ?>
+        </select>
+    </div>
+    <div class="col-sm-1">
+        <input name="eco_footerlinkhovercolor" cols="40" rows="5" placeholder="<?php echo $entry_code; ?>" value="<?php echo $eco_footerlinkhovercolor; ?>" class="pick-a-color form-control"/>
+    </div>
+</div>
+
+
+<?php if(empty($eco_powerbycolor)) { $eco_powerbycolor="#ffffff"; }  ?>
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-eco_powerbycolor">Footer powered by text color:</label>
+    <div class="col-sm-2">
+        <select name="eco_powerbycolor_ed" id="input-eco_powerbycolor_ed" class="form-control">
+            <?php if ($eco_powerbycolor_ed) { ?>
+            <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+            <option value="0"><?php echo $text_disabled; ?></option>
+            <?php } else { ?>
+            <option value="1"><?php echo $text_enabled; ?></option>
+            <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+            <?php } ?>
+        </select>
+    </div>
+    <div class="col-sm-1">
+        <input name="eco_powerbycolor" cols="40" rows="5" placeholder="<?php echo $entry_code; ?>" value="<?php echo $eco_powerbycolor; ?>" class="pick-a-color form-control"/>
+    </div>
+</div>
+
+
+
+</div>
+<div class="tab-pane" id="fonts">
+    <br><b>THEME FONTS</b><br>
+    Choose font from list
+    <hr>
+
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="input-eco_fonttransform">Font transform:</label>
+        <div class="col-sm-8">
+            <?php $gfonts = "Abel,Abril Fatface,Aclonica,Acme,Actor,Adamina,Aguafina Script,Aladin,Aldrich,Alegreya,Alegreya SC,Alex Brush,Alfa Slab One,Alice,Alike,Alike Angular,Allan,Allerta,Allerta Stencil,Allura,Almendra,Almendra SC,Amaranth,Amatic SC,Amethysta,Andada,Andika,Annie Use Your Telescope,Anonymous Pro,Antic,Anton,Arapey,Arbutus,Architects Daughter,Arial,Arimo,Arizonia,Armata,Artifika,Arvo,Asap,Asset,Astloch,Asul,Atomic Age,Aubrey,Bad Script,Balthazar,Bangers,Basic,Baumans,Belgrano,Bentham,Bevan,Bigshot One,Bilbo,Bilbo Swash Caps,Bitter,Black Ops One,Bonbon,Boogaloo,Bowlby One,Bowlby One SC,Brawler,Bree Serif,Bubblegum Sans,Buda,Buenard,Butcherman,Butterfly Kids,Cabin,Cabin Condensed,Cabin Sketch,Caesar Dressing,Cagliostro,Calligraffitti,Cambo,Candal,Cantarell,Cardo,Carme,Carter One,Caudex,Cedarville Cursive,Ceviche One,Changa One,Chango,Chelsea Market,Cherry Cream Soda,Chewy,Chicle,Chivo,Coda,Coda Caption,Comfortaa,Comic Sans MS,Coming Soon,Concert One,Condiment,Contrail One,Convergence,Cookie,Copse,Corben,Cousine,Coustard,Covered By Your Grace,Crafty Girls,Creepster,Crete Round,Crimson Text,Crushed,Cuprum,Damion,Dancing Script,Dawning of a New Day,Days One,Delius,Delius Swash Caps,Delius Unicase,Devonshire,Didact Gothic,Diplomata,Diplomata SC,Dorsa,Dr Sugiyama,Droid Sans,Droid Sans Mono,Droid Serif,Duru Sans,Dynalight,EB Garamond,Eater,Electrolize,Emblema One,Engagement,Enriqueta,Erica One,Esteban,Euphoria Script,Ewert,Exo,Expletus Sans,Fanwood Text,Fascinate,Fascinate Inline,Federant,Federo,Felipa,Fjord One,Flamenco,Flavors,Fondamento,Fontdiner Swanky,Forum,Francois One,Fredericka the Great,Fresca,Frijole,Fugaz One,Galdeano,Gentium Basic,Gentium Book Basic,Geo,Geostar,Geostar Fill,Germania One,Give You Glory,Glegoo,Gloria Hallelujah,Goblin One,Gochi Hand,Goudy Bookletter 1911,Gravitas One,Gruppo,Gudea,Habibi,Hammersmith One,Handlee,Herr Von Muellerhoff,Holtwood One SC,Homemade Apple,Homenaje,IM Fell DW Pica,IM Fell DW Pica SC,IM Fell Double Pica,IM Fell Double Pica SC,IM Fell English,IM Fell English SC,IM Fell French Canon,IM Fell French Canon SC,IM Fell Great Primer,IM Fell Great Primer SC,Iceberg,Iceland,Inconsolata,Inder,Indie Flower,Inika,Irish Grover,Istok Web,Italianno,Jim Nightshade,Jockey One,Josefin Sans,Josefin Slab,Judson,Julee,Junge,Jura,Just Another Hand,Just Me Again Down Here,Kameron,Kaushan Script,Kelly Slab,Kenia,Knewave,Kotta One,Kranky,Krmicra,Kristi,La Belle Aurore,Lancelot,Lato,League Script,Leckerli One,Lekton,Lemon,Lilita One,Limelight,Linden Hill,Lobster,Lobster Two,Lora,Love Ya Like A Sister,Loved by the King,Luckiest Guy,Lusitana,Lucida Grande,Lustria,Macondo,Macondo Swash Caps,Magra,Maiden Orange,Mako,Marck Script,Marko One,Marmelad,Marvel,Mate,Mate SC,Maven Pro,Meddon,MedievalSharp,Medula One,Megrim,Merienda One,Merriweather,Metamorphous,Metrophobic,Michroma,Miltonian,Miltonian Tattoo,Miniver,Miss Fajardose,Modern Antiqua,Molengo,Monofett,Monoton,Monsieur La Doulaise,Montaga,Montez,Montserrat,Mountains of Christmas,Mr Bedfort,Mr Dafoe,Mr De Haviland,Mrs Saint Delafield,Mrs Sheppards,Muli,Neucha,Neuton,News Cycle,Niconne,Nixie One,Nobile,Norican,Nosifer,Nothing You Could Do,Noticia Text,Nova Cut,Nova Flat,Nova Mono,Nova Oval,Nova Round,Nova Script,Nova Slim,Nova Square,Numans,Nunito,Old Standard TT,Oldenburg,Open Sans,Open Sans Condensed,Orbitron,Original Surfer,Oswald,Over the Rainbow,Overlock,Overlock SC,Ovo,PT Sans,PT Sans Caption,PT Sans Narrow,PT Serif,PT Serif Caption,Pacifico,Parisienne,Passero One,Passion One,Patrick Hand,Patua One,Paytone One,Permanent Marker,Petrona,Philosopher,Piedra,Pinyon Script,Plaster,Play,Playball,Playfair Display,Podkova,Poller One,Poly,Pompiere,Port Lligat Sans,Port Lligat Slab,Prata,Princess Sofia,Prociono,Puritan,Quantico,Quattrocento,Quattrocento Sans,Questrial,Quicksand,Qwigley,Radley,Raleway,Rammetto One,Rancho,Rationale,Redressed,Reenie Beanie,Ribeye,Ribeye Marrow,Righteous,Rochester,Rock Salt,Rokkitt,Ropa Sans,Rosario,Rouge Script,Ruda,Ruge Boogie,Ruluko,Ruslan Display,Ruthie,Sail,Salsa,Sancreek,Sansita One,sans-serif,Sarina,Satisfy,Schoolbell,Shadows Into Light,Shanti,Share,Shojumaru,Short Stack,Sigmar One,Signika,Signika Negative,Sirin Stencil,Six Caps,Slackey,Smokum,Smythe,Sniglet,Snippet,Sofia,Sonsie One,Sorts Mill Goudy,Special Elite,Spicy Rice,Spinnaker,Spirax,Squada One,Stardos Stencil,Stint Ultra Condensed,Stint Ultra Expanded,Stoke,Sue Ellen Francisco,Sunshiney,Supermercado One,Swanky and Moo Moo,Syncopate,Tangerine,Tahoma,Times New Roman,Telex,Tenor Sans,Terminal Dosis,The Girl Next Door,Tienne,Tinos,Titan One,Trade Winds,Trochut,Trykker,Tulpen One,Ubuntu,Ubuntu Condensed,Ubuntu Mono,Ultra,Uncial Antiqua,UnifrakturCook,UnifrakturMaguntia,Unkempt,Unlock,Unna,VT323,Varela,Varela Round,Vast Shadow,Vibur,Vidaloka,Viga,Volkhov,Vollkorn,Voltaire,Verdana,Waiting for the Sunrise,Wallpoet,Walter Turncoat,Wellfleet,Wire One,Yanone Kaffeesatz,Yellowtail,Yeseva One,Yesteryear,Zeyada";
+      $ecofonts = explode(',', $gfonts);
+      ?>
+
+            <select name="eco_fonttransform" id="input-eco_fonttransform" class="form-control">
+                <option value="" <?php if ($eco_fonttransform=='') {?>selected<?php } ?>  ></option>
+                <?php foreach ($ecofonts as $f ){ ?>
+                <option value="<?php echo $f; ?>" <?php if($eco_fonttransform==$f){echo 'selected';} ?>>
+                <?php echo $f; ?>
+                </option>
+                <?php } ?>
+            </select>
+
+
+        </div>
+
+    </div>
+
+
+
+</div>
+
+</div>
+
+
+</form>
+</div>
+</div>
+</div>
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+
+        $('input.pick-a-color').each( function(){
+            var input = this;
+            $(input).attr('readonly','readonly');
+            $(input).ColorPicker({
+                onChange:function (hsb, hex, rgb) {
+                    $(input).css('backgroundColor', '#' + hex);
+                    $(input).val( '#' + hex );
+                }
+            });
+        } );
+
+    });
+
+</script>
+
 <?php echo $footer; ?>

@@ -4,7 +4,7 @@ $_['heading_title']       = '<b>Eco Theme Editor</b>';
 
 // Text
 $_['text_module']         = 'Modules';
-$_['text_success']        = 'Success: You have modified module Boss Themes!';
+$_['text_success']        = 'Success: You have modified module Eco Theme Editor!';
 $_['text_content_top']    = 'Content Top';
 $_['text_content_bottom'] = 'Content Bottom';
 $_['text_column_left']    = 'Column Left';
@@ -164,5 +164,5 @@ $_['tab_title_font']        = 'Title';
 
 
 // Error
-$_['error_permission']    = 'Warning: You do not have permission to modify module Boss Themes!';
+$_['error_permission']    = 'Warning: You do not have permission to modify module Eco Theme Editor!';
 ?>
