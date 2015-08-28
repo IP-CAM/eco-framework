@@ -1,10 +1,8 @@
 <?php
-$megamenu = $this->controller('module/ecomegamenu');
+//$megamenu = $this->newAction('module/ecomegamenu');
 
-
-
-$this->model('setting/setting');
-$setting = $this->registry->get('model_setting_setting');
+$setting = $this->newModel('setting/setting');
+//$setting = $this->registry->get('model_setting_setting');
 
 
 $aThemeSettings = $setting->getSetting('ecothemecontrol',0);
@@ -40,6 +38,9 @@ $aThemeSettings = $aThemeSettings['ecothemecontrol'];
 <link href="catalog/view/javascript/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
 <script src="catalog/view/javascript/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 <link href="catalog/view/javascript/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="catalog/view/javascript/jquery/owl-carousel/owl.carousel.css" rel="stylesheet" type="text/css" />
+
+
 <link href="//fonts.googleapis.com/css?family=Open+Sans:400,400i,300,700" rel="stylesheet" type="text/css" />
 <link href="catalog/view/theme/default/stylesheet/stylesheet.css" rel="stylesheet">
     <link href="catalog/view/javascript/jquery/colorbox/css/colorbox.css" rel="stylesheet">
@@ -47,6 +48,7 @@ $aThemeSettings = $aThemeSettings['ecothemecontrol'];
 <link href="<?php echo $style['href']; ?>" type="text/css" rel="<?php echo $style['rel']; ?>" media="<?php echo $style['media']; ?>" />
 <?php } ?>
 <script src="catalog/view/javascript/jquery/colorbox/jquery.colorbox.js" type="text/javascript"></script>
+<script src="catalog/view/javascript/jquery/owl-carousel/owl.carousel.min.js" type="text/javascript"></script>
     <script src="catalog/view/javascript/common.js" type="text/javascript"></script>
 <?php foreach ($scripts as $script) { ?>
 <script src="<?php echo $script; ?>" type="text/javascript"></script>

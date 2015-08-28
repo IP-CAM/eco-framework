@@ -709,3 +709,10 @@ h2.price {
 .input-group .form-control[name^=quantity] {
 	min-width: 50px;
 }
+
+.product-view .flexslider-large {
+    margin: 30px auto 0;
+    max-width: 420px;
+    padding: 0 65px;
+    position: relative;
+}
