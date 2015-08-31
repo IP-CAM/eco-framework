@@ -710,9 +710,12 @@ h2.price {
 	min-width: 50px;
 }
 
-.product-view .flexslider-large {
-    margin: 30px auto 0;
-    max-width: 420px;
-    padding: 0 65px;
-    position: relative;
+.sticky {
+    display: block;
+    height: 40px;
+    margin-top: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 500;
 }

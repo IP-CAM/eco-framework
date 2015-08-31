@@ -1,13 +1,5 @@
 <?php
-//$megamenu = $this->newAction('module/ecomegamenu');
-
-$setting = $this->newModel('setting/setting');
-//$setting = $this->registry->get('model_setting_setting');
-
-
-$aThemeSettings = $setting->getSetting('ecothemecontrol',0);
-$aThemeSettings = $aThemeSettings['ecothemecontrol'];
-
+$megamenu = $this->controller('module/ecomegamenu');
 ?>
 <!DOCTYPE html>
 <!--[if IE]><![endif]-->
@@ -38,101 +30,16 @@ $aThemeSettings = $aThemeSettings['ecothemecontrol'];
 <link href="catalog/view/javascript/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
 <script src="catalog/view/javascript/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 <link href="catalog/view/javascript/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-    <link href="catalog/view/javascript/jquery/owl-carousel/owl.carousel.css" rel="stylesheet" type="text/css" />
-
-
 <link href="//fonts.googleapis.com/css?family=Open+Sans:400,400i,300,700" rel="stylesheet" type="text/css" />
 <link href="catalog/view/theme/default/stylesheet/stylesheet.css" rel="stylesheet">
-    <link href="catalog/view/javascript/jquery/colorbox/css/colorbox.css" rel="stylesheet">
 <?php foreach ($styles as $style) { ?>
 <link href="<?php echo $style['href']; ?>" type="text/css" rel="<?php echo $style['rel']; ?>" media="<?php echo $style['media']; ?>" />
 <?php } ?>
-<script src="catalog/view/javascript/jquery/colorbox/jquery.colorbox.js" type="text/javascript"></script>
-<script src="catalog/view/javascript/jquery/owl-carousel/owl.carousel.min.js" type="text/javascript"></script>
-    <script src="catalog/view/javascript/common.js" type="text/javascript"></script>
+<script src="catalog/view/javascript/common.js" type="text/javascript"></script>
 <?php foreach ($scripts as $script) { ?>
 <script src="<?php echo $script; ?>" type="text/javascript"></script>
 <?php } ?>
 <?php echo $google_analytics; ?>
-
-    <style type="text/css">
-        <?php if($aThemeSettings['eco_fonttransform']!=''){?>
-body {font-family:<?php echo $aThemeSettings['eco_fonttransform']; ?>, sans-serif !important ;}
-<?php }?>
-
- /* sale label */
-.sale-label {background:<?php $aThemeSettings['eco_sale_labelcolor']; ?>}
-
-/*Main color section */
-<?php if($aThemeSettings['eco_body_bg_ed']==1) { ?>
-        body {background:<?php echo $aThemeSettings['eco_body_bg']; ?> }
-<?php } ?>
- <?php if($aThemeSettings['eco_fontcolor_ed']==1) { ?>
-        body {color:<?php echo $aThemeSettings['eco_fontcolor']; ?> }
-<?php } ?>
-<?php if($aThemeSettings['eco_linkcolor_ed']==1) { ?>
-        a,a:visited {color:<?php echo $aThemeSettings['eco_linkcolor']; ?>}
-<?php } ?>
-<?php if($aThemeSettings['eco_linkhovercolor_ed']==1) { ?>
-        a:hover {color:<?php echo $aThemeSettings['eco_linkhovercolor']; ?>}
-<?php } ?>
-
-
-/* header color section */
-<?php if($aThemeSettings['eco_headerbg_ed']==1) { ?>
-.header-top { background-color: <?php echo $aThemeSettings['eco_headerbg']; ?>;} <?php } ?>
-<?php if($aThemeSettings['eco_headerlinkcolor_ed']==1) { ?>
-.header-top a,.block-language{color:<?php echo $aThemeSettings['eco_headerlinkcolor']."! important"; ?>;} <?php } ?>
-<?php if($aThemeSettings['eco_headerlinkhovercolor_ed']==1) { ?>
-.header-top a:hover,.block-language:hover{color:<?php echo $aThemeSettings['eco_headerlinkhovercolor']."! important"; ?>;} <?php } ?>
-
-<?php /* if($aThemeSettings['eco_headerclcolor_ed']==1) { ?>
-ul.currencies_list li a{color:<?php echo $aThemeSettings['eco_headerclcolor']."! important"; ?>;} <?php } */ ?>
-
-/*Top Menu */
-/*background*/
-<?php if($aThemeSettings['eco_mmbgcolor_ed']==1) { ?>
-nav#menu { background:<?php echo $aThemeSettings['eco_mmbgcolor']; ?> } <?php } ?>
-     /*main menu links*/
- <?php if($aThemeSettings['eco_mmlinkscolor_ed']==1) { ?>
-li.level0 > a > span{ color:<?php echo $aThemeSettings['eco_mmlinkscolor']."! important"; ?>; } <?php } ?>
-/*main menu link hover*/
-<?php if($aThemeSettings['eco_mmlinkshovercolor_ed']==1) { ?>
-li.level0 > a > span:hover:nth-child(1), #nav > li > a.active:nth-child(1){color:<?php echo $aThemeSettings['eco_mmlinkshovercolor']."! important"; ?>} <?php } ?>
-<?php if($aThemeSettings['eco_mmslinkscolor_ed']==1) { ?>
-#nav ul.level0 > li > a{color:<?php echo $aThemeSettings['eco_mmslinkscolor']; ?>} <?php } ?>
-/*sub links hover*/
-<?php if($aThemeSettings['eco_mmslinkshovercolor_ed']==1) { ?>
-#nav ul li a:hover{color:<?php echo $aThemeSettings['eco_mmslinkshovercolor']; ?> } <?php } ?>
-
-/*buttons*/
-<?php if($aThemeSettings['eco_buttoncolor_ed']==1) { ?>
-button.button,.btn{background-color:<?php echo $aThemeSettings['eco_buttoncolor']."! important"; ?> } <?php } ?>
-<?php if($aThemeSettings['eco_buttonhovercolor_ed']==1) { ?>
-button.button:hover,.btn:hover{background-color: <?php echo $aThemeSettings['eco_buttonhovercolor']."! important"; ?>} <?php } ?>
-
-
-/*price*/
-<?php if($aThemeSettings['eco_pricecolor_ed']==1) { ?>
-.regular-price .price{ color:<?php echo $aThemeSettings['eco_pricecolor']; ?> } <?php } ?>
-<?php if($aThemeSettings['eco_oldpricecolor_ed']==1) { ?>
-.old-price .price{ color:<?php echo $aThemeSettings['eco_oldpricecolor']."! important"; ?> } <?php } ?>
-<?php if($aThemeSettings['eco_newpricecolor_ed']==1) { ?>
-.special-price .price{ color:<?php echo $aThemeSettings['eco_newpricecolor']; ?> } <?php } ?>
-
- /*footer*/
-<?php if($aThemeSettings['eco_footerbg_ed']==1) { ?>
-footer{background:<?php echo $aThemeSettings['eco_footerbg']; ?> } <?php } ?>
-<?php if($aThemeSettings['eco_footerlinkcolor_ed']==1) { ?>
-footer li a{color: <?php echo $aThemeSettings['eco_footerlinkcolor']; ?>}
-<?php } ?>
-<?php if($aThemeSettings['eco_footerlinkhovercolor_ed']==1) { ?>
-footer li a:hover{color: <?php echo $aThemeSettings['eco_footerlinkhovercolor']; ?>} <?php } ?>
-<?php if($aThemeSettings['eco_powerbycolor_ed']==1) { ?>
-footer .coppyright{color: <?php echo $aThemeSettings['eco_powerbycolor']; ?>} <?php } ?>
-
-    </style>
-
 </head>
 <body class="<?php echo $class; ?>">
 <nav id="top">
