@@ -71,8 +71,7 @@ class ModelMenuEcoMegamenu extends Model {
 			return 'Please install datasample for this module';
 		}
 
-		$this->load->model( 'menu/widget' );
-		$this->parserMegaConfig( $params ); 
+		$this->parserMegaConfig( $params );
 		if( $edit ){ 
 			$this->_editString  = ' data-id="%s" data-group="%s"  data-cols="%s" ';
 		}

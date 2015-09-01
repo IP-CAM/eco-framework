@@ -78,6 +78,12 @@ public function preRender( $template_buffer, $template_name, &$data ) {
     $data['products'] = array();
 
     $results = $this->model_catalog_product->getBestSellerProducts(3);
+    $data['megamenu'] = $this->load->controller('module/ecomegamenu');
+
+    $this->load->model('setting/setting');
+    $aThemeSettings = $this->model_setting_setting->getSetting('ecothemecontrol',0);
+
+    $data['aThemeSettings'] = isset($aThemeSettings['ecothemecontrol']) ? $aThemeSettings['ecothemecontrol'] : array();
 
     if ($results) {
       foreach ($results as $result) {
