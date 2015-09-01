@@ -1,7 +1,7 @@
 <?php
 
 /* ---------------------------------------------------------------------------------- */
-/*  OpenCart index.php (with modififications for the Override Engine)                 */
+/*  OpenCart admin/index.php (with modififications for the Override Engine)           */
 /*                                                                                    */
 /*  Original file Copyright © 2014 by Daniel Kerr (www.opencart.com)                  */
 /*  Modifications Copyright © 2014 by J.Neuhoff (www.mhccorp.com)                     */
@@ -21,7 +21,6 @@
 /*  You should have received a copy of the GNU General Public License                 */
 /*  along with OpenCart.  If not, see <http://www.gnu.org/licenses/>.                 */
 /* ---------------------------------------------------------------------------------- */
-
 // Version
 define('VERSION', '2.0.0.0');
 
@@ -32,7 +31,7 @@ if (is_file('config.php')) {
 
 // Install
 if (!defined('DIR_APPLICATION')) {
-	header('Location: install/index.php');
+	header('Location: ../install/index.php');
 	exit;
 }
 
@@ -42,10 +41,6 @@ require_once(DIR_SYSTEM . 'startup.php');
 // Registry
 $registry = new Registry();
 
-// Loader
-$loader = new Loader($registry);
-$registry->set('load', $loader);
-
 // Factory
 $factory = new Factory($registry);
 $registry->set( 'factory', $factory );
@@ -54,44 +49,30 @@ $registry->set( 'factory', $factory );
 $config = $factory->newConfig();
 $registry->set('config', $config);
 
-// Database 
+// Database
 $db = $factory->newDB(DB_DRIVER, DB_HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
 $registry->set('db', $db);
 
-// Store
-if (isset($_SERVER['HTTPS']) && (($_SERVER['HTTPS'] == 'on') || ($_SERVER['HTTPS'] == '1'))) {
-	$store_query = $db->query("SELECT * FROM " . DB_PREFIX . "store WHERE REPLACE(`ssl`, 'www.', '') = '" . $db->escape('https://' . str_replace('www.', '', $_SERVER['HTTP_HOST']) . rtrim(dirname($_SERVER['PHP_SELF']), '/.\\') . '/') . "'");
-} else {
-	$store_query = $db->query("SELECT * FROM " . DB_PREFIX . "store WHERE REPLACE(`url`, 'www.', '') = '" . $db->escape('http://' . str_replace('www.', '', $_SERVER['HTTP_HOST']) . rtrim(dirname($_SERVER['PHP_SELF']), '/.\\') . '/') . "'");
-}
-
-if ($store_query->num_rows) {
-	$config->set('config_store_id', $store_query->row['store_id']);
-} else {
-	$config->set('config_store_id', 0);
-}
-
 // Settings
-$query = $db->query("SELECT * FROM `" . DB_PREFIX . "setting` WHERE store_id = '0' OR store_id = '" . (int)$config->get('config_store_id') . "' ORDER BY store_id ASC");
+$query = $db->query("SELECT * FROM " . DB_PREFIX . "setting WHERE store_id = '0'");
 
-foreach ($query->rows as $result) {
-	if (!$result['serialized']) {
-		$config->set($result['key'], $result['value']);
+foreach ($query->rows as $setting) {
+	if (!$setting['serialized']) {
+		$config->set($setting['key'], $setting['value']);
 	} else {
-		$config->set($result['key'], unserialize($result['value']));
+		$config->set($setting['key'], unserialize($setting['value']));
 	}
 }
 
-if (!$store_query->num_rows) {
-	$config->set('config_url', HTTP_SERVER);
-	$config->set('config_ssl', HTTPS_SERVER);
-}
+// Loader
+$loader = new Loader($registry);
+$registry->set('load', $loader);
 
 // Url
-$url = $factory->newUrl($config->get('config_url'), $config->get('config_secure') ? $config->get('config_ssl') : $config->get('config_url'));
+$url = $factory->newUrl(HTTP_SERVER, $config->get('config_secure') ? HTTPS_SERVER : HTTP_SERVER);	
 $registry->set('url', $url);
 
-// Log
+// Log 
 $log = $factory->newLog($config->get('config_error_filename'));
 $registry->set('log', $log);
 
@@ -142,7 +123,6 @@ $registry->set('request', $request);
 // Response
 $response = $factory->newResponse();
 $response->addHeader('Content-Type: text/html; charset=utf-8');
-$response->setCompression($config->get('config_compression'));
 $registry->set('response', $response);
 
 // Cache
@@ -153,94 +133,27 @@ $registry->set('cache', $cache);
 $session = $factory->newSession();
 $registry->set('session', $session);
 
-// Language Detection
+// Language
 $languages = array();
 
-$query = $db->query("SELECT * FROM `" . DB_PREFIX . "language` WHERE status = '1'");
+$query = $db->query("SELECT * FROM `" . DB_PREFIX . "language`"); 
 
 foreach ($query->rows as $result) {
 	$languages[$result['code']] = $result;
 }
 
-$detect = '';
+$config->set('config_language_id', $languages[$config->get('config_admin_language')]['language_id']);
 
-if (isset($request->server['HTTP_ACCEPT_LANGUAGE']) && $request->server['HTTP_ACCEPT_LANGUAGE']) {
-	$browser_languages = explode(',', $request->server['HTTP_ACCEPT_LANGUAGE']);
-
-	foreach ($browser_languages as $browser_language) {
-		foreach ($languages as $key => $value) {
-			if ($value['status']) {
-				$locale = explode(',', $value['locale']);
-
-				if (in_array($browser_language, $locale)) {
-					$detect = $key;
-
-					break 2;
-				}
-			}
-		}
-	}
-}
-
-
-if (isset($session->data['language']) && array_key_exists($session->data['language'], $languages) && $languages[$session->data['language']]['status']) {
-	$code = $session->data['language'];
-} elseif (isset($request->cookie['language']) && array_key_exists($request->cookie['language'], $languages) && $languages[$request->cookie['language']]['status']) {
-	$code = $request->cookie['language'];
-} elseif ($detect) {
-	$code = $detect;
-} else {
-	$code = $config->get('config_language');
-}
-
-if (!isset($session->data['language']) || $session->data['language'] != $code) {
-	$session->data['language'] = $code;
-}
-
-if (!isset($request->cookie['language']) || $request->cookie['language'] != $code) {
-	setcookie('language', $code, time() + 60 * 60 * 24 * 30, '/', $request->server['HTTP_HOST']);
-}
-
-$config->set('config_language_id', $languages[$code]['language_id']);
-$config->set('config_language', $languages[$code]['code']);
-
-// Language
-$language = $factory->newLanguage($languages[$code]['directory']);
-$language->load($languages[$code]['directory']);
+// Language	
+$language = $factory->newLanguage($languages[$config->get('config_admin_language')]['directory']);
+$language->load($languages[$config->get('config_admin_language')]['directory']);
 $registry->set('language', $language);
 
 // Document
 $registry->set('document', $factory->newDocument());
 
-// Customer
-$customer = $factory->newCustomer($registry);
-$registry->set('customer', $customer);
-
-// Customer Group
-if ($customer->isLogged()) {
-	$config->set('config_customer_group_id', $customer->getGroupId());
-} elseif (isset($session->data['customer'])) {
-	// For API calls
-	$config->set('config_customer_group_id', $session->data['customer']['customer_group_id']);
-} elseif (isset($session->data['guest'])) {
-	$config->set('config_customer_group_id', $session->data['guest']['customer_group_id']);
-}
-
-// Tracking Code
-if (isset($request->get['tracking'])) {
-	setcookie('tracking', $request->get['tracking'], time() + 3600 * 24 * 1000, '/');
-
-	$db->query("UPDATE `" . DB_PREFIX . "marketing` SET clicks = (clicks + 1) WHERE code = '" . $db->escape($request->get['tracking']) . "'");
-}
-
-// Affiliate
-$registry->set('affiliate', $factory->newAffiliate($registry));
-
 // Currency
 $registry->set('currency', $factory->newCurrency($registry));
-
-// Tax
-$registry->set('tax', $factory->newTax($registry));
 
 // Weight
 $registry->set('weight', $factory->newWeight($registry));
@@ -248,14 +161,11 @@ $registry->set('weight', $factory->newWeight($registry));
 // Length
 $registry->set('length', $factory->newLength($registry));
 
-// Cart
-$registry->set('cart', $factory->newCart($registry));
-
-// Encryption
-$registry->set('encryption', $factory->newEncryption($config->get('config_encryption')));
+// User
+$registry->set('user', $factory->newUser($registry));
 
 //OpenBay Pro
-$registry->set('openbay', new Openbay($registry));
+$registry->set('openbay', $factory->newOpenbay($registry));
 
 // Event
 $event = $factory->newMediator($registry);
@@ -270,17 +180,17 @@ foreach ($query->rows as $result) {
 // Front Controller
 $controller = new Front($registry);
 
-// Maintenance Mode
-$controller->addPreAction($factory->newAction('common/maintenance'));
+// Login
+$controller->addPreAction($factory->newAction('common/login/check'));
 
-// SEO URL's
-$controller->addPreAction($factory->newAction('common/seo_url'));
+// Permission
+$controller->addPreAction($factory->newAction('error/permission/check'));
 
 // Router
 if (isset($request->get['route'])) {
 	$action = $factory->newAction($request->get['route']);
 } else {
-	$action = $factory->newAction('common/home');
+	$action = $factory->newAction('common/dashboard');
 }
 
 // Dispatch
