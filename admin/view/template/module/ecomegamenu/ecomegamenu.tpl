@@ -4,7 +4,6 @@
         <div class="container-fluid">
             <div class="pull-right">
                 <button type="submit" onclick="$('#form-megamenu').submit();" form="form-carousel" data-toggle="tooltip" title="<?php echo $button_save; ?>" class="btn btn-primary"><i class="fa fa-save"></i></button>
-                <a class="btn btn-info" title="<?php echo $objlang->get('button_save_edit'); ?>" onclick="$('#save_mode').val('save-edit');$('#form').submit();"><?php echo $objlang->get('button_save_edit'); ?></a>
                 <a href="<?php echo $cancel; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
             <h1><?php echo $heading_title; ?></h1>
             <ul class="breadcrumb">
@@ -42,14 +41,6 @@
                             </select>
                         </div>
 
-                    </div>
-                </div>
-
-                <div id="menu-toolbars">
-                    <div class="container-fluid">
-                        <div class="pull-left">
-                            <a onclick="$('#import_categories').val('import-categories');$('#form-megamenu').submit();" title="Import Categories" class="btn btn-primary">Import Categories</a>
-                        </div>
                     </div>
                 </div>
                 <div id="zo2-admin-megamenu" class="zo2-admin-megamenu">

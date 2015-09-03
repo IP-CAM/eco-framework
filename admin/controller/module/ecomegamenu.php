@@ -58,14 +58,12 @@ class ControllerModuleEcomegamenu extends Controller {
 
             $this->load->model('setting/setting');
 
-            if( isset($this->request->post['import_categories']) &&  (string)$this->request->post['import_categories'] != '' ) {
-                $this->model_menu_ecomegamenu->importCategories((int)$this->request->post['store_id']);
-            } else {
-                if( isset($this->request->post['menu_config']) ) {
-                    $params = trim(html_entity_decode($this->request->post['menu_config']));
+            if( isset($this->request->post['menu_config']) ) {
+                $params = trim(html_entity_decode($this->request->post['menu_config']));
 
-                    $this->model_setting_setting->editSetting('ecomegamenu_params', array('ecomegamenu_params'=> $params) );
-                }
+                $this->model_setting_setting->editSetting('ecomegamenu_params', array('ecomegamenu_params'=> $params) );
+
+                $this->response->redirect($this->url->link('extension/module', 'token=' . $this->session->data['token'], 'SSL'));
             }
         }
 
@@ -241,6 +239,8 @@ class ControllerModuleEcomegamenu extends Controller {
         $data['token'] = $this->session->data['token'];
 
         $data['treemenu'] = $this->model_menu_ecomegamenu->getTree( 1, true, $params, $store_id );
+
+        if($data['treemenu'] == '') $data['treemenu'] = '<ul class="nav navbar-nav level-top"></ul>';
 
         $this->response->setOutput($this->load->view('module/ecomegamenu/ecomegamenu.tpl', $data));
 	}

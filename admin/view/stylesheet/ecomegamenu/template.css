@@ -78,7 +78,7 @@ div.modal {
     min-width: 50px;
 }
 
-.btn {
+#zo2-admin-megamenu .btn {
     -moz-border-bottom-colors: none;
     -moz-border-left-colors: none;
     -moz-border-right-colors: none;
@@ -118,41 +118,7 @@ element.style {
 *::before, *::after {
     box-sizing: border-box;
 }
-body {
-    color: #666;
-    font-family: "Open Sans",sans-serif;
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 20px;
-    width: 100%;
-}
-body {
-    background: #fff none repeat scroll 0 0;
-    color: #555;
-    height: 100%;
-    line-height: 20px;
-    overflow: auto !important;
-    width: 100%;
-}
-body {
-    background-color: #ffffff;
-    color: #333333;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 14px;
-    line-height: 1.42857;
-}
-body {
-    margin: 0;
-}
-* {
-    box-sizing: border-box;
-}
-html {
-    font-size: 10px;
-}
-html {
-    font-family: sans-serif;
-}
+
 .navbar .nav > li > .dropdown-menu::before {
     border-bottom: 7px solid rgba(0, 0, 0, 0.2);
     border-left: 7px solid transparent;

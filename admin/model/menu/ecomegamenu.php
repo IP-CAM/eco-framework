@@ -686,6 +686,9 @@ class ModelMenuEcomegamenu extends Model {
             foreach( $sql as $q ){
                 $this->db->query( $q );
             }
+
+            //Import categories to megamenu
+            $this->importCategories(0);
         }
 
     }
