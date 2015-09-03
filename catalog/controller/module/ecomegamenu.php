@@ -49,7 +49,8 @@ class ControllerModuleEcomegamenu extends Controller {
 
 		$parent = '1';
 		$this->data['treemenu'] = $this->model_menu_ecomegamenu->getTree( $parent, true, $params, $store_id);
- 
+
+        if($this->data['treemenu'] == '') return '';
 			
 		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/module/ecomegamenu.tpl')) {
 			$template = $this->config->get('config_template') . '/template/module/ecomegamenu.tpl';
