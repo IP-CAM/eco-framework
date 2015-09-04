@@ -1,0 +1,12 @@
+/* start css product on tooltip */
+.btn-viewmore {
+	padding-bottom: 20px;
+    text-align: center;
+}
+
+.popover-content {
+	text-align: center;
+}
+.popover-content .name a:hover{
+	color:#ff7800;
+}

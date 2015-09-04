@@ -25,7 +25,7 @@
 <div class="<?php echo $class; ?>">
     <?php if ($thumb || $images) { ?>
     <?php if ($thumb) { ?>
-    <a class="thumbnail" href="<?php echo $popup; ?>" title="<?php echo $heading_title; ?>"><img id="zoom1"src="<?php echo $thumb; ?>" data-zoom-image="<?php echo $thumb; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a>
+    <a class="thumbnail" href="<?php echo $popup; ?>" title="<?php echo $heading_title; ?>"><img id="zoom1"src="<?php echo $popup; ?>" data-zoom-image="<?php echo $popup; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a>
     <?php } ?>
     <ul class="thumbnails" id="gallery-images">
 

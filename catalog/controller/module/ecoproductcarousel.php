@@ -11,6 +11,9 @@ class ControllerModuleEcoproductcarousel extends Controller {
 		$this->load->model('tool/image');
 		$this->load->language('module/ecoproductcarousel');
 
+        $this->document->addStyle('catalog/view/javascript/jquery/owl-carousel/owl.carousel.css');
+        $this->document->addScript('catalog/view/javascript/jquery/owl-carousel/owl.carousel.min.js');
+
 		$data['button_cart'] = $this->language->get('button_cart');
 		if (file_exists('catalog/view/theme/' . $this->config->get('config_template') . '/stylesheet/ecoproductcarousel.css')) {
 			$this->document->addStyle('catalog/view/theme/' . $this->config->get('config_template') . '/stylesheet/ecoproductcarousel.css');
@@ -74,6 +77,8 @@ class ControllerModuleEcoproductcarousel extends Controller {
 
 
 		$data['button_link'] = $button_link;
+
+        $data['url'] = $this->url;
 
 		$data['view_more'] = $this->language->get('label_btn_view_more');
 

@@ -3,7 +3,7 @@ $id = rand(1,9)+rand();
 ?>
 <div class="box box-normal <?php echo count($tabs) > 1 ? 'producttabs' : '' ?>">
     <div class="box-heading">
-        <?php if(count($tabs) > 2): ?>
+        <?php if(count($tabs) > 1): ?>
             <ul class="nav nav-tabs" id="producttabs<?php echo $id;?>">
                 <?php foreach( $tabs as $tab => $products ) { if( empty($products) ){ continue;}  ?>
                 <li><a href="#tab-<?php echo $tab.$id;?>" data-toggle="tab"><?php echo $objlang->get('text_'.$tab)?></a></li>

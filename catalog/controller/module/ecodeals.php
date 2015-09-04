@@ -23,7 +23,7 @@ class ControllerModuleEcodeals extends Controller {
 			$this->load->model('module/ecodeals');
 		   $this->load->model('tool/image');
 			$filter_data = array(
-                'filter_categories' => $setting['product_category'],
+                'filter_categories' => isset($setting['product_category']) ? $setting['product_category'] : array(),
 				'sort'  => 'pd.name',
 				'order' => 'ASC',
 				'start' => 0,
