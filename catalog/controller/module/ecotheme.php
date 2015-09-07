@@ -3,6 +3,9 @@ class ControllerModuleEcotheme extends Controller {
 	private $error = array();
 
 	public function index() {
+		$this->document->addScript('catalog/view/theme/eco/js/jquery.elevateZoom-3.0.8.min.js');
+		$this->document->addStyle('catalog/view/javascript/jquery/owl-carousel/owl.carousel.css');
+
 		$this->load->language('product/product');
 
 		$data['breadcrumbs'] = array();
