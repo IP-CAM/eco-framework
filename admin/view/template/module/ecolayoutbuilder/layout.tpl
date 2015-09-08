@@ -75,7 +75,7 @@
                 <div class="zo2-add-new-row" data-zo2-type="row" data-zo2-customclass="" data-zo2-fullwidth="0" data-zo2-visibility-xs="1" data-zo2-visibility-sm="1" data-zo2-visibility-md="1" data-zo2-visibility-lg="1">
                     <button class="btn btn-primary add-new-row" title="" data-toggle="tooltip" form="form-carousel" type="button" data-original-title="Add new row"><?php echo $objlang->get('button_add_new_row'); ?></button>
                 </div>
-                <?php if(isset($layout_data)); ?>
+                <?php if(isset($layout_data)): ?>
                     <?php foreach ($layout_data as $row) : ?>
                     <?php require("layout_row.tpl"); ?>
                     <?php endforeach; ?>
