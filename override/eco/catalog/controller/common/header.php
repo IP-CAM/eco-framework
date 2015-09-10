@@ -1,11 +1,17 @@
 <?php
 class eco_ControllerCommonHeader extends ControllerCommonHeader {
 
-public function preRender( $template_buffer, $template_name, &$data ) {
+    public function index(){
+        $this->document->addScript('catalog/view/theme/eco/js/eco.js');
+        return parent::index();
+    }
+
+    public function preRender( $template_buffer, $template_name, &$data ) {
         if ($template_name != $this->config->get('config_template').'/template/common/header.tpl') {
             return parent::preRender( $template_buffer, $template_name, $data );
         }
-       
+
+
         // add new controller variables
 
 

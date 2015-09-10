@@ -1,22 +1,21 @@
-<div id="boxes" class="newletter-container">
- <div style="" id="dialog" class="window">
+<div id="mt_newsletter" class="newletter-container">
 	<div class="box">
 	  <div class="newletter-title">
 		<h2><?php echo $heading_title; ?></h2>
 		<label><?php echo $newletter_lable; ?></label>
 	  </div>
-	  <div class="box-content newleter-content">
+	  <div class="box-content newleter-content input-box">
 		  <div id="frm_subscribe">
-			  <form name="subscribe" id="subscribe">
+			  <form name="subscribe">
 				  <table>
 					   <tr>
 						 <td><span class="required">*</span>&nbsp;<span><?php echo $entry_email; ?></span><input type="text" value="" name="subscribe_email" id="subscribe_email"></td>
 					   </tr>
 					   <tr>
 						 <td>
-							<a class="button" onclick="email_subscribe()"><span><?php echo $entry_button; ?></span></a>
+							<button class="button" onclick="email_subscribe()"><span><?php echo $entry_button; ?></span></button>
 							<?php if($option_unsubscribe) { ?>
-							<a class="button" onclick="email_unsubscribe()"><span><?php echo $entry_unbutton; ?></span></a>
+							<button class="button" onclick="email_unsubscribe()"><span><?php echo $entry_unbutton; ?></span></button>
 							<?php } ?>    
 						 </td>
 					   </tr>
@@ -24,10 +23,15 @@
 				  </table>
 			  </form>
 		  </div><!-- /#frm_subscribe -->
+          <div class="block-content">
+              <label class="subcriper_label">
+                  <input type="checkbox">
+                  <?php echo ("Don't show this popup again");?>
+              </label>
+          </div>
 		  <div id="notification"></div>
 		</div><!-- /.box-content -->
- </div>
-</div>	
+</div>
 <div style="width: 2000px;top:-808px; height: 2000px; display: none; opacity: 0.7;" id="mask"> </div>
 
   
@@ -59,66 +63,57 @@ function email_unsubscribe(){
 </script>
 <script type="text/javascript">
     $(document).ready(function() {
-	 return ; 
-        function setCookie(cname,cvalue,exdays)
-        {
-            var d = new Date();
-            d.setTime(d.getTime()+(exdays*24*60*60*1000));
-            var expires = "expires="+d.toGMTString();
-            document.cookie = cname+"="+cvalue+"; "+expires;
+        //var isSuccess = $('ul.messages li.success-msg').length;
+        var subscribeFlag = $.cookie('mtNewsletterSubscribeFlag');
+        function subsSetcookie(){
+            $.cookie('mtNewsletterSubscribe', 'true', {
+                expires: 30,
+                path: '/'
+            });
         }
-        function getCookie(cname)
-        {
-            var name = cname + "=";
-            var ca = document.cookie.split(';');
-            for(var i=0; i<ca.length; i++)
-            {
-                var c = ca[i].trim();
-                if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+        $('#mt_newsletter .subcriper_label input').on('click', function(){
+            if($(this).parent().find('input:checked').length){
+                subsSetcookie();
+            } else {
+                $.removeCookie('mtNewsletterSubscribe', { path: '/' });
             }
-            return "";
-        }
-
-        //transition effect
-        if(getCookie("shownewsletter") != 1){
-            var id = '#dialog';
-            //Get the screen height and width
-            var maskHeight = $(document).height();
-            var maskWidth = $(window).width();
-            //Set heigth and width to mask to fill up the whole screen
-            //transition effect
-            //Get the window height and width
-            var winH = $(window).height();
-            var winW = $(window).width();
-            //Set the popup window to center
-            $(id).css('top',  winH/2-$(id).height()/2 -50);
-            $(id).css('left', winW/2-$(id).width()/2);
-            $('#mask').fadeIn(800);
-            $('#mask').fadeTo("slow",0.8);
-            $(id).fadeIn(500);
-      
-        }else {
-            $('#advice-required-entry-newsletter').remove();
-
-            $('#dialog').remove();
-            $('#boxes').remove();
-        }
-        //if close button is clicked
-        $('.window .close').click(function (e) {
-            //Cancel the link behavior
-            e.preventDefault();
-            $('#mask').hide();
-            $('.window').hide();
-            setCookie("shownewsletter",'1',1);
         });
-
-//if mask is clicked
-        $('#mask').click(function () {
-            $(this).preventDefault();
-            $(this).hide();
-            $('.window').hide();
-            setCookie("shownewsletter",'1',1);
+        $('#mt_newsletter .input-box button.button').on('click', function(){
+            var button = $(this);
+            setTimeout(function(){
+                if(!button.parent().find('input#newsletter').hasClass('validation-failed')){
+                    $.cookie('mtNewsletterSubscribeFlag', 'true', {
+                        path: '/'
+                    });
+                }
+            }, 500);
         });
+        if(!(subscribeFlag) && true){
+            $.colorbox({
+                inline:true,
+                href:$('#mt_newsletter'),
+                opacity:	0.3,
+                speed:		500,
+                innerWidth:'500px',
+                innerHeight:'350px',
+                fixed: true,
+                onOpen: function(){
+                    $('#cboxContent').addClass('newsletterbox');
+                    $('#cboxLoadingGraphic').addClass('box-loading');
+                },
+                onComplete: function(){
+                    setTimeout(function(){
+                        $('#cboxLoadingGraphic').removeClass('box-loading');
+                    },800);
+                },
+                onClosed: function(){
+                    $('#cboxContent').removeClass('newsletterbox');
+                }
+            });
+        }else{
+            $.removeCookie('mtNewsletterSubscribeFlag', { path: '/' });
+            subsSetcookie();
+        }
     });
 </script>
 

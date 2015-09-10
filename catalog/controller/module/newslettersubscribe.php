@@ -6,6 +6,7 @@ class ControllerModuleNewslettersubscribe extends Controller {
 	
 		$this->language->load('module/newslettersubscribe');
 		$this->document->addScript('catalog/view/javascript/jquery/jquery.bpopup.min.js');
+		$this->document->addScript('catalog/view/javascript/jquery/jquery.cookie.js');
 		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/stylesheet/newslettersubscribe.css')) {
 			$this->document->addStyle('catalog/view/theme/'.$this->config->get('config_template').'/stylesheet/newslettersubscribe.css');
 		} else {
@@ -69,10 +70,7 @@ class ControllerModuleNewslettersubscribe extends Controller {
 									   <td> Email Id </td>
 									   <td> '.$this->request->post['subscribe_email'].' </td>
 									 </tr>
-									 <tr>
-									   <td> Name  </td>
-									   <td> '.$this->request->post['subscribe_name'].' </td>
-									 </tr>';
+									 ';
 						$message .= '</table>';
 			 
 						$mail = new Mail();

@@ -140,7 +140,7 @@ class ModelMenuEcomegamenu extends Model {
             $this->children[$child['parent_id']][] = $child;
         }
 
-        $parent = 1 ;
+        $parent = 0 ;
         $this->load->model('catalog/category');
         $this->load->model('catalog/product');
         $this->load->model('tool/image');
