@@ -122,7 +122,7 @@ class eco_ControllerCommonHeader extends ControllerCommonHeader {
         } else {
           $rating = false;
         }
-        $data['footer'] = $this->load->controller('module/ecomegamenu');
+
         $data['products'][] = array(
           'product_id'  => $result['product_id'],
           'thumb'       => $image,
@@ -137,7 +137,7 @@ class eco_ControllerCommonHeader extends ControllerCommonHeader {
       }
     }
 
-    
+        $data['megamenu'] = $this->load->controller('module/ecomegamenu');
          
         // call parent method
         return parent::preRender( $template_buffer, $template_name, $data );

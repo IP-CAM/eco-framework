@@ -1,23 +1,5 @@
-/*-----------------------------------------------------------------------------
 
-	-	Revolution Slider 4.1 Captions -
-
-		Screen Stylesheet
-
-version:   	1.4.5
-date:      	06/01/15
-author:		magikcommerce
-email:      support@magikcommerce.com
-website:   	http://www.magikcommerce.com/
------------------------------------------------------------------------------*/
-
-
-
-/*************************
-	-	CAPTIONS	-
-**************************/
-
-#magik-slideshow {
+#eco-slideshow {
 	border: none;
 	padding: 0;
 	width: 100%;

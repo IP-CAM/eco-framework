@@ -1,16 +1,19 @@
+<?php
+$id = rand(1,9)+rand();
+?>
 <div id="eco-slideshow" class="eco-slideshow">
   <div id='rev_slider_4_wrapper' class='rev_slider_wrapper fullwidthbanner-container' >
-        <div id='rev_slider_4' class='rev_slider fullwidthabanner'>
+        <div id='rev_slider_4_<?php echo $id ?>' class='rev_slider fullwidthabanner'>
           <ul>
             <?php $cnt = 0; foreach ($slider as $slide) { ?>
-              <style>#ms<?php echo $cnt?>{ cursor: pointer;}</style>
+              <style>#ms<?php echo $id.$cnt?>{ cursor: pointer;}</style>
                     <script type="text/javascript">
                     $(document).ready(function(){
-                           $("#ms<?php echo $cnt?>").click(function() {
+                           $("#ms<?php echo $id.$cnt?>").click(function() {
                                   window.open('<?php echo $slide['link'];?>','_blank');
                            });   });  </script>
-                    
-                    <li id="ms<?php echo $cnt ?>" data-transition='random' data-slotamount='7' data-masterspeed='1000' data-thumb="<?php echo $slide['image']?>">
+
+              <li id="ms<?php echo $id.$cnt ?>" data-transition='random' data-slotamount='7' data-masterspeed='1000' data-thumb="<?php echo $slide['image']?>">
                 <img  src="<?php echo $slide['image']?>" data-bgposition='left top'  data-bgfit='cover' data-bgrepeat='no-repeat' title="<?php if($slide['title']) {echo $slide['title'];}?>" />
                 <?php if($slide['description']) { echo $slide['description'];}?>
               </li>
@@ -20,17 +23,10 @@
     </div><!-- rev_slider_4_wrapper -->
 </div>
 
-<?php if (isset($this->request->get['route'])) { 
- $route = $this->request->get['route']; } 
- else { $route = 'common/home';} ?>
-
-<?php if($route=='common/home' || $route=='home') { ?>
-</div><!-- page started in header-->
-<?php } ?>
 
 <script type='text/javascript'>
 jQuery(document).ready(function(){
-jQuery('#rev_slider_4').show().revolution({
+jQuery('#rev_slider_4_<?php echo $id ?>').show().revolution({
 dottedOverlay: 'none',
 delay: 5000,
 startwidth: 1920,
