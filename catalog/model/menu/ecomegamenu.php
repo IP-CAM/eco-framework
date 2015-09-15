@@ -476,8 +476,8 @@ class ModelMenuEcoMegamenu extends Model {
 			case 'manufacturer':
 				return  $this->url->link('product/manufacturer/info', 'manufacturer_id=' . $id);
 			default:
-				return "SBC";
-				return $menu['url'];
+				if(!preg_match('/^http:\/\//',$menu['url'])) return 'http://' . $menu['url'];
+				else return $menu['url'];
 		}
 	}
 	

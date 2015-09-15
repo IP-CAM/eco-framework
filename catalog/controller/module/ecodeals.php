@@ -43,7 +43,7 @@ class ControllerModuleEcodeals extends Controller {
             $data['objlang'] = $this->language;
 
 			$results = $this->model_module_ecodeals->getTimeCountdown($filter_data);
-
+			$data['products'] = array();
 			if ($results) {
 				foreach ($results as $result) { 
 					if ($result['image']) {

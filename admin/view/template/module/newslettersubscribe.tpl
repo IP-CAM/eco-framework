@@ -55,23 +55,16 @@
 					   
 					  
 			   <div class="row">
-					  <div class="col-sm-2">
 						 <div class="tab-pane" id="tab-module">
-							  <ul class="nav nav-pills nav-stacked" id="module">
+							  <ul class="nav nav-tabs" id="module" data-tabs="module">
 									<li>
 										<a href="#tab-general" class="selected"  data-toggle="tab" ><?php echo $tab_general; ?></a>
 									</li>
 									<li>
 										<a href="#tab-list"  class="" data-toggle="tab" ><?php echo $tab_list; ?></a>
 									</li>
-									<li>
-										<a href="#tab-mail"  data-toggle="tab" ><?php echo $tab_mail; ?></a>
-									</li>
-								
 							  </ul>
 						  </div>
-					  </div>
-					  <div class="col-sm-10">
 						   <div class="tab-content">
 								<div class="tab-pane" id ="tab-general">
 										<div class="form-group required">
@@ -177,116 +170,8 @@
 									<div class="pagination"><?php echo $pagination; ?></div>
 									</div>
 								</div>
-								<div class="tab-pane" id ="tab-mail">
-											<div class="table-responsive">
-												<table id="mail"  class="table table-bordered table-hover">
-												  <tr>
-													<td><?php echo $entry_store; ?></td>
-													<td><select name="store_id">
-														<option value="0"><?php echo $text_default; ?></option>
-														<?php foreach ($stores as $store) { ?>
-														<option value="<?php echo $store['store_id']; ?>"><?php echo $store['name']; ?></option>
-														<?php } ?>
-													  </select></td>
-												  </tr>
-												  <tr>
-													<td><?php echo $entry_to; ?></td>
-													<td><select name="to">
-														<option value="sendall"><?php echo $text_sendall; ?></option>
-														<option value="newsletter"><?php echo $text_newsletter; ?></option>
-														<option value="lbnewsletter"><?php echo $text_lbnewsletter; ?></option>
-														<option value="customer_all"><?php echo $text_customer_all; ?></option>
-														<option value="customer_group"><?php echo $text_customer_group; ?></option>
-														<option value="affiliate_all"><?php echo $text_affiliate_all; ?></option>
-													  </select></td>
-												  </tr>
-												  <tbody id="to-customer-group" class="to">
-													<tr>
-													  <td><?php echo $entry_customer_group; ?></td>
-													  <td><select name="customer_group_id">
-														  <?php foreach ($customer_groups as $customer_group) { ?>
-														  <option value="<?php echo $customer_group['customer_group_id']; ?>"><?php echo $customer_group['name']; ?></option>
-														  <?php } ?>
-														</select></td>
-													</tr>
-												  </tbody>
-												  <tbody id="to-customer" class="to">
-													<tr>
-													  <td><?php echo $entry_customer; ?></td>
-													  <td><input type="text" name="customers" value="" /></td>
-													</tr>
-													<tr>
-													  <td>&nbsp;</td>
-													  <td><div id="customer" class="scrollbox"></div></td>
-													</tr>
-												  </tbody>
-												  <tbody id="to-affiliate" class="to">
-													<tr>
-													  <td><?php echo $entry_affiliate; ?></td>
-													  <td><input type="text" name="affiliates" value="" /></td>
-													</tr>
-													<tr>
-													  <td>&nbsp;</td>
-													  <td><div id="affiliate" class="scrollbox"></div></td>
-													</tr>
-												  </tbody>
-												  <tbody id="to-product" class="to">
-													<tr>
-													  <td><?php echo $entry_product; ?></td>
-													  <td><input type="text" name="products" value="" /></td>
-													</tr>
-													<tr>
-													  <td>&nbsp;</td>
-													  <td><div id="product" class="scrollbox"></div></td>
-													</tr>
-												  </tbody>
-												  <tr>
-													<td><span class="required">*</span> <?php echo $entry_subject; ?></td>
-													<td><input type="text" name="subject" value="" /></td>
-												  </tr>
-												  <tr>
-													<td><span class="required">*</span> <?php echo $entry_message; ?></td>
-													<td>   <textarea name="message"  id="input-description" class="form-control">conten email here.....</textarea></td>
-												  </tr>
-												</table>
-											</div>
-										
-									
-								</div>
-								<div class="tab-pane" id ="tab-statistic">
-										<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-										<script type="text/javascript">
-										  google.load("visualization", "1", {packages:["corechart"]});
-										  google.setOnLoadCallback(drawChart);
-										  function drawChart() {
-											var data = google.visualization.arrayToDataTable([
-											  ['Date', 'Users'],
-											  <?php foreach($jack as $key => $j) { ?> 
-											  ['<?php echo date("d M",strtotime($key)); ?>',  <?php echo $j; ?>],
-											  <?php } ?>
-											]);
-									
-											var options = {
-												title: 'Last 15 Days Newsletter Report',
-												width: 1800, 
-												height: 500,
-												vAxis: {title: 'Users Per Day', titleTextStyle: {color: '#000'}},
-												hAxis: {title: 'Date', titleTextStyle: {color: '#000'}},
-												
-											};
-											
-
-											var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-											chart.draw(data, options);
-
-										  }
-										</script>
-										<div id="chart_div" style="width: 100%; height: 500px;"></div>
-										
-								</div>
 						   </div>
 						
-					  </div>
 			   </div>
 			  
         </form>
@@ -294,221 +179,13 @@
       </div>
     </div>
   </div>
- <script type="text/javascript"><!--
-function addModule() {
-	var token = Math.random().toString(36).substr(2);
-			
-	html  = '<tr id="module-row' + token + '">';
-	html += '  <td class="text-right">' + ($('tbody tr').length + 1) + '</td>';
-	html += '  <td class="text-left"><input type="text" name="newslettersubscribe_module[' + token + '][limit]" value="5" placeholder="<?php echo $entry_limit; ?>" class="form-control" /></td>';
-	html += '  <td class="text-left"><input type="text" name="newslettersubscribe_module[' + token + '][width]" value="200" placeholder="<?php echo $entry_width; ?>" class="form-control" /> <input type="text" name="newslettersubscribe_module[' + token + '][height]" value="200" placeholder="<?php echo $entry_height; ?>" class="form-control" /></td>';	
-	html += '  <td class="text-left"><button type="button" onclick="$(\'#module-row' + token + '\').remove();" data-toggle="tooltip" title="<?php echo $button_remove; ?>" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
-	html += '</tr>';
-	
-	$('#module tbody').append(html);
-}
-//--></script></div> 
+ </div>
 <script  type ="text/javascript">
 	$('#module li:first-child a').tab('show');
 	$('#input-description').summernote({
 		height: 300
 	});
 </script> 
-<script type="text/javascript"><!--	
-$('select[name=\'to\']').bind('change', function() {
-	$('#mail .to').hide();
-	$('#mail #to-' + $(this).val().replace('_', '-')).show();
-	
-});
 
-$('select[name=\'to\']').trigger('change');
-//--></script> 
-<script type="text/javascript"><!--
-$.widget('custom.catcomplete', $.ui.autocomplete, {
-	_renderMenu: function(ul, items) {
-		var self = this, currentCategory = '';
-		
-		$.each(items, function(index, item) {
-			if (item.category != currentCategory) {
-				ul.append('<li class="ui-autocomplete-category">' + item.category + '</li>');
-				
-				currentCategory = item.category;
-			}
-			
-			self._renderItemData (ul, item);
-		});
-	}
-});
-
-$('input[name=\'customers\']').catcomplete({
-	delay: 500,
-	source: function(request, response) {
-		$.ajax({
-			url: 'index.php?route=sale/customer/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request.term),
-			dataType: 'json',
-			success: function(json) {	
-				response($.map(json, function(item) {
-					return {
-						category: item.customer_group,
-						label: item.name,
-						value: item.customer_id
-					}
-				}));
-			}
-		});
-		
-	}, 
-	select: function(event, ui) {
-		$('#customer' + ui.item.value).remove();
-		
-		$('#customer').append('<div id="customer' + ui.item.value + '">' + ui.item.label + '<img src="view/image/delete.png" alt="" /><input type="hidden" name="customer[]" value="' + ui.item.value + '" /></div>');
-
-		$('#customer div:odd').attr('class', 'odd');
-		$('#customer div:even').attr('class', 'even');
-				
-		return false;
-	},
-	focus: function(event, ui) {
-      	return false;
-   	}
-});
-
-$('#customer div img').bind('click', function() {
-	$(this).parent().remove();
-	
-	$('#customer div:odd').attr('class', 'odd');
-	$('#customer div:even').attr('class', 'even');	
-});
-//--></script> 
-<script type="text/javascript"><!--	
-$('input[name=\'affiliates\']').autocomplete({
-	delay: 500,
-	source: function(request, response) {
-		$.ajax({
-			url: 'index.php?route=sale/affiliate/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request.term),
-			dataType: 'json',
-			success: function(json) {		
-				response($.map(json, function(item) {
-					return {
-						label: item.name,
-						value: item.affiliate_id
-					}
-				}));
-			}
-		});
-		
-	}, 
-	select: function(event, ui) {
-		$('#affiliate' + ui.item.value).remove();
-		
-		$('#affiliate').append('<div id="affiliate' + ui.item.value + '">' + ui.item.label + '<img src="view/image/delete.png" alt="" /><input type="hidden" name="affiliate[]" value="' + ui.item.value + '" /></div>');
-
-		$('#affiliate div:odd').attr('class', 'odd');
-		$('#affiliate div:even').attr('class', 'even');
-				
-		return false;
-	},
-	focus: function(event, ui) {
-      	return false;
-   	}
-});
-
-$('#affiliate div img').bind('click', function() {
-	$(this).parent().remove();
-	
-	$('#affiliate div:odd').attr('class', 'odd');
-	$('#affiliate div:even').attr('class', 'even');	
-});
-
-$('input[name=\'products\']').autocomplete({
-	delay: 500,
-	source: function(request, response) {
-		$.ajax({
-			url: 'index.php?route=catalog/product/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request.term),
-			dataType: 'json',
-			success: function(json) {		
-				response($.map(json, function(item) {
-					return {
-						label: item.name,
-						value: item.product_id
-					}
-				}));
-			}
-		});
-	}, 
-	select: function(event, ui) {
-		$('#product' + ui.item.value).remove();
-		
-		$('#product').append('<div id="product' + ui.item.value + '">' + ui.item.label + '<img src="view/image/delete.png" alt="" /><input type="hidden" name="product[]" value="' + ui.item.value + '" /></div>');
-
-		$('#product div:odd').attr('class', 'odd');
-		$('#product div:even').attr('class', 'even');
-				
-		return false;
-	},
-	focus: function(event, ui) {
-      	return false;
-   	}
-});
-
-$('#product div img').bind('click', function() {
-	$(this).parent().remove();
-	
-	$('#product div:odd').attr('class', 'odd');
-	$('#product div:even').attr('class', 'even');	
-});
-
-function send(url) { 
-	$('textarea[name="message"]').val($('.note-editable').html());
-	
-	$.ajax({
-		url: url,
-		type: 'post',
-		data: $('select, input, textarea'),		
-		dataType: 'json',
-		beforeSend: function() {
-			$('#button-send').attr('disabled', true);
-			$('#button-send').before('<span class="wait"><img src="view/image/loading.gif" alt="" />&nbsp;</span>');
-		},
-		complete: function() {
-			$('#button-send').attr('disabled', false);
-			$('.wait').html('Sent mail successfully');
-		},				
-		success: function(json) {
-			$('.success, .warning, .error').remove();
-			
-			if (json['error']) {
-				if (json['error']['warning']) {
-					$('.box').before('<div class="warning" style="display: none;">' + json['error']['warning'] + '</div>');
-			
-					$('.warning').fadeIn('slow');
-				}
-				
-				if (json['error']['subject']) {
-					$('input[name=\'subject\']').after('<span class="error">' + json['error']['subject'] + '</span>');
-				}	
-				
-				if (json['error']['message']) {
-					$('textarea[name=\'message\']').parent().append('<span class="error">' + json['error']['message'] + '</span>');
-				}									
-			}			
-			
-			if (json['next']) {
-				if (json['success']) {
-					$('.box').before('<div class="success">' + json['success'] + '</div>');
-					
-					send(json['next']);
-				}		
-			} else {
-				if (json['success']) {
-					$('.box').before('<div class="success" style="display: none;">' + json['success'] + '</div>');
-			
-					$('.success').fadeIn('slow');
-				}					
-			}				
-		}
-	});
-}
-//--></script>
   
 <?php echo $footer; ?>

@@ -1,19 +1,21 @@
 <?php
-class ControllerModuleNewslettersubscribe extends Controller {
+class ControllerModuleEconewsletter extends Controller {
 	private $error = array(); 
 	
 	public function index() {   
 	
-		$this->load->language('module/newslettersubscribe');
+		$this->load->language('module/econewsletter');
 
-		$this->document->setTitle($this->language->get('heading_title'));
+		$this->document->setTitle(strip_tags($this->language->get('heading_title')));
+
+		$this->document->addStyle('view/javascript/jquery/ui/jquery-ui.min.css');
+		$this->document->addScript('view/javascript/jquery/ui/jquery-ui.min.js');
 		
 		$this->load->model('setting/setting');
 		$this->load->model('extension/module');
 		$this->load->model('module/newslettersubscribe');
 		
 		$this->model_module_newslettersubscribe->check_db();
-		$this->document->addScript('view/javascript/newsletter/jquery-ui.js');
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
 	
 			if (!isset($this->request->get['module_id'])) {

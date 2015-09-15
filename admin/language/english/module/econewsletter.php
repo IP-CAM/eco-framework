@@ -1,6 +1,6 @@
 <?php
 // Heading
-$_['heading_title']    		= 'Oc Newsletter';
+$_['heading_title']    		= '<b>Eco Newsletter</b>';
 
 //Tabs
 $_['tab_general']         	= 'General';
@@ -10,10 +10,9 @@ $_['tab_statistic']         = 'Report';
 
 // Text
 $_['text_module']         	= 'Modules';
-$_['text_success']        	= 'Success: You have modified module LB Newsletter!';
+$_['text_success']        	= 'Success: You have modified module Eco Newsletter!';
 $_['text_left']           	= 'Left';
 $_['text_right']          	= 'Right';
-$_['text_info']           	= '<span class="help">Developed by <a href="plazathemes.com" target="_blank"> Plaza Theme </a> &nbsp;&nbsp;&nbsp;&nbsp;<a href="mailto:palazatheme@gmail.com">Contact Him!</a></span>';  
 $_['text_module']         	= 'Modules';
 $_['text_content_top']    	= 'Content Top';
 $_['text_content_bottom'] 	= 'Content Bottom';
@@ -30,7 +29,7 @@ $_['text_customer']        	= 'Customers';
 $_['text_affiliate_all']   	= 'All Affiliates';
 $_['text_affiliate']       	= 'Affiliates';
 $_['text_product']         	= 'Products';
-$_['text_lbnewsletter']    	= 'LB Newsletter\'s User List';
+$_['text_lbnewsletter']    	= 'Eco Newsletter\'s User List';
 $_['text_sendall']         	= 'Send to All';
 $_['text_mail_success']    	= 'Success : Mail has been sent to the selected Criteria!';
 
@@ -58,7 +57,7 @@ $_['button_delete']       	= 'Delete';
 $_['button_send']       	= 'Send';
 
 // Error
-$_['error_permission'] 		= 'Warning: You do not have permission to modify module LB Newsletter!';
+$_['error_permission'] 		= 'Warning: You do not have permission to modify module Eco Newsletter!';
 $_['error_subject']        	= 'E-Mail Subject required!';
 $_['error_message']        	= 'E-Mail Message required!';
 ?>

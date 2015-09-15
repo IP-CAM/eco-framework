@@ -1,6 +1,6 @@
 <?php
 // Heading
-$_['heading_title']    = 'Eco Layout Builder';
+$_['heading_title']    = '<b>Eco Layout Builder</b>';
 
 // Text
 $_['text_module']      = 'Modules';
