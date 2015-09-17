@@ -80,6 +80,19 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-product"><?php echo $objlang->get('entry_product'); ?></label>
+                                <div class="col-sm-10">
+                                    <input type="text" style="width:55%;" name="product" value="" placeholder="<?php echo $objlang->get('entry_product'); ?>" id="input-product" class="form-control" />
+                                    <div id="featured-product" class="well well-sm" style="width:55%; overflow: auto; height: 150px;">
+                                        <?php foreach ($products as $product) { ?>
+                                        <div id="featured-product<?php echo $product['product_id']; ?>"><i class="fa fa-minus-circle"></i> <?php echo $product['name']; ?>
+                                            <input type="hidden" name="product[]" value="<?php echo $product['product_id']; ?>" />
+                                        </div>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label" for="input-carousel"><?php echo $objlang->get('entry_enablecarousel');; ?></label>
                                 <div class="col-sm-10">
                                     <select class="form-control" id="input-carousel" name="carousel" style="width:55%;">
@@ -141,12 +154,48 @@
 	</div><!-- End div#page-content -->
 
 </div><!-- End div#content -->
-<style type="text/css">
-	.nostyle { width: 36%; }
-</style>
 <script type="text/javascript">
 	<?php foreach ($languages as $language) { ?>
 		$("#description-<?php echo $language['language_id']; ?>").summernote({ height: 150 });
 	<?php } ?>
+    $(document).ready(function(){
+        $('#input-tabs').on('change',function(){
+            var options = $('#input-tabs').val();
+            if($.inArray('featured',options) > -1) {
+                $('#input-product').closest('.form-group').show();
+            } else {
+                $('#input-product').closest('.form-group').hide();
+            }
+        });
+
+
+        $('input[name=\'product\']').autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: 'index.php?route=catalog/product/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+                    dataType: 'json',
+                    success: function(json) {
+                        response($.map(json, function(item) {
+                            return {
+                                label: item['name'],
+                                value: item['product_id']
+                            }
+                        }));
+                    }
+                });
+            },
+            select: function(item) {
+                $('input[name=\'product\']').val('');
+
+                $('#featured-product' + item['value']).remove();
+
+                $('#featured-product').append('<div id="featured-product' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="product[]" value="' + item['value'] + '" /></div>');
+            }
+        });
+
+        $('#featured-product').delegate('.fa-minus-circle', 'click', function() {
+            $(this).parent().remove();
+        });
+    });
 </script>
 <?php echo $footer; ?>

@@ -115,6 +115,31 @@ class ControllerModuleEcoproductcarousel extends Controller {
 		} else {
 			$data['width'] = '600';
 		}
+
+		//feature product
+		$this->load->model('catalog/product');
+
+		$data['products'] = array();
+
+		if (isset($this->request->post['product'])) {
+			$products = $this->request->post['product'];
+		} elseif (!empty($module_info)) {
+			$products = $module_info['product'];
+		} else {
+			$products = array();
+		}
+
+		foreach ($products as $product_id) {
+			$product_info = $this->model_catalog_product->getProduct($product_id);
+
+			if ($product_info) {
+				$data['products'][] = array(
+					'product_id' => $product_info['product_id'],
+					'name'       => $product_info['name']
+				);
+			}
+		}
+
 		
 		// height
 		if (isset($this->request->post['height'])) {

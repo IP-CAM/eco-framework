@@ -30,6 +30,7 @@ class ControllerModuleEcoproductcarousel extends Controller {
 	 	$a = array('interval'=> 8000,'auto_play'=>0 );
 		$setting = array_merge( $a, $setting );
 
+
 		$data['prefix'] = isset($setting['prefix'])?$setting['prefix']:'';
 		$data['width'] = $setting['width'];
 		$data['height'] = $setting['height'];
@@ -51,6 +52,7 @@ class ControllerModuleEcoproductcarousel extends Controller {
 
 		$data['show_button'] = isset($setting['btn_view_more'])?$setting['btn_view_more']:0;
 
+		$data['text_tax'] = $this->language->get('text_tax');
 		$data['button_cart'] = $this->language->get('button_cart');
 		$data['button_wishlist'] = $this->language->get('button_wishlist');
 		$data['button_compare'] = $this->language->get('button_compare');
@@ -102,10 +104,10 @@ class ControllerModuleEcoproductcarousel extends Controller {
 		}
 
         if(isset($setting['tabs']['featured'])){
-            $tabs['featured'] = $this->getProducts( $this->getFeatured($sortData), $setting );
+            $tabs['featured'] = $this->getProducts( $this->getFeatured($sortData, $setting), $setting );
         }
         if( isset($setting['tabs']['latest']) ){
-            $tabs['latest'] = $this->getProducts( $this->model_catalog_product->getProducts( $sortData ), $setting );
+            $tabs['latest'] = $this->getProducts( $this->model_catalog_product->getProducts( $sortData), $setting );
         }
         if( isset($setting['tabs']['bestseller']) ){
             $tabs['bestseller'] = $this->getProducts( $this->model_catalog_product->getBestSellerProducts( $sortData['limit'] ), $setting );
@@ -134,8 +136,9 @@ class ControllerModuleEcoproductcarousel extends Controller {
 			return $this->load->view('default/template/module/ecoproductcarousel.tpl', $data);
 		}
 	}
-	private function getFeatured($option = array()){
-		$products = explode(',', $this->config->get('featured_product'));
+	private function getFeatured($option = array(),$setting){
+		$products = $setting['product'];
+
 		$return = array();
 		if(!empty($products)){
 			$limit = (isset($option['limit']) && !empty($option['limit']))?$option['limit']: 5;
@@ -173,6 +176,12 @@ class ControllerModuleEcoproductcarousel extends Controller {
 				$special = false;
 			}
 
+			if ($this->config->get('config_tax')) {
+				$tax = $this->currency->format((float)$result['special'] ? $result['special'] : $result['price']);
+			} else {
+				$tax = false;
+			}
+
 			if ($this->config->get('config_review_status')) {
 				$rating = $result['rating'];
 			} else {
@@ -190,6 +199,7 @@ class ControllerModuleEcoproductcarousel extends Controller {
 				'price'   	 => $price,
 				'special' 	 => $special,
 				'rating'     => $rating,
+				'tax'		 => $tax,
 				'description'=> (html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8')),
 				'reviews'    => sprintf($this->language->get('text_reviews'), (int)$result['reviews']),
 				'href'    	 => $this->url->link('product/product', 'product_id=' . $result['product_id']),

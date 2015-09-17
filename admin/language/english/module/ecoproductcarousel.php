@@ -64,6 +64,7 @@ $_['entry_height']             = 'Height';
 $_['entry_items']             = 'Num of items';
 $_['entry_limit']             = 'Limit';
 $_['entry_row']             = 'Row';
+$_['entry_product']         = 'Featured Products';
 $_['entry_tabs' ]              = 'Product Types';
 $_['entry_description' ]       = 'Module Description';
 $_['entry_default_store' ]     = 'Filter By Store: ';
