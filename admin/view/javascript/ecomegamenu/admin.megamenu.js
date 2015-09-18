@@ -43,6 +43,9 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
         // deselect when click outside menu
         $(document.body).click(function(event) {
             hide_toolbox(true);
+            $('.popover').popover('hide', function() {
+                $('.popover').remove();
+            });
             //event.stopPropagation();
         });
         // bind event for action
@@ -418,6 +421,15 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
     edit_menu = function(Selected){
         if(!currentSelected) currentSelected = Selected;
 
+
+        if(currentSelected.prop("tagName") != 'A') return;
+
+        var oldName = currentSelected.find('span').text();
+
+        if($('#editMenuName').length) $('#editMenuName').remove();
+        currentSelected.find('span').text('');
+        currentSelected.find('span').append('<input type="text" value="' + oldName + '" id="editMenuName"/>')
+
         if(currentSelected.attr('id') != 'zo2-admin-mm-container'){
             $('.popover').popover('hide', function() {
                 $('.popover').remove();
@@ -434,44 +446,23 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
 
 
             $('#button-image').on('click', function(event) {
-                $('#menuModal').modal('show');
-                $('#input-label').val(currentSelected.find('span').text());
-                event.stopPropagation();
-                // $('#modal-image').remove();
+                $.ajax({
+                    url : options.edit_menu,
+                    data : {name : $('#editMenuName').val(), menu_id : currentSelected.closest('li').data('id')},
+                    dataType : 'json',
+                    type : 'POST'
+                }).done(function(){
+                    currentSelected.find('span').text($('#editMenuName').val());
+                    $('#editMenuName').remove();
+                });
 
-                //$.ajax({
-                //    url: 'index.php?route=common/filemanager&token=' + getURLVar('token') + '&target=' + currentSelected.parent().find('input').attr('id') + '&thumb=' + $(element).attr('id'),
-                //    dataType: 'html',
-                //    beforeSend: function() {
-                //        $('#button-image i').replaceWith('<i class="fa fa-circle-o-notch fa-spin"></i>');
-                //        $('#button-image').prop('disabled', true);
-                //    },
-                //    complete: function() {
-                //        $('#button-image i').replaceWith('<i class="fa fa-pencil"></i>');
-                //        $('#button-image').prop('disabled', false);
-                //    },
-                //    success: function(html) {
-                //        $('body').append('<div id="modal-image" class="modal">' + html + '</div>');
-                //
-                //        $('#modal-image').modal('show');
-                //    }
-                //});
+
 
                 currentSelected.popover('hide', function() {
                     $('.popover').remove();
                 });
-            });
 
-            $('#btnSaveMenu').on('click',function(){
-                $.ajax({
-                    url : options.edit_menu,
-                    data : {name : $('#input-label').val(), menu_id : currentSelected.closest('li').data('id')},
-                    dataType : 'json',
-                    type : 'POST'
-                }).done(function(){
-                    currentSelected.find('span').text($('#input-label').val())
-                    $('#menuModal').modal('hide');
-                });
+                event.stopPropagation();
             });
 
         }
@@ -572,6 +563,10 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
                 /* enable/disable module chosen */
                 if (currentSelected.find('.mega-nav').length > 0) {
                     $('.toolcol-module').parent().addClass('disabled');
+                }else{
+                    $('.toolmenu-category').parent().addClass('disabled');
+                    $('.toolmenu-url').parent().addClass('disabled');
+                    $('.toolmenu-information').parent().addClass('disabled');
                 }
                 // disable choose width if signle column
                 if (currentSelected.parent().children().length === 1) {
@@ -659,6 +654,13 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
                 break;
             case 'menu_type':
                 $('#zo2-admin-mm-tb .admin-hide').hide();
+                if(currentSelected.find('ul.mega-nav').length > 0){
+                    if(value == 'module') return;
+                }else
+                {
+                    if(value != 'module') return;
+                }
+
                 if(currentSelected.attr('id') != 'zo2-admin-mm-container'){
                     $('#zo2-admin-mm-toolcol .toolmenu-'+value).closest('li').show();
                     if(value != 'module'){ $('#zo2-admin-mm-toolcol > ul:last').show(); $('#zo2-admin-mm-toolcol > ul:eq(6)').show();}
@@ -701,6 +703,11 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
         });
         els.click(function(event) {
             show_toolbox($(this));
+            event.stopPropagation();
+            return false;
+        });
+
+        els.dblclick(function(event) {
             edit_menu($(this));
             event.stopPropagation();
             return false;
@@ -804,7 +811,7 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
             var output = [];
             megamenu = $('#zo2-admin-mm-container').find('.zo2-megamenu');
             var config = {},
-                items = megamenu.find('ul[class*="level-top"] > li.mega');
+                items = megamenu.find('ul[class*="level-top"] > li');
             items.each(function() {
                 var $this = $(this),
                      data = $(this).data();

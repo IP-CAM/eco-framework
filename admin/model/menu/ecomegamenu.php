@@ -181,7 +181,7 @@ class ModelMenuEcomegamenu extends Model {
 
                     $output .= $this->genTree( $menu['megamenu_id'], 1, $menu );
                     $output .= '</li>';
-                } else if ( !$this->hasChild($menu['megamenu_id']) && $menu['megaconfig'] && $menu['megaconfig']->rows ){
+                } else if ( !$this->hasChild($menu['megamenu_id']) && $menu['megaconfig'] && isset($menu['megaconfig']->rows) ){
                     $output .= $this->genMegaMenuByConfig( $menu['megamenu_id'], 1, $menu );
                 }else {
                     $output .= '<li class="'.$menu['menu_class'].'" '.$this->renderAttrs($menu).'>
