@@ -50,7 +50,11 @@ $_['text_alignment_right'] = 'Right';
 $_['text_alignment_center'] = 'Center';
 $_['text_alignment_justify'] = 'Justify';
 
-
+$_['add_edit_menu'] = 'Add/Edit Menu';
+$_['text_common_close'] = 'Close';
+$_['text_common_save_change'] = 'Update Setting';
+$_['additional_class'] = 'Additional Class';
+$_['custom_label'] = 'Custom Label';
 $_['button_update_order']         = "Update Order";
 $_['text_edit']                   = "Edit";
 $_['entry_menu_information']      = "Menu Information";

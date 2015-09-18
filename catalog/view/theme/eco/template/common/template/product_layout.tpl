@@ -35,26 +35,3 @@
     </div>
   </div>
 </div>
-<script type="text/javascript">
-  $(document).ready(function(){
-
-    $('.options-cart').colorbox({
-      iframe: true,
-      href:this.href,
-      opacity:	0.5,
-      speed:		300,
-      close:      "close",
-      innerWidth:'780px',
-      innerHeight:'650px',
-      onOpen: function(){
-        $('#cboxLoadingGraphic').addClass('box-loading');
-      },
-      onComplete: function(){
-        setTimeout(function(){
-          $('#cboxLoadingGraphic').removeClass('box-loading');
-        },1300);
-      }
-    });
-
-  });
-</script>

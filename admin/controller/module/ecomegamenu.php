@@ -232,6 +232,8 @@ class ControllerModuleEcomegamenu extends Controller {
 
         $data['addmenu'] 	   = $this->url->link('module/ecomegamenu/ajaxmenu', 'root=1'.$store_param.'&token=' . $this->session->data['token'], 'SSL');
 
+        $data['editmenu'] 	   = $this->url->link('module/ecomegamenu/editmenu', 'root=1'.$store_param.'&token=' . $this->session->data['token'], 'SSL');
+
         $data['removemenu'] 	   = $this->url->link('module/ecomegamenu/deletemenu', 'root=1'.$store_param.'&token=' . $this->session->data['token'], 'SSL');
 
         $data['informations'] = $this->model_catalog_information->getInformations();
@@ -249,7 +251,17 @@ class ControllerModuleEcomegamenu extends Controller {
 
         $this->load->model('menu/ecomegamenu');
 
+
+
         $megamenu_id = $this->model_menu_ecomegamenu->insertMenu($this->request->post);
+
+        echo $megamenu_id;
+    }
+
+    public function editmenu(){
+        $this->load->model('menu/ecomegamenu');
+
+        $megamenu_id = $this->model_menu_ecomegamenu->editMenu($this->request->post);
 
         echo $megamenu_id;
     }
@@ -258,7 +270,11 @@ class ControllerModuleEcomegamenu extends Controller {
 
         $this->load->model('menu/ecomegamenu');
 
-        $this->model_menu_ecomegamenu->delete($this->request->post['id'],$this->request->post['store_id']);
+        $aListDel = explode(',',trim($this->request->post['id'],','));
+
+        foreach($aListDel as $id){
+            $this->model_menu_ecomegamenu->delete($id,$this->request->post['store_id']);
+        }
 
         echo '1';
     }
@@ -307,7 +323,6 @@ class ControllerModuleEcomegamenu extends Controller {
                 }
             }
         }
-
         return $data['extensions'];
     }
 

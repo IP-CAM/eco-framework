@@ -117,7 +117,7 @@ class ModelMenuEcomegamenu extends Model {
 
         $this->parserMegaConfig( $params );
         if( $edit ){
-            $this->_editString  = ' data-id="%s" data-group="%s"  data-cols="%s" data-level="%s" data-align="%s" data-subwidth="%s" ';
+            $this->_editString  = ' data-id="%s" data-group="%s"  data-class="%s" data-subclass="%s"  data-align="%s" data-subwidth="%s" ';
         }
         $this->_editStringCol = ' data-colwidth="%s" data-class="%s" ' ;
 
@@ -125,10 +125,13 @@ class ModelMenuEcomegamenu extends Model {
         $childs = $this->getChilds( null, $store_id );
         foreach($childs as $child ){
             $child['megaconfig'] = $this->hasMegaMenuConfig( $child );
+
+            //Remove #1
             if( isset($child['megaconfig']->group) ){
                 $child['is_group'] = $child['megaconfig']->group;
             }
 
+            //Remove #2
             if( isset($child['megaconfig']->submenu) && $child['megaconfig']->submenu == 0){
                 $child['menu_class'] = $child['menu_class'] .' disable-menu';
             }
@@ -139,6 +142,7 @@ class ModelMenuEcomegamenu extends Model {
 
             $this->children[$child['parent_id']][] = $child;
         }
+
 
         $parent = 0 ;
         $this->load->model('catalog/category');
@@ -153,6 +157,7 @@ class ModelMenuEcomegamenu extends Model {
         if( $this->hasChild($parent) ){
             $data = $this->getNodes( $parent );
 
+
             // render menu at level 0
             $output = '<ul class="nav navbar-nav level-top">';
             foreach( $data as $menu ){
@@ -160,19 +165,19 @@ class ModelMenuEcomegamenu extends Model {
                 if( isset($menu['megaconfig']->align) ){
                     $menu['menu_class'] .= ' mega-align-'.$menu['megaconfig']->align;
                 }
+                if( isset($menu['megaconfig']->class) ){
+                    $menu['menu_class'] .= ' '.$menu['megaconfig']->class;
+                }
                 $menu['menu_level'] = 1;
-                if( $this->hasChild($menu['megamenu_id']) || $menu['type_submenu'] == 'html'){
+                if( $this->hasChild($menu['megamenu_id'])){
                     $output .= '<li class="mega dropdown '.$menu['menu_class'].'" '.$this->renderAttrs($menu).'>
-					<a class="dropdown-toggle" data-toggle="dropdown" href="'.$this->getLink( $menu ).'">';
+					<a class="dropdown-toggle" data-toggle="dropdown">';
 
                     if( $menu['image']){ $output .= '<span class="menu-icon" style="background:url(\''.$this->shopUrl."image/".$menu['image'].'\') no-repeat;">';	}
 
                     $output .= '<span class="menu-title">'.$menu['title']."</span>";
-                    if( $menu['description'] ){
-                        $output .= '<span class="menu-desc">' . $menu['description'] . "</span>";
-                    }
+
                     $output .= "<b class=\"caret\"></b></a>";
-                    if( $menu['image']){  $output .= '</span>'; }
 
                     $output .= $this->genTree( $menu['megamenu_id'], 1, $menu );
                     $output .= '</li>';
@@ -180,15 +185,10 @@ class ModelMenuEcomegamenu extends Model {
                     $output .= $this->genMegaMenuByConfig( $menu['megamenu_id'], 1, $menu );
                 }else {
                     $output .= '<li class="'.$menu['menu_class'].'" '.$this->renderAttrs($menu).'>
-					<a href="'.$this->getLink( $menu ).'">';
+					<a  href="'.$this->getLink( $menu ).'">';
 
-                    if( $menu['image']){ $output .= '<span class="menu-icon" style="background:url(\''.$this->shopUrl."image/".$menu['image'].'\') no-repeat;">';	}
+                    $output .= '<span  class="menu-title">'.$menu['title']."</span>";
 
-                    $output .= '<span class="menu-title">'.$menu['title']."</span>";
-                    if( $menu['description'] ){
-                        $output .= '<span class="menu-desc">' . $menu['description'] . "</span>";
-                    }
-                    if( $menu['image']){ $output .= '</span>';	}
                     $output .= '</a></li>';
                 }
             }
@@ -208,7 +208,7 @@ class ModelMenuEcomegamenu extends Model {
         $attrw = '';
         $class = $level > 1 ? "dropdown-submenu":"dropdown";
         $output = '<li class="mega '.$menu['menu_class'].' parent '.$class.' " '.$this->renderAttrs($menu).'>
-					<a href="'.$this->getLink( $menu ).'" class="dropdown-toggle" data-toggle="dropdown">';
+					<a href="'.$this->getLink( $menu ).'" class="dropdown-toggle" data-toggle="image">';
 
         if( $menu['image']){ $output .= '<span class="menu-icon" style="background:url(\''.$this->shopUrl."image/".$menu['image'].'\') no-repeat;">';	}
 
@@ -276,109 +276,68 @@ class ModelMenuEcomegamenu extends Model {
 
 
         $attrw = '';
-        $class = 'menu-child ' . ($parent['is_group']?"dropdown-mega":"dropdown-menu");
+        $class = 'menu-child dropdown-menu ';
         if( isset($parent['megaconfig']->subwidth) &&  $parent['megaconfig']->subwidth ){
             $attrw .= ' style="width:'.$parent['megaconfig']->subwidth.'px"' ;
+        }
+
+        if( isset($parent['megaconfig']->subclass) &&  $parent['megaconfig']->subclass ){
+            $class .= $parent['megaconfig']->subclass ;
         }
 
 
         if( $this->hasChild($parentId) ){
 
             $data = $this->getNodes( $parentId );
-            $parent['colums'] = (int)$parent['colums'];
-            if( $parent['colums'] > 1  ){
+            if( !empty($parent['megaconfig']->rows) )
+            {
+                $output = '<div class="'.$class.' level'.$level.'" '.$attrw.' ><div class="mega-dropdown-inner">';
 
-                if( !empty($parent['megaconfig']->rows) ) {
+                foreach( $parent['megaconfig']->rows as $rows ){
+                    foreach( $rows as $rowcols ){
+                        $output .='<div class="row-fluid">';
+                        foreach( $rowcols as $col ) {
 
-                    $cols   = array_chunk( $data, ceil(count($data)/$parent['colums'])  );
-                    $output = '<div class="'.$class.' level'.$level.'" '.$attrw.' ><div class="mega-dropdown-inner">';
-                    foreach( $parent['megaconfig']->rows as $rows ){
-                        foreach( $rows as $rowcols ){
-                            $output .='<div class="row-fluid">';
-
-                            foreach( $rowcols as $key => $col ) {
-                                $col->colwidth = isset($col->colwidth)?$col->colwidth:6;
-                                if( isset($col->type) && $col->type == 'menu' && isset($cols[$key]) ){
-                                    $scol = '<div class="span'. $col->colwidth .' mega-col col-sm-'.$col->colwidth.'" data-type="menu" '.$this->getColumnDataConfig( $col ).'><div class="mega-inner">';
-                                    $scol .= '<ul class="mega-nav level'. $level .'">';
-                                    foreach( $cols[$key] as $menu ) {
-                                        $scol .= $this->renderMenuContent( $menu, $level+1 );
-                                    }
-                                    $scol .='</ul></div></div>';
-                                }else {
-                                    $scol = '<div class="mega-col col-sm-'.$col->colwidth.'"  '.$this->getColumnDataConfig( $col ).'><div class="mega-inner">';
-
-                                    $scol .= '</div></div>';
+                            if( isset($col->type) && $col->type == 'menu' ){
+                                $colwidth = isset($col->colwidth)?$col->colwidth:'';
+                                $scol = '<div class="span'. $colwidth .' mega-col col-sm-'.$colwidth.'" data-type="menu" '.$this->getColumnDataConfig( $col ).'><div class="mega-inner">';
+                                $scol .= '<ul class="mega-nav level'. $level .'">';
+                                $menulist = trim($col->menulist,',');
+                                $aList = explode(',',$menulist);
+                                foreach( $data as $menu ){
+                                    if(!in_array($menu['megamenu_id'], $aList)) continue;
+                                    $scol .= $this->renderMenuContent( $menu , $level+1 );
                                 }
-                                $output .= $scol;
+                                $scol .= '</ul>';
+
+                            }else {
+                                $scol = '<div class="span'. $col->colwidth .' mega-col col-sm-'.$col->colwidth.'"  '.$this->getColumnDataConfig( $col ).'><div class="mega-inner">';
+                                $scol .= $col->module_name;
                             }
 
-                            $output .= '</div>';
+                            $scol .= '</div></div>';
+                            $output .= $scol;
                         }
+                        $output .= '</div>';
                     }
-                    $output .= '</div></div>';
-
-                }else {
-                    $output = '<div class="'.$class.' mega-cols cols'.$parent['colums'].'" '.$attrw.' ><div class="mega-dropdown-inner"><div class="row">';
-                    $cols   = array_chunk( $data, ceil(count($data)/$parent['colums'])  );
-
-                    $oSpans = $this->getColWidth( $parent, (int)$parent['colums'] );
-
-                    foreach( $cols as $i =>  $menus ){
-
-                        $output .='<div class="mega-col '.$oSpans[$i+1].' col-'.($i+1).'" data-type="menu"><div class="mega-inner"><ul class="mega-nav level'. $level .'">';
-                        foreach( $menus as $menu ) {
-                            $output .= $this->renderMenuContent( $menu, $level+1 );
-                        }
-                        $output .='</ul></div></div>';
-                    }
-
-                    $output .= '</div></div></div>';
-                }
-                return $output;
-            }else {
-
-                if( !empty($parent['megaconfig']->rows) ) {
-                    $output = '<div class="'.$class.' level'.$level.'" '.$attrw.' ><div class="mega-dropdown-inner">';
-                    foreach( $parent['megaconfig']->rows as $rows ){
-                        foreach( $rows as $rowcols ){
-                            $output .='<div class="row-fluid">';
-                            foreach( $rowcols as $col ) {
-
-                                if( isset($col->type) && $col->type == 'menu' ){
-                                    $colwidth = isset($col->colwidth)?$col->colwidth:'';
-                                    $scol = '<div class="span'. $colwidth .' mega-col col-sm-'.$colwidth.'" data-type="menu" '.$this->getColumnDataConfig( $col ).'><div class="mega-inner">';
-                                    $scol .= '<ul class="mega-nav level'. $level .'">';
-                                    foreach( $data as $menu ){
-                                        $scol .= $this->renderMenuContent( $menu , $level+1 );
-                                    }
-                                    $scol .= '</ul>';
-
-                                }else {
-                                    $scol = '<div class="span'. $col->colwidth .'mega-col col-sm-'.$col->colwidth.'"  '.$this->getColumnDataConfig( $col ).'><div class="mega-inner">';
-                                    $scol .= $col->module_name;
-                                }
-
-                                $scol .= '</div></div>';
-                                $output .= $scol;
-                            }
-                            $output .= '</div>';
-                        }
-
-                    }$output .= '</div></div>';
-                } else {
-                    $output = '<div class="'.$class.' level'.$level.'" '.$attrw.' ><div class="mega-dropdown-inner">';
-                    $row = '<div class="row-fluid"><div class="span12 col-sm-12 mega-col" data-colwidth="12" data-type="menu" ><div class="mega-inner"><ul class="mega-nav level'. $level .'">';
-                    foreach( $data as $menu ){
-                        $row .= $this->renderMenuContent( $menu , $level+1 );
-                    }
-                    $row .= '</ul></div></div></div>';
-
-                    $output .= $row;
 
                 }
 
             }
+            else
+            {
+                $output = '<div class="'.$class.' level'.$level.'" '.$attrw.' ><div class="dropdown-menu-inner">';
+                $row = '<div class="row"><div class="col-sm-12 mega-col" data-colwidth="12" data-type="menu" ><div class="mega-col-inner"><ul>';
+                foreach( $data as $menu ){
+                    $row .= $this->renderMenuContent( $menu , $level+1 );
+                }
+                $row .= '</ul></div></div></div>';
+
+                $output .= $row;
+
+            }
+
+            $output .= '</div></div>';
 
             return $output;
 
@@ -390,7 +349,11 @@ class ModelMenuEcomegamenu extends Model {
      *
      */
     public function renderAttrs( $menu ){
-        $t = sprintf( $this->_editString, $menu['megamenu_id'], $menu['is_group'], $menu['colums'], $menu['menu_level'], $menu['menu_align'], $menu['menu_subwidth']  );
+        $class = isset($menu['megaconfig']->class) ? $menu['megaconfig']->class : "";
+        $subclass = isset($menu['megaconfig']->subclass) ? $menu['megaconfig']->subclass : "";
+        $align = isset($menu['megaconfig']->align) ? $menu['megaconfig']->align : "";
+        $subwidth = isset($menu['megaconfig']->subwidth) ? $menu['megaconfig']->subwidth : "";
+        $t = sprintf( $this->_editString, $menu['megamenu_id'], $menu['is_group'], $class, $subclass, $align, $subwidth  );
         return $t;
     }
 
@@ -403,12 +366,7 @@ class ModelMenuEcomegamenu extends Model {
         $class = $menu['is_group']?"mega-group":"";
         $menu['menu_class'] = ' '.$class;
         $menu['menu_level'] = $level-1;
-        if( $menu['type'] == 'html' ){
-            $output .= '<li class="'.$menu['menu_class'].'" '.$this->renderAttrs($menu).'>';
-            $output .= '<div class="menu-content">'.html_entity_decode($menu['content_text']).'</div>';
-            $output .= '</li>';
-            return $output;
-        }
+
         if( $this->hasChild($menu['megamenu_id']) ){
 
             $output .= '<li class="parent dropdown-submenu'.$menu['menu_class'].'" '.$this->renderAttrs($menu). '>';
@@ -438,12 +396,6 @@ class ModelMenuEcomegamenu extends Model {
 
                 if( $menu['image']){ $output .= '<span class="menu-icon" style="background:url(\''.$this->shopUrl."image/".$menu['image'].'\') no-repeat;">';	}
                 $output .= '<span class="menu-title">'.$menu['title']."</span>";
-                if( $menu['description'] ){
-                    $output .= '<span class="menu-desc">' . $menu['description'] . "</span>";
-                }
-                if( $menu['image']){
-                    $output .= '</span>';
-                }
 
                 $output .= '</a>';
             }
@@ -574,6 +526,15 @@ class ModelMenuEcomegamenu extends Model {
         $this->db->query( $sql );
 
         return $data['megamenu']['megamenu_id'];
+    }
+
+    public function editMenu(array $dataInput = array()){
+
+        $sql = " UPDATE ".DB_PREFIX ."megamenu_description SET title = '" . $dataInput['name'] . "' WHERE megamenu_id=".(int)$dataInput['menu_id'] ;
+
+        $this->db->query( $sql );
+
+        return $dataInput['menu_id'];
     }
 
 

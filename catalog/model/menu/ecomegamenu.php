@@ -104,6 +104,8 @@ class ModelMenuEcoMegamenu extends Model {
 	 	$output  = '';
 		if( $this->hasChild($parent) ){
 			$data = $this->getNodes( $parent );
+
+
 			// render menu at level 0
 			$output = '<ul class="nav navbar-nav megamenu">';
 			foreach( $data as $menu ){
@@ -194,7 +196,13 @@ class ModelMenuEcoMegamenu extends Model {
 		if( isset($menu['megaconfig']->subwidth) &&  $menu['megaconfig']->subwidth ){
 			$attrw .= ' style="width:'.$menu['megaconfig']->subwidth.'px"' ;
 		}
-		$class  = 'dropdown-menu';
+
+		$class  = 'dropdown-menu ';
+
+		if( isset($menu['megaconfig']->subclass) &&  $menu['megaconfig']->subclass ){
+			$class .= $menu['megaconfig']->subclass ;
+		}
+
 		$output .= '<div class="'.$class.'" '.$attrw.' ><div class="dropdown-menu-inner">';
 
 		foreach( $menu['megaconfig']->rows  as $row ){
@@ -259,12 +267,15 @@ class ModelMenuEcoMegamenu extends Model {
 		 
 	 
 		$attrw = '';
-		$class = $parent['is_group']?"dropdown-mega":"dropdown-menu";
+		$class = $parent['is_group']?"dropdown-mega":"dropdown-menu ";
 		
 		if( isset($parent['megaconfig']->subwidth) &&  $parent['megaconfig']->subwidth ){
 			$attrw .= ' style="width:'.$parent['megaconfig']->subwidth.'px"' ;
 		}
 
+		if( isset($parent['megaconfig']->subclass) &&  $parent['megaconfig']->subclass ){
+			$class .= $parent['megaconfig']->subclass ;
+		}
 
 		if( $parent['type_submenu'] == 'html' ){
 			$output = '<div class="'.$class.'"><div class="menu-content">';
@@ -327,21 +338,17 @@ class ModelMenuEcoMegamenu extends Model {
 				return $output;
 			}else {
 
-				
-
-				$failse = false; 
-
-			///	echo '<pre>' .print_r( $parent, 1 );
 				if( !empty($parent['megaconfig']->rows) ) {
 					$output = '<div class="'.$class.' level'.$level.'" '.$attrw.' ><div class="dropdown-menu-inner">';
 					foreach( $parent['megaconfig']->rows as $rows ){ 
 						foreach( $rows as $rowcols ){
 							$output .='<div class="row">';
 							foreach( $rowcols as $col ) {
-								
+								$colwidth = isset($col->colwidth)?$col->colwidth:'';
+								$colExtClass = isset($col->class)?$col->class:'';
 								if( isset($col->type) && $col->type == 'menu' ){
-									$colwidth = isset($col->colwidth)?$col->colwidth:'';
-									$scol = '<div class="mega-col col-xs-12 col-sm-12 col-md-'.$colwidth.'" data-type="menu" ><div class="mega-col-inner">';
+
+									$scol = '<div class= ' . $colExtClass . '" mega-col col-xs-12 col-sm-12 col-md-'.$colwidth.'" data-type="menu" ><div class="mega-col-inner">';
 									$scol .= '<ul>';
 									foreach( $data as $menu ){
 										$scol .= $this->renderMenuContent( $menu , $level+1 );
@@ -349,7 +356,7 @@ class ModelMenuEcoMegamenu extends Model {
 									$scol .= '</ul>';
 									
 								}else {
-									$scol = '<div class="mega-col col-xs-12 col-sm-12 col-md-'.$col->colwidth.'"  ><div class="mega-col-inner">';
+									$scol = '<div class=' . $colExtClass . '"mega-col col-xs-12 col-sm-12 col-md-'.$colwidth.'"  ><div class="mega-col-inner">';
 									$scol .= $this->renderModuleContent( $col );
 								}
 								$scol .= '</div></div>';

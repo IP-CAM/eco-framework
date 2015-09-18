@@ -343,6 +343,39 @@
                                     </li>
                                 </ul>
                             </div>
+                            <div id="menuModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="menuModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <!-- Modal header -->
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h3 class="modal-title" id="menuModalLabel"><?php echo $objlang->get('add_edit_menu'); ?></h3>
+                                        </div>
+                                        <!-- Modal body -->
+                                        <div class="modal-body">
+                                                <form>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="input-label"><?php echo $objlang->get('custom_label'); ?></label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" name="menu_label" value="" placeholder="<?php echo $objlang->get('custom_label'); ?>" id="input-label" class="form-control" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="input-additional-class"><?php echo $objlang->get('additional_class'); ?></label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" name="additional_class" value="" placeholder="<?php echo $objlang->get('additional_class'); ?>" id="input-additional-class" class="form-control" />
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                        </div>
+                                        <!-- Model footer -->
+                                        <div class="modal-footer">
+                                            <button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo $objlang->get('text_common_close'); ?></button>
+                                            <button class="btn btn-primary" id="btnSaveMenu"><?php echo $objlang->get('text_common_save_change'); ?></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
@@ -365,8 +398,9 @@
 </div>
 <script type="text/javascript">
     var addmenu = '<?php echo str_replace("&amp;","&", $addmenu); ?>',
+            editmenu = '<?php echo str_replace("&amp;","&", $editmenu); ?>',
             removemenu = '<?php echo str_replace("&amp;","&", $removemenu); ?>';
-    var options = { 'add_menu': addmenu, 'remove_menu' : removemenu};
+    var options = { 'add_menu': addmenu, 'remove_menu' : removemenu, 'edit_menu' : editmenu};
     $(document).ready(function(){
         ZO2AdminMegamenu.prepare(options);
     });
@@ -413,6 +447,7 @@ window.location = url;
             return false;
         }
     });
+
 
 </script>
 

@@ -1,18 +1,3 @@
-/**
- *------------------------------------------------------------------------------
- * @package       T3 Framework for Joomla!
- *------------------------------------------------------------------------------
- * @copyright     Copyright (C) 2004-2013 JoomlArt.com. All Rights Reserved.
- * @license       GNU General Public License version 2 or later; see LICENSE.txt
- * @authors       JoomlArt, JoomlaBamboo, (contribute to this project at github
- *                & Google group to become co-author)
- * @Google group: https://groups.google.com/forum/#!forum/t3fw
- * @Link:         http://t3-framework.org
- * ------------------------------------------------------------------------------
- * @modifed & improve by : ZooTempalte
- * @link        http://www.zootemplate.com/zo2
- *------------------------------------------------------------------------------
- */
 
 var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
 !function($) {
@@ -40,6 +25,7 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
                 liitem.removeClass('dropdown dropdown-submenu mega');
             }
         });
+
         // hide toolbox
         hide_toolbox(true);
         // bind events for all selectable elements
@@ -109,7 +95,7 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
         if (sub.length === 0 || sub.css('display') === 'none') {
             // add sub
             if (sub.length === 0) {
-                sub = $('<div class="menu-child  dropdown-menu mega-dropdown-menu"><div class="row-fluid"><div class="span12" data-colwidth="12"><div class="mega-inner"></div></div></div></div>').appendTo(liitem);
+                sub = $('<div class="menu-child  dropdown-menu"><div class="mega-dropdown-inner"><div class="row-fluid"><div class="span12" data-colwidth="12"><div class="mega-inner"></div></div></div></div></div>').appendTo(liitem);
                 bindEvents(sub.find('[class*="span"]'));
                 liitem.addClass('mega');
             } else {
@@ -182,17 +168,21 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
         }).done(function(data){
             if(currentSelected.find('ul').is('ul'))
             {
-                var menuHtml = '<li data-subwidth="" data-align="left" data-level="1" data-cols="1" data-group="0" data-id="' + data + '" class="">'
+                var menuHtml = '<li data-subwidth="" data-subclass="" data-class="" data-align="left"  data-group="0" data-id="' + data + '" class="">'
                     + '<a href="#" class=""><span class="menu-title">' + menuInput.find('.toolmenu-name:first').val() + '</span></a></li>';
                 var  $menu = $(menuHtml).appendTo(currentSelected.find('ul:first'));
             }else{
-                var menuHtml = '<ul><li data-subwidth="" data-align="left" data-level="1" data-cols="1" data-group="0" data-id="' + data + '" class="">'
+                var menuHtml = '<ul><li data-subwidth="" data-subclass="" data-class="" data-align="left"  data-group="0" data-id="' + data + '" class="">'
                     + '<a href="#" class=""><span class="menu-title">' + menuInput.find('.toolmenu-name:first').val() + '</span></a></li></ul>';
                 var  $menu = $(menuHtml).appendTo(currentSelected.find('.mega-inner'));
             }
             $menu.closest('[class*="span"]').data('type','menu');
+            var menulist = $menu.closest('[class*="span"]').data('menulist') ? $menu.closest('[class*="span"]').data('menulist') : "";
+            menulist += data + ",";
+            $menu.closest('[class*="span"]').removeData('menulist').data('menulist',menulist);
             bindEvents($menu.find('a:first'));
             // update toolbox status
+            $('.popover').remove();
             currentSelected = null;
             show_toolbox($menu.find('a:first'));
         });
@@ -243,6 +233,7 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
 
 
     actions.addRow = function() {
+        console.log(currentSelected);
         if (!currentSelected)
             return;
         var $row = $('<div class="row-fluid"><div class="span12" data-colwidth="12"><div class="mega-inner"></div></div></div>').appendTo(currentSelected.find('.mega-dropdown-inner:first')),
@@ -317,6 +308,18 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
             || $allcols.length === 1) {
             // if this is the only one column left
             return;
+        }
+
+        if($col.data('type') == 'menu')
+        {
+            var menulist = $col.data('menulist');
+
+            $.ajax({
+                url : options.remove_menu,
+                data : {id : menulist, store_id : $('#stores').val()},
+                dataType : 'json',
+                type : 'POST'
+            })
         }
 
         // remove column
@@ -408,6 +411,70 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
         $('#zo2-admin-mm-tool' + type).show();
         update_toolbox(type);
         $('#zo2-admin-mm-tb').show();
+
+
+    };
+
+    edit_menu = function(Selected){
+        if(!currentSelected) currentSelected = Selected;
+
+        if(currentSelected.attr('id') != 'zo2-admin-mm-container'){
+            $('.popover').popover('hide', function() {
+                $('.popover').remove();
+            });
+            currentSelected.popover({
+                html: true,
+                placement: 'top',
+                trigger: 'manual',
+                content: function() {
+                    return '<button type="button" id="button-image" data-toggle="modal" data-target="#menuModal" class="btn btn-primary btn-lg"><i class="fa fa-pencil"></i></button> <button type="button" id="button-clear" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>';
+                }
+            });
+            currentSelected.popover('show');
+
+
+            $('#button-image').on('click', function(event) {
+                $('#menuModal').modal('show');
+                $('#input-label').val(currentSelected.find('span').text());
+                event.stopPropagation();
+                // $('#modal-image').remove();
+
+                //$.ajax({
+                //    url: 'index.php?route=common/filemanager&token=' + getURLVar('token') + '&target=' + currentSelected.parent().find('input').attr('id') + '&thumb=' + $(element).attr('id'),
+                //    dataType: 'html',
+                //    beforeSend: function() {
+                //        $('#button-image i').replaceWith('<i class="fa fa-circle-o-notch fa-spin"></i>');
+                //        $('#button-image').prop('disabled', true);
+                //    },
+                //    complete: function() {
+                //        $('#button-image i').replaceWith('<i class="fa fa-pencil"></i>');
+                //        $('#button-image').prop('disabled', false);
+                //    },
+                //    success: function(html) {
+                //        $('body').append('<div id="modal-image" class="modal">' + html + '</div>');
+                //
+                //        $('#modal-image').modal('show');
+                //    }
+                //});
+
+                currentSelected.popover('hide', function() {
+                    $('.popover').remove();
+                });
+            });
+
+            $('#btnSaveMenu').on('click',function(){
+                $.ajax({
+                    url : options.edit_menu,
+                    data : {name : $('#input-label').val(), menu_id : currentSelected.closest('li').data('id')},
+                    dataType : 'json',
+                    type : 'POST'
+                }).done(function(){
+                    currentSelected.find('span').text($('#input-label').val())
+                    $('#menuModal').modal('hide');
+                });
+            });
+
+        }
     };
 
     update_toolbox = function(type) {
@@ -542,7 +609,7 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
                     currentSelected.width(value);
                 }
                 if (type === 'col') {
-                    currentSelected.removeClass('span' + currentSelected.data(name)).addClass('span' + value);
+                    currentSelected.removeClass('span' + currentSelected.data('col'+name)).addClass('span' + value);
                 }
                 currentSelected.data('col'+name, value);
                 currentSelected.parent().data('subwidth', value);
@@ -550,11 +617,15 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
             case 'class':
                 if (type === 'item') {
                     var item = currentSelected.closest('li');
-                } else {
+                    item.data('class', value);
+                }else if(type === 'sub') {
+                    currentSelected.parent().data('subclass', value);
+                }
+                else {
                     var item = currentSelected;
+                    item.data('class', value);
                 }
                 item.removeClass(item.data(name) || '').addClass(value);
-                item.data(name, value);
                 break;
             case 'xicon':
                 if (type === 'item') {
@@ -630,6 +701,7 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
         });
         els.click(function(event) {
             show_toolbox($(this));
+            edit_menu($(this));
             event.stopPropagation();
             return false;
         });
@@ -732,11 +804,10 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
             var output = [];
             megamenu = $('#zo2-admin-mm-container').find('.zo2-megamenu');
             var config = {},
-                items = megamenu.find('ul[class*="level"] > li.mega');
+                items = megamenu.find('ul[class*="level-top"] > li.mega');
             items.each(function() {
                 var $this = $(this),
-                    item = $(this).data();
-                var data = $(this).data();
+                     data = $(this).data();
                 if ($this.hasClass('mega')) {
                     var $sub = $this.find('.menu-child:first');
 
@@ -749,6 +820,7 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
                         var row =  new Object();
                         row.cols = new Array();
                         $cols.each(function() {
+                            $(this).removeData('bs.popover')
                             row.cols.push( $(this).data() );
                         });
                         data.rows.push(row);
