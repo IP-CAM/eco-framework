@@ -236,7 +236,6 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
 
 
     actions.addRow = function() {
-        console.log(currentSelected);
         if (!currentSelected)
             return;
         var $row = $('<div class="row-fluid"><div class="span12" data-colwidth="12"><div class="mega-inner"></div></div></div>').appendTo(currentSelected.find('.mega-dropdown-inner:first')),
@@ -519,8 +518,9 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
                 break;
             case 'sub':
                 var liitem = currentSelected.closest('li');
+                if(currentSelected.hasClass('menu-child')) $('.toolsub-exclass').attr('value', liitem.data('subclass') || '');
+                else $('.toolsub-exclass').attr('value', currentSelected.data('subclass') || '');
 
-                $('.toolsub-exclass').attr('value', currentSelected.data('class') || '');
                 if (liitem.data('group')) {
                     $('.toolsub-width').attr('value', '').addClass('disabled');
                     // disable alignment
@@ -561,13 +561,13 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
                 $('.toolcol-module').val(currentSelected.data('module_id') || '').trigger("liszt:updated");
                 $('.toolcol-width').val(currentSelected.data('width') || '').trigger("liszt:updated");
                 /* enable/disable module chosen */
-                if (currentSelected.find('.mega-nav').length > 0) {
-                    $('.toolcol-module').parent().addClass('disabled');
-                }else{
-                    $('.toolmenu-category').parent().addClass('disabled');
-                    $('.toolmenu-url').parent().addClass('disabled');
-                    $('.toolmenu-information').parent().addClass('disabled');
-                }
+                //if (currentSelected.find('.mega-nav').length > 0) {
+                //    $('.toolcol-module').parent().addClass('disabled');
+                //}else{
+                //    $('.toolmenu-category').parent().addClass('disabled');
+                //    $('.toolmenu-url').parent().addClass('disabled');
+                //    $('.toolmenu-information').parent().addClass('disabled');
+                //}
                 // disable choose width if signle column
                 if (currentSelected.parent().children().length === 1) {
                     $('.toolcol-width').parent().addClass('disabled');
@@ -658,7 +658,7 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
                     if(value == 'module') return;
                 }else
                 {
-                    if(value != 'module') return;
+                    if(value != 'module' && currentSelected.data('module_id')) return;
                 }
 
                 if(currentSelected.attr('id') != 'zo2-admin-mm-container'){
@@ -811,7 +811,7 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
             var output = [];
             megamenu = $('#zo2-admin-mm-container').find('.zo2-megamenu');
             var config = {},
-                items = megamenu.find('ul[class*="level-top"] > li');
+                items = megamenu.find('ul[class*="level"] > li');
             items.each(function() {
                 var $this = $(this),
                      data = $(this).data();

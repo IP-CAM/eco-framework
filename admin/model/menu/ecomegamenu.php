@@ -32,12 +32,11 @@ class ModelMenuEcomegamenu extends Model {
 
     private $_editStringCol = '';
 
-    private $_isLiveEdit = true;
     /**
      *
      */
     public function getChilds( $id=null, $store_id = 0 ){
-        $sql = ' SELECT m.*, md.title,md.description FROM ' . DB_PREFIX . 'megamenu m LEFT JOIN '
+        $sql = ' SELECT m.*, md.title FROM ' . DB_PREFIX . 'megamenu m LEFT JOIN '
             .DB_PREFIX.'megamenu_description md ON m.megamenu_id=md.megamenu_id AND language_id='.(int)$this->config->get('config_language_id') ;
         $sql .= ' WHERE m.`published`=1 ';
         $sql .= ' AND store_id='.(int)$store_id;
@@ -53,7 +52,7 @@ class ModelMenuEcomegamenu extends Model {
      * get get all  Menu Childrens by Id
      */
     public function getChild( $id=null, $store_id = 0){
-        $sql = ' SELECT m.*, md.title,md.description FROM ' . DB_PREFIX . 'megamenu m LEFT JOIN '
+        $sql = ' SELECT m.*, md.title FROM ' . DB_PREFIX . 'megamenu m LEFT JOIN '
             .DB_PREFIX.'megamenu_description md ON m.megamenu_id=md.megamenu_id AND language_id='.(int)$this->config->get('config_language_id') ;
 
         $sql .= ' WHERE store_id='.(int)$store_id;
@@ -126,15 +125,6 @@ class ModelMenuEcomegamenu extends Model {
         foreach($childs as $child ){
             $child['megaconfig'] = $this->hasMegaMenuConfig( $child );
 
-            //Remove #1
-            if( isset($child['megaconfig']->group) ){
-                $child['is_group'] = $child['megaconfig']->group;
-            }
-
-            //Remove #2
-            if( isset($child['megaconfig']->submenu) && $child['megaconfig']->submenu == 0){
-                $child['menu_class'] = $child['menu_class'] .' disable-menu';
-            }
 
             $child['menu_subwidth'] = isset($child['megaconfig']->subwidth) ? $child['megaconfig']->subwidth : '';
 
@@ -210,13 +200,8 @@ class ModelMenuEcomegamenu extends Model {
         $output = '<li class="mega '.$menu['menu_class'].' parent '.$class.' " '.$this->renderAttrs($menu).'>
 					<a href="'.$this->getLink( $menu ).'" class="dropdown-toggle" data-toggle="image">';
 
-        if( $menu['image']){ $output .= '<span class="menu-icon" style="background:url(\''.$this->shopUrl."image/".$menu['image'].'\') no-repeat;">';	}
-
         $output .= '<span class="menu-title">'.$menu['title']."</span>";
-        if( $menu['description'] ){
-            $output .= '<span class="menu-desc">' . $menu['description'] . "</span>";
-        }
-        if( $menu['image']){ $output .= '</span>';	}
+
         $output .= "<b class=\"caret\"></b></a>";
 
         if( isset($menu['megaconfig']->subwidth) &&  $menu['megaconfig']->subwidth ){
@@ -230,7 +215,7 @@ class ModelMenuEcomegamenu extends Model {
             $output .= '<div class="row-fluid">';
             foreach( $row->cols as $col ){
                 $output .= '<div class="span'. $col->colwidth .' mega-col col-sm-'.$col->colwidth.'" '.$this->getColumnDataConfig( $col ).'> <div class="mega-inner">';
-                $output .= $col->module_name;
+                $output .= isset($col->module_name) ? $col->module_name : "";
                 $output .= '</div></div>';
             }
             $output .= '</div>';
@@ -243,7 +228,7 @@ class ModelMenuEcomegamenu extends Model {
 
     public function getColumnDataConfig( $col ){
         $output = '';
-        if( is_object($col)  && $this->_isLiveEdit ){
+        if( is_object($col) ){
             $vars = get_object_vars($col);
             foreach( $vars as $key => $var ){
                 $output .= ' data-'.$key.'="'.$var . '" ' ;
@@ -312,7 +297,7 @@ class ModelMenuEcomegamenu extends Model {
 
                             }else {
                                 $scol = '<div class="span'. $col->colwidth .' mega-col col-sm-'.$col->colwidth.'"  '.$this->getColumnDataConfig( $col ).'><div class="mega-inner">';
-                                $scol .= $col->module_name;
+                                $scol .= isset($col->module_name) ? $col->module_name : "";
                             }
 
                             $scol .= '</div></div>';
@@ -349,6 +334,7 @@ class ModelMenuEcomegamenu extends Model {
      *
      */
     public function renderAttrs( $menu ){
+
         $class = isset($menu['megaconfig']->class) ? $menu['megaconfig']->class : "";
         $subclass = isset($menu['megaconfig']->subclass) ? $menu['megaconfig']->subclass : "";
         $align = isset($menu['megaconfig']->align) ? $menu['megaconfig']->align : "";
@@ -363,7 +349,7 @@ class ModelMenuEcomegamenu extends Model {
     public function renderMenuContent( $menu , $level ){
 
         $output = '';
-        $class = $menu['is_group']?"mega-group":"";
+        $class = isset($menu['megaconfig']->rows) ? "mega":"";
         $menu['menu_class'] = ' '.$class;
         $menu['menu_level'] = $level-1;
 
@@ -387,14 +373,13 @@ class ModelMenuEcomegamenu extends Model {
             $output .= $this->genTree( $menu['megamenu_id'], $level, $menu );
             $output .= '</li>';
 
-        } else if (  $menu['megaconfig'] && $menu['megaconfig']->rows ){
+        } else if (  $menu['megaconfig'] && isset($menu['megaconfig']->rows) ){
             $output .= $this->genMegaMenuByConfig( $menu['megamenu_id'], $level, $menu );
         }else {
             $output .= '<li class="'.$menu['menu_class'].'" '.$this->renderAttrs($menu).'>';
             if( $menu['show_title'] ){
                 $output .= '<a href="'.$this->getLink( $menu ).'">';
 
-                if( $menu['image']){ $output .= '<span class="menu-icon" style="background:url(\''.$this->shopUrl."image/".$menu['image'].'\') no-repeat;">';	}
                 $output .= '<span class="menu-title">'.$menu['title']."</span>";
 
                 $output .= '</a>';
@@ -498,14 +483,10 @@ class ModelMenuEcomegamenu extends Model {
         $data['megamenu']['item'] = $dataInput['item_id'];
         $data['megamenu']['published'] = 1;
         $data['megamenu']['parent_id'] = $dataInput['parent_id'];
-        $data['megamenu']['show_title'] = 1;
-        $data['megamenu']['widget_id'] = 1;
         $data['megamenu']['type_submenu'] = 'menu';
         $data['megamenu']['type'] = $dataInput['type'];
-        $data['megamenu']['colums'] = 1;
         $data['megamenu']['url'] = $dataInput['url'];
         $data['megamenu']['store_id'] = $dataInput['store_id'];
-        $data['megamenu']['is_group'] = 0;
 
         $sql = "INSERT INTO ".DB_PREFIX . "megamenu ( `";
         $tmp = array();
@@ -544,11 +525,8 @@ class ModelMenuEcomegamenu extends Model {
         $data['megamenu']['item'] = $category['category_id'];
         $data['megamenu']['published'] = 1;
         $data['megamenu']['parent_id'] = $megamenu_parent_id;
-        $data['megamenu']['show_title'] = 1;
-        $data['megamenu']['widget_id'] = 1;
         $data['megamenu']['type_submenu'] = 'menu';
         $data['megamenu']['type'] = 'category';
-        $data['megamenu']['colums'] = 1;
         $data['megamenu']['store_id'] = $store_id;
         $data['megamenu']['is_group'] = 0;
 
@@ -598,36 +576,15 @@ class ModelMenuEcomegamenu extends Model {
             $sql[]  = "
 				CREATE TABLE IF NOT EXISTS `".DB_PREFIX."megamenu` (
 				  `megamenu_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `image` varchar(255) NOT NULL DEFAULT '',
 				  `parent_id` int(11) NOT NULL DEFAULT '0',
-				  `is_group` smallint(6) NOT NULL DEFAULT '2',
-				  `width` varchar(255) DEFAULT NULL,
-				  `submenu_width` varchar(255) DEFAULT NULL,
-				  `colum_width` varchar(255) DEFAULT NULL,
-				  `submenu_colum_width` varchar(255) DEFAULT NULL,
 				  `item` varchar(255) DEFAULT NULL,
-				  `colums` varchar(255) DEFAULT '1',
 				  `type` varchar(255) NOT NULL,
-				  `is_content` smallint(6) NOT NULL DEFAULT '2',
-				  `show_title` smallint(6) NOT NULL DEFAULT '1',
 				  `type_submenu` varchar(10) NOT NULL DEFAULT '1',
-				  `level_depth` smallint(6) NOT NULL DEFAULT '0',
 				  `published` smallint(6) NOT NULL DEFAULT '1',
 				  `store_id` smallint(5) unsigned NOT NULL DEFAULT '0',
 				  `position` int(11) unsigned NOT NULL DEFAULT '0',
-				  `show_sub` smallint(6) NOT NULL DEFAULT '0',
 				  `url` varchar(255) DEFAULT NULL,
-				  `target` varchar(25) DEFAULT NULL,
-				  `privacy` smallint(5) unsigned NOT NULL DEFAULT '0',
-				  `position_type` varchar(25) DEFAULT 'top',
 				  `menu_class` varchar(25) DEFAULT NULL,
-				  `description` text,
-				  `content_text` text,
-				  `submenu_content` text,
-				  `level` int(11) NOT NULL,
-				  `left` int(11) NOT NULL,
-				  `right` int(11) NOT NULL,
-				  `widget_id` int(11) DEFAULT '0',
 				  PRIMARY KEY (`megamenu_id`)
 				) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=41 ;
 			";
@@ -636,7 +593,6 @@ class ModelMenuEcomegamenu extends Model {
 						  `megamenu_id` int(11) NOT NULL,
 						  `language_id` int(11) NOT NULL,
 						  `title` varchar(255) NOT NULL,
-						  `description` text NOT NULL,
 						  PRIMARY KEY (`megamenu_id`,`language_id`),
 						  KEY `name` (`title`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;
