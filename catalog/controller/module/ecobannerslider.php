@@ -14,7 +14,8 @@ class ControllerModuleEcobannerslider extends Controller {
  			$slider[] = array('title'=>html_entity_decode($slide['ecobannerslider_image_title'][$this->config->get('config_language_id')]['title']),'link'=>$slide['link'],'image'=>$this->model_tool_image->resize($slide['image'], $setting['width'],$setting['height']),'description'=>html_entity_decode($slide['ecobannerslider_image_description'][$this->config->get('config_language_id')]['description']));
 			}
 		}
-
+		$data['class'] = isset($setting['class']) ? $setting['class'] : "" ;
+		$data['enable_slider'] = $setting['slider'];
 		$data['slider'] = $slider;
 
 			if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/module/ecobannerslider.tpl')) {

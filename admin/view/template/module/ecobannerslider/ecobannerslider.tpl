@@ -55,7 +55,27 @@
         </div>
         </div>
 
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-class"><?php echo $objlang->get('Custom Class'); ?></label>
+            <div class="col-sm-10">
+              <input type="text" name="class" value="<?php echo $class; ?>" placeholder="<?php echo $objlang->get('Custom Class'); ?>" id="input-class" class="form-control" />
+            </div>
+          </div>
 
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-slider"><?php echo $objlang->get('Enable Slider'); ?></label>
+            <div class="col-sm-10">
+              <select name="slider" id="input-slider" class="form-control">
+                <?php if ($slider) { ?>
+                <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+                <option value="0"><?php echo $text_disabled; ?></option>
+                <?php } else { ?>
+                <option value="1"><?php echo $text_enabled; ?></option>
+                <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+                <?php } ?>
+              </select>
+            </div>
+          </div>
 
           <div class="form-group">
             <label class="col-sm-2 control-label" for="input-status"><?php echo $entry_status; ?></label>

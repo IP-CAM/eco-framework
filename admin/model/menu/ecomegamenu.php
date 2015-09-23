@@ -478,8 +478,8 @@ class ModelMenuEcomegamenu extends Model {
 
     public function insertMenu(array $dataInput = array()){
         $data = array();
-
-        $data['megamenu']['position'] = 99;
+        $curPos = $this->getMaxPosition();
+        $data['megamenu']['position'] = ++$curPos;
         $data['megamenu']['item'] = $dataInput['item_id'];
         $data['megamenu']['published'] = 1;
         $data['megamenu']['parent_id'] = $dataInput['parent_id'];
@@ -516,6 +516,13 @@ class ModelMenuEcomegamenu extends Model {
         $this->db->query( $sql );
 
         return $dataInput['menu_id'];
+    }
+
+    public function getMaxPosition(){
+        $sql = " SELECT MAX(position) as maxpos ".DB_PREFIX ."FROM megamenu ";
+        $query = $this->db->query( $sql );
+
+        return (int)$query->row['maxpos'];
     }
 
 

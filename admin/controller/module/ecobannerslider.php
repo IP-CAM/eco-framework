@@ -129,6 +129,22 @@ class ControllerModuleEcobannerslider extends Controller {
 		$data['status'] = '';
 		}
 
+		if (isset($this->request->post['class'])) {
+			$data['class'] = $this->request->post['class'];
+		} elseif (!empty($module_info)) {
+			$data['class'] = $module_info['class'];
+		} else {
+			$data['class'] = '';
+		}
+
+		if (isset($this->request->post['slider'])) {
+			$data['slider'] = $this->request->post['slider'];
+		} elseif (!empty($module_info)) {
+			$data['slider'] = $module_info['slider'];
+		} else {
+			$data['slider'] = '';
+		}
+
 		$this->load->model('localisation/language');
 		$data['languages'] = $this->model_localisation_language->getLanguages();
 
@@ -164,7 +180,7 @@ class ControllerModuleEcobannerslider extends Controller {
 
 			);
 		}
-
+		$data['objlang'] = $this->language;
 		$data['placeholder'] = $this->model_tool_image->resize('no_image.png', 100, 100);
 
 		$data['header'] = $this->load->controller('common/header');

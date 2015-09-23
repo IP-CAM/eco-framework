@@ -46,6 +46,11 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
             $('.popover').popover('hide', function() {
                 $('.popover').remove();
             });
+            if($('#editMenuName').length)
+            {
+                $('#editMenuName').parent().text($('#editMenuName').val());
+                $('#editMenuName').remove();
+            }
             //event.stopPropagation();
         });
         // bind event for action
@@ -425,7 +430,11 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
 
         var oldName = currentSelected.find('span').text();
 
-        if($('#editMenuName').length) $('#editMenuName').remove();
+        if($('#editMenuName').length)
+        {
+            $('#editMenuName').parent().text($('#editMenuName').val());
+            $('#editMenuName').remove();
+        }
         currentSelected.find('span').text('');
         currentSelected.find('span').append('<input type="text" value="' + oldName + '" id="editMenuName"/>')
 
@@ -438,7 +447,7 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
                 placement: 'top',
                 trigger: 'manual',
                 content: function() {
-                    return '<button type="button" id="button-image" data-toggle="modal" data-target="#menuModal" class="btn btn-primary btn-lg"><i class="fa fa-pencil"></i></button> <button type="button" id="button-clear" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>';
+                    return '<button type="button" id="button-image" data-toggle="modal" data-target="#menuModal" class="btn btn-primary btn-lg"><i class="fa fa-pencil"></i></button>';
                 }
             });
             currentSelected.popover('show');
