@@ -105,7 +105,6 @@
               <?php $image_row = 0; ?>
               <?php if($ecobannerslider_images){
               foreach ($ecobannerslider_images as $ecobannerslider_image) { ?>
-              <?php //echo "<pre>"; print_r($ecobannerslider_image);exit();?>
               <tr id="image-row<?php echo $image_row; ?>">
                 <td class="text-left">
                   <?php foreach ($languages as $language) {?>

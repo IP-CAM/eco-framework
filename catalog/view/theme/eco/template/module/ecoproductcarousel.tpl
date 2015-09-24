@@ -1,6 +1,9 @@
 <?php
 $id = rand(1,9)+rand();
 $product_layout = DIR_TEMPLATE . $this->config->get('config_template') . '/template/common/template/product_layout.tpl';
+if($itemsperpage == 0) $itemsperpage = 1;
+$slice = 12 / (int)$itemsperpage;
+$class = "col-lg-$slice col-md-".(int)$slice." col-sm-6 col-xs-12";
 ?>
 <div class="box box-normal <?php echo count($tabs) > 1 ? 'producttabs' : '' ?>">
     <div class="box-heading">
@@ -31,7 +34,7 @@ $product_layout = DIR_TEMPLATE . $this->config->get('config_template') . '/templ
                 <div id="product<?php echo $module.$cid; ?>" class="owl-carousel">
                     <?php endif ?>
                     <?php if ($i % $column == 0 || ($row > 1 && $i % $row == 0)): ?>
-                    <div class="category-products <?php echo $carousel == 0 ? 'col-lg-3 col-md-3 col-sm-6 col-xs-12' : '';?>">
+                    <div class="category-products <?php echo $carousel == 0 ? $class : '';?>">
                         <?php if ($carousel == 1 && $row == 1): ?>
                         <ul id="product<?php echo $module.$cid; ?>" class="products-grid">
                         <?php else: ?>

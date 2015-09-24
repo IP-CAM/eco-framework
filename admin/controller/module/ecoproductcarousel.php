@@ -129,16 +129,19 @@ class ControllerModuleEcoproductcarousel extends Controller {
 			$products = array();
 		}
 
-		foreach ($products as $product_id) {
-			$product_info = $this->model_catalog_product->getProduct($product_id);
+		if(is_array($products)){
+			foreach ($products as $product_id) {
+				$product_info = $this->model_catalog_product->getProduct($product_id);
 
-			if ($product_info) {
-				$data['products'][] = array(
-					'product_id' => $product_info['product_id'],
-					'name'       => $product_info['name']
-				);
+				if ($product_info) {
+					$data['products'][] = array(
+						'product_id' => $product_info['product_id'],
+						'name'       => $product_info['name']
+					);
+				}
 			}
 		}
+
 
 		
 		// height

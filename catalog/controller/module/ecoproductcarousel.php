@@ -34,7 +34,7 @@ class ControllerModuleEcoproductcarousel extends Controller {
 		$data['prefix'] = isset($setting['prefix'])?$setting['prefix']:'';
 		$data['width'] = $setting['width'];
 		$data['height'] = $setting['height'];
-        $data['row'] = $setting['row'];
+        $data['row'] = !$setting['row'] ? 1 : $setting['row'];
         $data['carousel'] = $setting['carousel'];
         $data['slideshow'] = $setting['slideshow'];
 		$data['auto_play'] = $setting['auto_play']?"true":"false";
