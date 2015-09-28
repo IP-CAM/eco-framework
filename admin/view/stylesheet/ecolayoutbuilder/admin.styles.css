@@ -1,4 +1,11 @@
- #layoutbuilder-container {
+.zo2-container {
+ position: relative;
+ padding: 0;
+ max-width: 100%;
+ width: 99%;
+}
+
+#layoutbuilder-container {
   min-height: 500px;
 }
 

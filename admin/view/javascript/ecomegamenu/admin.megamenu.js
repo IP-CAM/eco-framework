@@ -296,7 +296,6 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
         if (!currentSelected) {
             return;
         }
-
         var $col = currentSelected,
             $row = $col.parent(),
             $rows = $row.parent().children('[class*="row"]'),
@@ -312,7 +311,7 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
             colwidths = defaultColumnsWidth(colcount),
             type_menu = $col.data('module_id') ? false : true;
         if ((type_menu && ((!$haspos && $allmenucols.length === 1) || ($haspos && $allmenucols.length === 0)))
-            || $allcols.length === 1) {
+            ) {
             // if this is the only one column left
             return;
         }
@@ -336,11 +335,12 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
                 tocol = colidx === 0 ? $allmenucols[1] : $allmenucols[colidx - 1];
             $col.find('ul:first > li').appendTo($(tocol).find('ul:first'));
         }
-
+        
         var colidx = $allcols.index($col),
             nextActiveCol = colidx === 0 ? $allcols[1] : $allcols[colidx - 1];
         if (colcount < 1) {
-            $row.remove();
+            if($allcols.length <= 1){ $row.parent().parent().parent().removeClass('mega');  $row.parent().parent().remove();  }
+            else $row.remove();
         } else {
             $cols = $cols.not($col);
             // update width

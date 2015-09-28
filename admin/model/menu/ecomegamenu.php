@@ -339,7 +339,7 @@ class ModelMenuEcomegamenu extends Model {
         $subclass = isset($menu['megaconfig']->subclass) ? $menu['megaconfig']->subclass : "";
         $align = isset($menu['megaconfig']->align) ? $menu['megaconfig']->align : "";
         $subwidth = isset($menu['megaconfig']->subwidth) ? $menu['megaconfig']->subwidth : "";
-        $t = sprintf( $this->_editString, $menu['megamenu_id'], $menu['is_group'], $class, $subclass, $align, $subwidth  );
+        $t = sprintf( $this->_editString, $menu['megamenu_id'], "", $class, $subclass, $align, $subwidth  );
         return $t;
     }
 
@@ -519,7 +519,7 @@ class ModelMenuEcomegamenu extends Model {
     }
 
     public function getMaxPosition(){
-        $sql = " SELECT MAX(position) as maxpos ".DB_PREFIX ."FROM megamenu ";
+        $sql = " SELECT MAX(position) as maxpos FROM ".DB_PREFIX ."megamenu ";
         $query = $this->db->query( $sql );
 
         return (int)$query->row['maxpos'];

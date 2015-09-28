@@ -79,6 +79,15 @@ class ControllerModuleEcoproductcarousel extends Controller {
             $data['carousel'] = 1;
         }
 
+		// STATUS
+		if (isset($this->request->post['display'])) {
+			$data['display'] = $this->request->post['display'];
+		} elseif (!empty($module_info)) {
+			$data['display'] = $module_info['display'];
+		} else {
+			$data['display'] = 1;
+		}
+
 
         // column
         if (isset($this->request->post['slideshow'])) {

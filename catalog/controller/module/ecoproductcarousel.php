@@ -35,6 +35,7 @@ class ControllerModuleEcoproductcarousel extends Controller {
 		$data['width'] = $setting['width'];
 		$data['height'] = $setting['height'];
         $data['row'] = !$setting['row'] ? 1 : $setting['row'];
+		$data['display'] = $setting['display'];
         $data['carousel'] = $setting['carousel'];
         $data['slideshow'] = $setting['slideshow'];
 		$data['auto_play'] = $setting['auto_play']?"true":"false";

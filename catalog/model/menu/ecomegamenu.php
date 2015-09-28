@@ -94,7 +94,6 @@ class ModelMenuEcoMegamenu extends Model {
 		if( $this->hasChild($parent) ){
 			$data = $this->getNodes( $parent );
 
-
 			// render menu at level 0
 			$output = '<ul class="nav navbar-nav megamenu">';
 			foreach( $data as $menu ){
@@ -124,8 +123,8 @@ class ModelMenuEcoMegamenu extends Model {
 					$output .= $this->genMegaMenuByConfig( $menu['megamenu_id'], 1, $menu );
 				}else {
 					$output .= '<li class="level0 '.$menu['menu_class'].'" >
-					<a href="'.$this->getLink( $menu ).'">';
-					
+								<a href="'.$this->getLink( $menu ).'">';
+					$output .= '<span  class="menu-title">'.$menu['title']."</span>";
 					$output .= '</a></li>';
 				}
 			}

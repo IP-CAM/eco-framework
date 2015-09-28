@@ -28,7 +28,7 @@ class ControllerModuleecolayoutbuilder extends Controller {
 		$this->document->addScript('view/javascript/ecolayoutbuilder/admin.layoutbuilder.js');
 
 		$this->document->addStyle('view/stylesheet/ecolayoutbuilder/admin.styles.css');
-        $this->document->addStyle('view/stylesheet/ecolayoutbuilder/template.css');
+        //$this->document->addStyle('view/stylesheet/ecolayoutbuilder/template.css');
 
 		if( isset($this->request->get['module_id']) && isset($this->request->get['delete']) ){
 			$this->model_extension_module->deleteModule( $this->request->get['module_id'] );

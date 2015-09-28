@@ -93,8 +93,22 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="input-carousel"><?php echo $objlang->get('entry_enablecarousel');; ?></label>
+                                <label class="col-sm-2 control-label" for="input-display"><?php echo $objlang->get('Display options'); ?></label>
                                 <div class="col-sm-10">
+                                    <select class="form-control" id="input-display" name="display" style="width:55%;">
+                                        <?php if ($display == 'grid') { ?>
+                                        <option value="grid" selected="selected"><?php echo $objlang->get('Grid'); ?></option>
+                                        <option value="list"><?php echo $objlang->get('List'); ?></option>
+                                        <?php } else { ?>
+                                        <option value="grid"><?php echo $objlang->get('Grid'); ?></option>
+                                        <option value="list" selected="selected"><?php echo $objlang->get('List'); ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-carousel"><?php echo $objlang->get('entry_enablecarousel');; ?></label>
+                                <div class="col-sm-10 grid-depend">
                                     <select class="form-control" id="input-carousel" name="carousel" style="width:55%;">
                                         <?php if ($carousel) { ?>
                                         <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
@@ -108,26 +122,26 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" for="input-slideshow"><?php echo $objlang->get('entry_slideshow'); ?></label>
-                                <div class="col-sm-10">
+                                <div class="col-sm-10 grid-depend">
                                     <input type="text" class="form-control" style="width:55%;" id="input-slideshow" placeholder="<?php echo $objlang->get('entry_slideshow'); ?>" value="<?php echo $slideshow; ?>" name="slideshow">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" for="input-row"><?php echo $objlang->get('entry_row'); ?></label>
-                                <div class="col-sm-10">
+                                <div class="col-sm-10 grid-depend">
                                     <input type="text" class="form-control" style="width:55%;" id="input-name" placeholder="<?php echo $objlang->get('entry_row'); ?>" value="<?php echo $row; ?>" name="row">
                                 </div>
                             </div>
 
 						    <div class="form-group">
                                 <label class="col-sm-2 control-label" for="input-itemsperpage"><?php echo $objlang->get('entry_items'); ?></label>
-                                <div class="col-sm-10">
+                                <div class="col-sm-10 grid-depend">
                                     <input type="text" class="form-control" style="width:55%;" id="input-itemsperpage" placeholder="<?php echo $objlang->get('entry_items'); ?>" value="<?php echo $itemsperpage; ?>" name="itemsperpage">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" for="input-limit"><?php echo $objlang->get('entry_limit'); ?></label>
-                                <div class="col-sm-10">
+                                <div class="col-sm-10 grid-depend">
                                     <input type="text" class="form-control" style="width:55%;" id="input-limit" placeholder="<?php echo $objlang->get('entry_limit'); ?>" value="<?php echo $limit; ?>" name="limit">
                                 </div>
                             </div>
@@ -159,6 +173,20 @@
 		$("#description-<?php echo $language['language_id']; ?>").summernote({ height: 150 });
 	<?php } ?>
     $(document).ready(function(){
+        if( $('#input-display').val() == 'list') $('.grid-depend').each(function(){ $(this).parent().hide();});
+        $('#input-display').on('change',function(){
+            if(this.value == 'list'){
+                $('.grid-depend').each(function(){
+                    $(this).parent().hide();
+                });
+            } else {
+                $('.grid-depend').each(function(){
+                    $(this).parent().show();
+                });
+            }
+        });
+
+
         $('#input-tabs').on('change',function(){
             var options = $('#input-tabs').val();
             if($.inArray('featured',options) > -1) {

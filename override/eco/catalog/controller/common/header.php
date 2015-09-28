@@ -94,6 +94,12 @@ class eco_ControllerCommonHeader extends ControllerCommonHeader {
     $this->load->model('setting/setting');
     $aThemeSettings = $this->model_setting_setting->getSetting('ecothemecontrol',0);
     $data['megamenu'] = $this->load->controller('module/ecomegamenu');
+
+//        echo __CLASS__ . " : " . __LINE__;
+//        echo "<pre>";
+//        print_r($data['megamenu']);
+//        exit;
+
     $data['aThemeSettings'] = isset($aThemeSettings['ecothemecontrol']) ? $aThemeSettings['ecothemecontrol'] : array();
 
     if ($results) {
