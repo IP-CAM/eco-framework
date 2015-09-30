@@ -4,8 +4,8 @@
     <h4><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a></h4>
     <?php if ($product['rating']) { ?>
     <div class="rating">
-      <?php for ($i = 1; $i <= 5; $i++) { ?>
-      <?php if ($product['rating'] < $i) { ?>
+      <?php for ($k = 1; $k <= 5; $k++) { ?>
+      <?php if ($product['rating'] < $k) { ?>
       <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
       <?php } else { ?>
       <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>

@@ -50,6 +50,8 @@ class ControllerModuleEcothemecontrol extends Controller {
         $data['button_add_module'] = $this->language->get('button_add_module');
         $data['button_remove'] = $this->language->get('button_remove');
 
+
+
         // This Block returns the warning if any
         if (isset($this->error['warning'])) {
             $data['error_warning'] = $this->error['warning'];
@@ -189,6 +191,54 @@ class ControllerModuleEcothemecontrol extends Controller {
         $aThemeSettings = $this->model_setting_setting->getSetting('ecothemecontrol',0);
         if(isset($aThemeSettings['ecothemecontrol'])) $data = array_merge($data,$aThemeSettings['ecothemecontrol']);
 
+        $this->load->model('tool/image');
+        if (isset($this->request->post['image']) && is_file(DIR_IMAGE . $this->request->post['image'])) {
+            $data['thumb'] = $this->model_tool_image->resize($this->request->post['image'], 100, 100);
+        } elseif (!empty($aThemeSettings['ecothemecontrol']) && is_file(DIR_IMAGE . $aThemeSettings['ecothemecontrol']['image'])) {
+            $data['thumb'] = $this->model_tool_image->resize($aThemeSettings['ecothemecontrol']['image'], 100, 100);
+        } else {
+            $data['thumb'] = $this->model_tool_image->resize('no_image.png', 100, 100);
+        }
+
+
+        $this->load->model('extension/extension');
+
+        $this->load->model('extension/module');
+
+        $data['extensions'] = array();
+
+        // Get a list of installed modules
+        $extensions = $this->model_extension_extension->getInstalled('module');
+
+        // Add all the modules which have multiple settings for each module
+        foreach ($extensions as $code) {
+            $this->load->language('module/' . $code);
+
+            $module_data = array();
+
+            $modules = $this->model_extension_module->getModulesByCode($code);
+
+            foreach ($modules as $module) {
+                $module_data[] = array(
+                    'name' => $this->language->get('heading_title') . ' &gt; ' . $module['name'],
+                    'code' => $code . '.' .  $module['module_id']
+                );
+            }
+
+            if ($this->config->has($code . '_status') || $module_data) {
+                $data['extensions'][] = array(
+                    'name'   => $this->language->get('heading_title'),
+                    'code'   => $code,
+                    'module' => $module_data
+                );
+            }
+        }
+
+        if (isset($this->request->post['layout_module']) ) {
+            $data['module_code'] = $this->request->post['layout_module'];
+        } else {
+            $data['module_code'] = $aThemeSettings['ecothemecontrol']['layout_module'];
+        }
 
         $data['header'] = $this->load->controller('common/header');
         $data['column_left'] = $this->load->controller('common/column_left');

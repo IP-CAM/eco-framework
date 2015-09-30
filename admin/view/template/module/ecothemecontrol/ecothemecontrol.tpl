@@ -40,6 +40,7 @@
     <li class="active"><a href="#general" data-toggle="tab">General</a></li>
     <li><a href="#colors" data-toggle="tab">Colors</a></li>
     <li><a href="#fonts" data-toggle="tab">Fonts</a></li>
+    <li><a href="#footer" data-toggle="tab">Footer</a></li>
 </ul>
 <div id="my-tab-content" class="tab-content">
 <div class="tab-pane active" id="general">
@@ -95,6 +96,13 @@
     </div>
 </div>
 
+<div class="form-group">
+    <label class="col-sm-2 control-label" >Breadcrumb background</label>
+    <div class="col-sm-10">
+        <a href="" data-toggle="image" class="img-thumbnail" id="thumb-image"><img src="<?php echo $thumb; ?>" alt="" title="" data-placeholder="Catalog custom images" /></a>
+        <input type="hidden" name="image" value="<?php echo $image; ?>" id="catalog-image" />
+    </div>
+</div>
 </div>
 <div class="tab-pane" id="colors">
 <br>
@@ -550,6 +558,39 @@ In this section, you can change theme colors. To change the color of element jus
 </div>
 
 
+
+</div>
+<div class="tab-pane active" id="footer">
+    <br>
+    <b class="heading">FOOTER SETTINGS</b><hr>
+
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="input-eco_home_option">Module:</label>
+        <div class="col-sm-10">
+            <select name="layout_module" class="form-control">
+                <?php foreach ($extensions as $extension) { ?>
+                <?php if (!$extension['module']) { ?>
+                <?php if ($extension['code'] == $module_code) { ?>
+                <option value="<?php echo $extension['code']; ?>" selected="selected"><?php echo $extension['name']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $extension['code']; ?>"><?php echo $extension['name']; ?></option>
+                <?php } ?>
+                <?php } else { ?>
+                <optgroup label="<?php echo strip_tags($extension['name']); ?>">
+                    <?php foreach ($extension['module'] as $module) { ?>
+                    <?php if ($module['code'] == $module_code) { ?>
+                    <option value="<?php echo $module['code']; ?>" selected="selected"><?php echo $module['name']; ?></option>
+                    <?php } else { ?>
+                    <option value="<?php echo $module['code']; ?>"><?php echo $module['name']; ?></option>
+                    <?php } ?>
+                    <?php } ?>
+                </optgroup>
+                <?php } ?>
+                <?php } ?>
+            </select>
+        </div>
+    </div>
 
 </div>
 <div class="tab-pane" id="fonts">

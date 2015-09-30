@@ -10,7 +10,7 @@ $objlang = $this->registry->get('language');
 
 <?php foreach ( $rows as $row) : ?>
 	    <?php if ( $row->level==1 ){	 ?>
-	        <div class="eco-container">
+	        <div class="eco-container <?php echo $row->customClass; ?>">
 	        	<div class="eco-inner">
 	    <?php } ?>  
 	    <div class="row row-level-<?php echo $row->level; ?> ">

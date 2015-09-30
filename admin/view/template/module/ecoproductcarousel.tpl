@@ -108,7 +108,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" for="input-carousel"><?php echo $objlang->get('entry_enablecarousel');; ?></label>
-                                <div class="col-sm-10 grid-depend">
+                                <div class="col-sm-10">
                                     <select class="form-control" id="input-carousel" name="carousel" style="width:55%;">
                                         <?php if ($carousel) { ?>
                                         <option value="1" selected="selected"><?php echo $text_enabled; ?></option>

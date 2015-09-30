@@ -41,6 +41,17 @@ abstract class Controller {
 		// This newly introduced hook method can be overridden 
 		// by extended controller classes.
 		// The template buffer or varibales can be modified here.
+		if ($this->request->server['HTTPS']) {
+			$server = $this->config->get('config_ssl');
+		} else {
+			$server = $this->config->get('config_url');
+		}
+
+
+		$this->load->model('setting/setting');
+		$aThemeSettings = $this->model_setting_setting->getSetting('ecothemecontrol',0);
+		$data['breadcrumb_background'] = $data['breadcrumb_background'] = $server . 'image/' . (string)$aThemeSettings['ecothemecontrol']['image'];
+
 		return $template_buffer;
 	}
 }

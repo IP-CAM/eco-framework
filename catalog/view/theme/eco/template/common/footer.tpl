@@ -1,3 +1,11 @@
+<?php if($layout_footer != ""):?>
+<footer>
+  <div class="container">
+    <?php echo $layout_footer;?>
+  </div>
+</footer>
+<?php else:?>
+
 <footer>
   <div class="container">
     <div class="row">
@@ -42,6 +50,8 @@
     <p><?php echo $powered; ?></p>
   </div>
 </footer>
+
+<?php endif;?>
 <script type="text/javascript">
   $(document).ready(function(){
 

@@ -27,9 +27,6 @@ class ControllerModuleecolayoutbuilder extends Controller {
 
 		$tpl = 'ecolayoutbuilder.tpl';
 
-		if( isset($setting['template']) ){
-			$tpl = 'pavhomebuilder/'.$setting['template'].'.tpl'; 
-		}	
 		if (file_exists('catalog/view/theme/' . $this->config->get('config_template') . '/stylesheet/homebuilder.css')) {
 			$this->document->addStyle('catalog/view/theme/' . $this->config->get('config_template') . '/stylesheet/homebuilder.css');
 		} else {

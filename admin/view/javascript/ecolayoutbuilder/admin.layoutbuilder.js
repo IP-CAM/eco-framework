@@ -168,9 +168,7 @@
 
             $('.add-new-row').on('click', function() {
                 var $row = $(this).closest('[data-zo2-type="row"]');
-                if($row.parent().hasClass('zo2-container')){
-                    _self._addChildRow($row, true);
-                }
+                _self._addChildRow($row, true);
             });
         },
         /**
