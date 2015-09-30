@@ -5,6 +5,10 @@
  width: 99%;
 }
 
+#layoutbuilder-container .zo2-row{
+ overflow: hidden;
+}
+
 #layoutbuilder-container {
   min-height: 500px;
 }

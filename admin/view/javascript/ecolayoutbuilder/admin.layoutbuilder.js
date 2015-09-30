@@ -63,6 +63,7 @@
             this._sortable();
             this.addNewRow();
             this.addColumn();
+            this.radioButton();
             this.delete();
             this.setting();
             this.save();
@@ -182,6 +183,25 @@
                 _self._addChildColumn($row.find('> .col-md-12 > .col-container'));
             });
         },
+
+        /**
+         * Radio button
+         * @returns {undefined}
+         */
+        radioButton: function() {
+            $('.btn-group-onoff > button').on('click', function (e) {
+                var $this = $(this);
+                var $container = $this.closest('.btn-group-onoff');
+
+                $container.find('button').removeClass('active btn-success btn-danger');
+                if ($this.hasClass('btn-on'))
+                    $this.addClass('active btn-success');
+                else
+                    $this.addClass('active btn-danger');
+
+                return false;
+            });
+        },
         /**
          * Add child column to container
          * @param {type} $rowContainer
@@ -194,9 +214,9 @@
             $col.attr('data-zo2-span', 12);
             $col.removeClass(_self._settings.allColClass);
             $col.addClass('col-md-12');
-            $col.attr('data-zo2-position', '');
-            $col.attr('data-zo2-offset', 0);
-            $col.attr('data-zo2-customClass', '');
+            for (var i = 0; i < _self._settings.visibilityAttributes.length; i++) {
+                $col.attr(_self._settings.visibilityAttributes[i], '1');
+            }
             var metaHtml = '<div class="col-wrap"><div class="col-name">(none)</div>' +
                     '<div class="col-grid-button">' +
                     '<i title="Column decrease" class="col-grid-icon col-decrease fa fa-minus-square-o"></i>' +
@@ -227,7 +247,6 @@
                 }                
                 $row.attr('data-zo2-type', 'row');
                 $row.attr('data-zo2-customClass', '');
-                $row.attr('data-zo2-fullwidth', '0');
                 for (var i = 0; i < _self._settings.visibilityAttributes.length; i++) {
                     $row.attr(_self._settings.visibilityAttributes[i], '1');
                 }
