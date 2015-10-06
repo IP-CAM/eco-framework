@@ -241,9 +241,9 @@
         _addChildRow: function($target, after) {
                 var _self = this;
                 if(typeof(after) === 'undefined'){
-                    var $row = $('<div />').addClass('zo2-row sortable-row').appendTo($target);
+                    var $row = $('<div />').addClass('zo2-row sortable-row clearfix').appendTo($target);
                 }else{
-                    var $row = $('<div />').addClass('zo2-row sortable-row').insertAfter($target);
+                    var $row = $('<div />').addClass('zo2-row sortable-row clearfix').insertAfter($target);
                 }                
                 $row.attr('data-zo2-type', 'row');
                 $row.attr('data-zo2-customClass', '');
