@@ -128,20 +128,20 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" for="input-row"><?php echo $objlang->get('entry_row'); ?></label>
-                                <div class="col-sm-10 grid-depend">
+                                <div class="col-sm-10">
                                     <input type="text" class="form-control" style="width:55%;" id="input-name" placeholder="<?php echo $objlang->get('entry_row'); ?>" value="<?php echo $row; ?>" name="row">
                                 </div>
                             </div>
 
 						    <div class="form-group">
                                 <label class="col-sm-2 control-label" for="input-itemsperpage"><?php echo $objlang->get('entry_items'); ?></label>
-                                <div class="col-sm-10 grid-depend">
+                                <div class="col-sm-10 ">
                                     <input type="text" class="form-control" style="width:55%;" id="input-itemsperpage" placeholder="<?php echo $objlang->get('entry_items'); ?>" value="<?php echo $itemsperpage; ?>" name="itemsperpage">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" for="input-limit"><?php echo $objlang->get('entry_limit'); ?></label>
-                                <div class="col-sm-10 grid-depend">
+                                <div class="col-sm-10">
                                     <input type="text" class="form-control" style="width:55%;" id="input-limit" placeholder="<?php echo $objlang->get('entry_limit'); ?>" value="<?php echo $limit; ?>" name="limit">
                                 </div>
                             </div>

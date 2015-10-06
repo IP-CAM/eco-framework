@@ -173,15 +173,17 @@ class ControllerModuleEcobannerslider extends Controller {
 			$data['ecobannerslider_images'][] = array(
 
 				'ecobannerslider_image_title'       => $ecobannerslider_image['ecobannerslider_image_title'],
-				'link'                          => $ecobannerslider_image['link'],
-				'image'                         => $image,
-				'thumb'                         => $this->model_tool_image->resize($thumb, 100, 100),
+				'link'                              => $ecobannerslider_image['link'],
+				'image'                             => $image,
+				'thumb'                             => $this->model_tool_image->resize($thumb, 200, 200),
+				'ecobannerslider_image_btn_name'    => $ecobannerslider_image['ecobannerslider_image_btn_name'],
+				'ecobannerslider_image_short_title' => $ecobannerslider_image['ecobannerslider_image_short_title'],
 				'ecobannerslider_image_description' => $ecobannerslider_image['ecobannerslider_image_description']
 
 			);
 		}
 		$data['objlang'] = $this->language;
-		$data['placeholder'] = $this->model_tool_image->resize('no_image.png', 100, 100);
+		$data['placeholder'] = $this->model_tool_image->resize('no_image.png', 200, 200);
 
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');

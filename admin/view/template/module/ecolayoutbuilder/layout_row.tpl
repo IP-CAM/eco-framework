@@ -1,4 +1,4 @@
-<div class="zo2-row sortable-row"
+<div class="zo2-row sortable-row clearfix"
      data-zo2-type="row"
      data-zo2-customClass="<?php echo $row->customClass; ?>"
      data-zo2-id="<?php echo $row->id; ?>"
@@ -9,7 +9,7 @@
      data-zo2-fullwidth="<?php echo $row->fullwidth ? 1 : 0 ?>"
         >
     <div class="col-md-12 row-control">
-        <div class="row-control-container">
+        <div class="row-control-container dragger clearfix">
             <div class="row-name"><?php echo $row->name; ?></div>
             <div class="row-control-buttons">
                 <i title="Drag row" class="fa fa-arrows row-control-icon dragger hasTooltip"></i>

@@ -7,10 +7,9 @@ $objlang = $this->registry->get('language');
 <div id="eco-layoutbuilder<?php echo rand(1,90000); ?>" class="clearfix">
 <?php $rows = $layouts; ?>
 <?php endif; ?>
-
 <?php foreach ( $rows as $row) : ?>
     <?php
-        $r_hidden_class = '';
+        $r_hidden_class = $container_class ='';
         $r_hidden_class .= ($row->visibility->xs == false) ? "hidden-xs " : "";
         $r_hidden_class .= ($row->visibility->sm == false) ? "hidden-sm " : "";
         $r_hidden_class .= ($row->visibility->md == false) ? "hidden-md " : "";
@@ -18,7 +17,7 @@ $objlang = $this->registry->get('language');
     ?>
 	    <?php if ( $row->level==1 ){	 ?>
 	        <div class="eco-container <?php echo $row->customClass; ?> <?php echo $r_hidden_class; ?>">
-	        	<div class="eco-inner">
+	        	<div class="container">
 	    <?php } ?>  
 	    <div class="row row-level-<?php echo $row->level; ?> <?php if ( $row->level!=1 ) { echo $row->customClass;  echo $r_hidden_class; }	 ?>">
             <div class="row-inner clearfix" >

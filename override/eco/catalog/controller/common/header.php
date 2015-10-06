@@ -3,11 +3,6 @@ class eco_ControllerCommonHeader extends ControllerCommonHeader {
 
     public function index(){
         $this->document->addScript('catalog/view/theme/eco/js/eco.js');
-        if (file_exists('catalog/view/theme/' . $this->config->get('config_template') . '/stylesheet/megamenu.css')) {
-            $this->document->addStyle('catalog/view/theme/' . $this->config->get('config_template') . '/stylesheet/megamenu.css');
-        } else {
-            $this->document->addStyle('catalog/view/theme/default/stylesheet/megamenu.css');
-        }
         return parent::index();
     }
 
@@ -89,16 +84,10 @@ class eco_ControllerCommonHeader extends ControllerCommonHeader {
     $data['products'] = array();
 
     $results = $this->model_catalog_product->getBestSellerProducts(3);
-
+    $data['megamenu'] = $this->load->controller('module/ecomegamenu');
 
     $this->load->model('setting/setting');
     $aThemeSettings = $this->model_setting_setting->getSetting('ecothemecontrol',0);
-    $data['megamenu'] = $this->load->controller('module/ecomegamenu');
-
-//        echo __CLASS__ . " : " . __LINE__;
-//        echo "<pre>";
-//        print_r($data['megamenu']);
-//        exit;
 
     $data['aThemeSettings'] = isset($aThemeSettings['ecothemecontrol']) ? $aThemeSettings['ecothemecontrol'] : array();
 
@@ -148,6 +137,8 @@ class eco_ControllerCommonHeader extends ControllerCommonHeader {
       }
     }
 
+        $data['megamenu'] = $this->load->controller('module/ecomegamenu');
+         
         // call parent method
         return parent::preRender( $template_buffer, $template_name, $data );
     }

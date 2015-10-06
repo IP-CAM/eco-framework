@@ -103,28 +103,37 @@
             </div>
             <!-- Modal body -->
             <div class="modal-body">
-                <div class="form-horizontal">
+                <div class="form-inline">
                     <!-- Tab contents -->
                     <div class="zo2-tabs-content">
                         <!-- Basic -->
-                        <div class="active" id="row-basic">
-                            <div class="control-group">
+                        <div class="active " id="row-basic">
+                            <div class="control-group ">
                                 <label class="control-label" for="txtRowName"><?php echo $objlang->get('text_row_name'); ?></label>
-                                <div class="controls">
-                                    <input type="text" id="txtRowName" placeholder="<?php echo $objlang->get('text_row_name'); ?>">
-                                </div>
+                                <input type="text" class="form-control" id="txtRowName" placeholder="<?php echo $objlang->get('text_row_name'); ?>">
                             </div>
                             <div class="control-group">
                                 <label class="control-label" for="txtRowCss"><?php echo $objlang->get('text_row_custom_class'); ?></label>
-                                <div class="controls">
-                                    <input type="text" id="txtRowCss" placeholder="<?php echo $objlang->get('text_row_custom_class'); ?>">
-                                </div>
+                                <input type="text" id="txtRowCss" class="form-control" placeholder="<?php echo $objlang->get('text_row_custom_class'); ?>">
                             </div>
-
+                            <div class="control-group">
+                                <label class="control-label" for="txtWithCss"><?php echo $objlang->get('text_layout'); ?></label>
+                                <select name="layout" id="input-layout" class="form-control">
+                                    <option value="0" selected="selected"><?php echo $objlang->get('box_width'); ?></option>
+                                    <option value="1"><?php echo $objlang->get('full_width'); ?></option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="txtWithCss"><?php echo $objlang->get('text_layout'); ?></label>
+                                <a href="" id="thumb-image" data-toggle="image" class="img-thumbnail">
+                                    <img src="ecolayoutbuilder_image[image]" alt="" title="" data-placeholder="" />
+                                </a>
+                                <input type="hidden" name="ecolayoutbuilder_image[<?php echo $image_row; ?>][image]" value="<?php echo $ecolayoutbuilder_image['image']; ?>" id="input-image" /></td>
+                            </div>
                             <div id="column-responsive">
                                 <div class="control-group">
                                     <div class="control-label"><?php echo $objlang->get('text_layout_responsive'); ?></div>
-                                    <div class="controls">
+                                    <div class="controls clearfix">
                                         <div class="control btn-group btn-group-onoff" id="btgRowPhone">
                                             <button class="btn btn-on active" data-toggle="tooltip" data-placement="left" title="Enable On Mobile"></button>
                                             <button class="btn btn-off" data-toggle="tooltip" data-placement="left" title="Disable On Mobile"></button>
@@ -165,46 +174,42 @@
                 <h3><?php echo $objlang->get('text_col_header_setting'); ?></h3>
             </div>
             <div class="modal-body">
-                <div class="form-horizontal">
+                <div class="form-inline">
                     <div class="zo2-tabs-content">
                         <div class="active" id="column-basic">
                             <!-- begin -->
                             <div class="control-group">
                                 <label class="control-label" for="dlColType"><?php echo $objlang->get('text_module'); ?></label>
-                                <div class="controls">
-                                    <select id="dlColPosition">
-                                        <?php foreach ($extensions as $extension) { ?>
-                                        <?php if (!$extension['module']) { ?>
-                                        <?php if ($extension['code'] == $layout_module['code']) { ?>
-                                        <option value="<?php echo $extension['code']; ?>" selected="selected"><?php echo $extension['name']; ?></option>
+                                <select id="dlColPosition" class="form-control">
+                                    <?php foreach ($extensions as $extension) { ?>
+                                    <?php if (!$extension['module']) { ?>
+                                    <?php if ($extension['code'] == $layout_module['code']) { ?>
+                                    <option value="<?php echo $extension['code']; ?>" selected="selected"><?php echo $extension['name']; ?></option>
+                                    <?php } else { ?>
+                                    <option value="<?php echo $extension['code']; ?>"><?php echo $extension['name']; ?></option>
+                                    <?php } ?>
+                                    <?php } else { ?>
+                                    <optgroup label="<?php echo $extension['name']; ?>">
+                                        <?php foreach ($extension['module'] as $module) { ?>
+                                        <?php if ($module['code'] == $layout_module['code']) { ?>
+                                        <option value="<?php echo $module['code']; ?>" selected="selected"><?php echo $module['name']; ?></option>
                                         <?php } else { ?>
-                                        <option value="<?php echo $extension['code']; ?>"><?php echo $extension['name']; ?></option>
-                                        <?php } ?>
-                                        <?php } else { ?>
-                                        <optgroup label="<?php echo $extension['name']; ?>">
-                                            <?php foreach ($extension['module'] as $module) { ?>
-                                            <?php if ($module['code'] == $layout_module['code']) { ?>
-                                            <option value="<?php echo $module['code']; ?>" selected="selected"><?php echo $module['name']; ?></option>
-                                            <?php } else { ?>
-                                            <option value="<?php echo $module['code']; ?>"><?php echo $module['name']; ?></option>
-                                            <?php } ?>
-                                            <?php } ?>
-                                        </optgroup>
+                                        <option value="<?php echo $module['code']; ?>"><?php echo $module['name']; ?></option>
                                         <?php } ?>
                                         <?php } ?>
-                                    </select>
-                                </div>
+                                    </optgroup>
+                                    <?php } ?>
+                                    <?php } ?>
+                                </select>
                             </div>
                             <div class="control-group">
                                 <label class="control-label" for="txtColCss"><?php echo $objlang->get('text_col_custom_class'); ?></label>
-                                <div class="controls">
-                                    <input type="text" id="txtColCss" placeholder="<?php echo $objlang->get('text_col_custom_class'); ?>">
-                                </div>
+                                <input type="text" id="txtColCss" class="form-control" placeholder="<?php echo $objlang->get('text_col_custom_class'); ?>">
                             </div>
                             <div id="column-responsive">
                                 <div class="control-group">
                                     <div class="control-label"><?php echo $objlang->get('text_layout_responsive'); ?></div>
-                                    <div class="controls">
+                                    <div class="controls clearfix">
                                         <div class="control btn-group btn-group-onoff" id="btgColPhone">
                                             <button class="btn btn-on active" data-toggle="tooltip" data-placement="left" title="Enable On Mobile"></button>
                                             <button class="btn btn-off" data-toggle="tooltip" data-placement="left" title="Disable On Mobile"></button>

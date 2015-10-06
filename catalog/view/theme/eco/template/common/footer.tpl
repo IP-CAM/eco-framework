@@ -3,6 +3,7 @@
   <div class="container">
     <?php echo $layout_footer;?>
   </div>
+  <p><?php echo $powered; ?></p>
 </footer>
 <?php else:?>
 
@@ -50,7 +51,6 @@
     <p><?php echo $powered; ?></p>
   </div>
 </footer>
-
 <?php endif;?>
 <script type="text/javascript">
   $(document).ready(function(){

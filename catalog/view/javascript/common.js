@@ -91,9 +91,10 @@ $(document).ready(function() {
             $(this).css('margin-left', '-' + (i + 5) + 'px');
         }
     });
-
     // Product List
     $('#list-view').click(function() {
+        $('.list-view').addClass('active');
+        $('.switch-layout .grid-view').removeClass('active');
         $('#content .product-layout > .clearfix').remove();
 
         //$('#content .product-layout').attr('class', 'product-layout product-list col-xs-12');
@@ -104,6 +105,8 @@ $(document).ready(function() {
 
     // Product Grid
     $('#grid-view').click(function() {
+        $('.grid-view').addClass('active');
+        $('.switch-layout .list-view').removeClass('active');
         $('#content .product-layout > .clearfix').remove();
 
         // What a shame bootstrap does not take into account dynamically loaded columns
@@ -161,7 +164,7 @@ var cart = {
 
                     // Need to set timeout otherwise it wont update the total
                     setTimeout(function () {
-                        $('#cart > button').html('<span id="cart-total"><i class="fa fa-shopping-cart"></i> ' + json['total'] + '</span>');
+                        $('#cart > button').html('<span id="cart-total"><i class="icon icon-handbag"></i> ' + json['total'] + '</span>');
                     }, 100);
 
                     $('html, body').animate({ scrollTop: 0 }, 'slow');
@@ -186,7 +189,7 @@ var cart = {
             success: function(json) {
                 // Need to set timeout otherwise it wont update the total
                 setTimeout(function () {
-                    $('#cart > button').html('<span id="cart-total"><i class="fa fa-shopping-cart"></i> ' + json['total'] + '</span>');
+                    $('#cart > button').html('<span id="cart-total"><i class="icon icon-handbag"></i> ' + json['total'] + '</span>');
                 }, 100);
 
                 if (getURLVar('route') == 'checkout/cart' || getURLVar('route') == 'checkout/checkout') {
@@ -212,7 +215,7 @@ var cart = {
             success: function(json) {
                 // Need to set timeout otherwise it wont update the total
                 setTimeout(function () {
-                    $('#cart > button').html('<span id="cart-total"><i class="fa fa-shopping-cart"></i> ' + json['total'] + '</span>');
+                    $('#cart > button').html('<span id="cart-total"><i class="icon icon-handbag"></i> ' + json['total'] + '</span>');
                 }, 100);
 
                 if (getURLVar('route') == 'checkout/cart' || getURLVar('route') == 'checkout/checkout') {
@@ -244,7 +247,7 @@ var voucher = {
             success: function(json) {
                 // Need to set timeout otherwise it wont update the total
                 setTimeout(function () {
-                    $('#cart > button').html('<span id="cart-total"><i class="fa fa-shopping-cart"></i> ' + json['total'] + '</span>');
+                    $('#cart > button').html('<span id="cart-total"><i class="icon icon-handbag"></i> ' + json['total'] + '</span>');
                 }, 100);
 
                 if (getURLVar('route') == 'checkout/cart' || getURLVar('route') == 'checkout/checkout') {

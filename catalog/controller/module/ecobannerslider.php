@@ -10,8 +10,13 @@ class ControllerModuleEcobannerslider extends Controller {
 		if (isset($setting['ecobannerslider_image'])) {
 			$slider = array();
 			foreach ($setting['ecobannerslider_image'] as $slide) {
-			
- 			$slider[] = array('title'=>html_entity_decode($slide['ecobannerslider_image_title'][$this->config->get('config_language_id')]['title']),'link'=>$slide['link'],'image'=>$this->model_tool_image->resize($slide['image'], $setting['width'],$setting['height']),'description'=>html_entity_decode($slide['ecobannerslider_image_description'][$this->config->get('config_language_id')]['description']));
+ 			$slider[] = array(
+                            'title'=>html_entity_decode($slide['ecobannerslider_image_title'][$this->config->get('config_language_id')]['title']),
+                            'link'=>$slide['link'],
+                            'btn_name'=>html_entity_decode($slide['ecobannerslider_image_btn_name'][$this->config->get('config_language_id')]['btn_name']),
+                            'short_title'=>html_entity_decode($slide['ecobannerslider_image_short_title'][$this->config->get('config_language_id')]['short_title']),
+                            'image'=>$this->model_tool_image->resize($slide['image'], $setting['width'],$setting['height']),
+                            'description'=>html_entity_decode($slide['ecobannerslider_image_description'][$this->config->get('config_language_id')]['description']));
 			}
 		}
 		$data['class'] = isset($setting['class']) ? $setting['class'] : "" ;

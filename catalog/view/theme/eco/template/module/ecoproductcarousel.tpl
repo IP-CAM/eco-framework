@@ -7,8 +7,8 @@ else $extClass = 'products-grid';
 $slice = 12 / (int)$itemsperpage;
 $class = "col-lg-$slice col-md-".(int)$slice." col-sm-6 col-xs-12";
 ?>
-<div class="box box-normal <?php echo count($tabs) > 1 ? 'producttabs' : '' ?>">
-    <div class="box-heading">
+<div class="widget widget-ecoproduct <?php echo count($tabs) > 1 ? 'producttabs' : '' ?>">
+    <div class="widget-title <?php echo $extClass;?>">
         <?php if(count($tabs) > 1): ?>
             <ul class="nav nav-tabs" id="producttabs<?php echo $id;?>">
                 <?php foreach( $tabs as $tab => $products ) { if( empty($products) ){ continue;}  ?>
@@ -17,12 +17,12 @@ $class = "col-lg-$slice col-md-".(int)$slice." col-sm-6 col-xs-12";
             </ul>
         <?php else: ?>
             <?php foreach( $tabs as $tab => $products ) {  ?>
-                <h3><?php echo $objlang->get('text_'.$tab)?></a></h3>
+                <span><?php echo $objlang->get('text_'.$tab)?></span>
             <?php } ?>
         <?php endif; ?>
     </div>
 
-    <div class="<?php echo count($tabs) > 1? 'tab-content' : '' ?> box-content">
+    <div class="<?php echo count($tabs) > 1? 'tab-content' : '' ?> widget-content clearfix">
         <?php foreach( $tabs as $tab => $products ) {
         if( empty($products) ){ continue;}
         $cid = rand(10,19)+rand();
@@ -38,19 +38,17 @@ $class = "col-lg-$slice col-md-".(int)$slice." col-sm-6 col-xs-12";
                     <?php if ($i % $column == 0 || ($row > 1 && $i % $row == 0)): ?>
                     <div class="category-products <?php echo $extClass;?>  <?php echo $carousel == 0 ? $class : '';?>">
                         <?php if ($carousel == 1 && $row == 1): ?>
-                        <ul id="product<?php echo $module.$cid; ?>" class="products-grid">
+                        <div id="product<?php echo $module.$cid; ?>" class="<?php echo $extClass;?>">
                         <?php else: ?>
-                            <ul class="products-grid">
+                            <div class="<?php echo $extClass;?>">
                          <?php endif; ?>
                             <?php endif ?>
                             <?php $i++ ?>
-                            <li>
                                 <div class="product-layout">
-                                <?php  require($product_layout);?>
+                                    <?php  require($product_layout);?>
                                 </div>
-                             </li>
                             <?php if ($i == $count || $i % $column == 0 || ($row > 1 && $i % $row == 0)): ?>
-                        </ul>
+                        </div>
                     </div>
                     <?php endif ?>
                     <?php if ($carousel == 1 && $row > 1 && $i == $count): ?>

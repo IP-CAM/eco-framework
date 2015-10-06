@@ -113,27 +113,32 @@
                       <img src="view/image/flags/<?php echo $language['image']; ?>" title="<?php echo $language['name']; ?>" /> 
                     </span>
                      <input type="text" name="ecobannerslider_image[<?php echo $image_row; ?>][ecobannerslider_image_title][<?php echo $language['language_id']; ?>][title]" value="<?php echo isset($ecobannerslider_image['ecobannerslider_image_title'][$language['language_id']]) ? $ecobannerslider_image['ecobannerslider_image_title'][$language['language_id']]['title'] : ''; ?>" placeholder="<?php echo $entry_title; ?>" class="form-control" />
-
                   </div>
                   <?php }?>
                 </td>
 
 
-                <td class="text-left" style="width: 30%;">
+                <td class="text-left" style="width: 20%;">
                   <input type="text" name="ecobannerslider_image[<?php echo $image_row; ?>][link]" value="<?php echo $ecobannerslider_image['link']; ?>" placeholder="<?php echo $entry_link; ?>" class="form-control" />
                 </td>
 
-                <td class="text-left"><a href="" id="thumb-image<?php echo $image_row; ?>" data-toggle="image" class="img-thumbnail"><img src="<?php echo $ecobannerslider_image['thumb']; ?>" alt="" title="" data-placeholder="<?php echo $placeholder; ?>" /></a>
+                <td class="text-left">
+                    <a href="" id="thumb-image<?php echo $image_row; ?>" data-toggle="image" class="img-thumbnail">
+                        <img src="<?php echo $ecobannerslider_image['thumb']; ?>" alt="" title="" data-placeholder="<?php echo $placeholder; ?>" />
+                    </a>
                   <input type="hidden" name="ecobannerslider_image[<?php echo $image_row; ?>][image]" value="<?php echo $ecobannerslider_image['image']; ?>" id="input-image<?php echo $image_row; ?>" /></td>
                 
-                <td class="text-right">
+                <td class="text-right" style="width: 40%;">
                   <?php foreach ($languages as $language) {?>
                 <div class="input-group pull-left">
-                <span class="input-group-addon">
-                <img src="view/image/flags/<?php echo $language['image']; ?>" title="<?php echo $language['name']; ?>" /> 
-                </span>
-            
-                  <textarea name="ecobannerslider_image[<?php echo $image_row; ?>][ecobannerslider_image_description][<?php echo $language['language_id']; ?>][description]" placeholder="<?php echo $entry_description; ?>" class="form-control"><?php echo isset($ecobannerslider_image['ecobannerslider_image_description'][$language['language_id']]) ? $ecobannerslider_image['ecobannerslider_image_description'][$language['language_id']]['description'] : ''; ?></textarea>
+                    <span class="input-group-addon">
+                        <img src="view/image/flags/<?php echo $language['image']; ?>" title="<?php echo $language['name']; ?>" />
+                    </span>
+                    <input type="text" name="ecobannerslider_image[<?php echo $image_row; ?>][ecobannerslider_image_btn_name][<?php echo $language['language_id']; ?>][btn_name]" value="<?php echo isset($ecobannerslider_image['ecobannerslider_image_btn_name'][$language['language_id']]) ? $ecobannerslider_image['ecobannerslider_image_btn_name'][$language['language_id']]['btn_name'] : ''; ?>" placeholder="Buttom name" class="form-control" />
+                    <input type="text" name="ecobannerslider_image[<?php echo $image_row; ?>][ecobannerslider_image_short_title][<?php echo $language['language_id']; ?>][short_title]" value="<?php echo isset($ecobannerslider_image['ecobannerslider_image_short_title'][$language['language_id']]) ? $ecobannerslider_image['ecobannerslider_image_short_title'][$language['language_id']]['short_title'] : ''; ?>" placeholder="Short title" class="form-control" />
+                    <textarea name="ecobannerslider_image[<?php echo $image_row; ?>][ecobannerslider_image_description][<?php echo $language['language_id']; ?>][description]" placeholder="<?php echo $entry_description; ?>" class="form-control">
+                        <?php echo isset($ecobannerslider_image['ecobannerslider_image_description'][$language['language_id']]) ? $ecobannerslider_image['ecobannerslider_image_description'][$language['language_id']]['description'] : ''; ?>
+                    </textarea>
                 </div>
                   <?php } ?>
                 </td>
@@ -170,7 +175,13 @@ function addImage() {
   html += '  <td class="text-left">';
   <?php foreach ($languages as $language) { ?>
     html += '    <div class="input-group">';
-   html += '      <span class="input-group-addon"><img src="view/image/flags/<?php echo $language['image']; ?>" title="<?php echo $language['name']; ?>" /></span><textarea type="text" name="ecobannerslider_image[' + image_row + '][ecobannerslider_image_description][<?php echo $language['language_id']; ?>][description]" placeholder="<?php echo $entry_description; ?>" class="form-control"></textarea>';
+   html += '      <span class="input-group-addon">' +
+                        '<img src="view/image/flags/<?php echo $language['image']; ?>" title="<?php echo $language['name']; ?>" />' +
+                '</span>' +
+                '<input type="text" name="ecobannerslider_image[' +  image_row + '][ecobannerslider_image_btn_name][<?php echo $language['language_id']; ?>][btn_name]" value="" placeholder="Buttom name" class="form-control" />'+
+                '<input type="text" name="ecobannerslider_image[' +  image_row + '][ecobannerslider_image_btn_name][<?php echo $language['language_id']; ?>][short_title]" value="" placeholder="Short title" class="form-control" />'+
+                '<textarea type="text" name="ecobannerslider_image[' + image_row + '][ecobannerslider_image_description][<?php echo $language['language_id']; ?>][description]" placeholder="<?php echo $entry_description; ?>" class="form-control">' +
+                '</textarea>';
     html += '    </div>';
   <?php }?>
     html += '  </td>';  

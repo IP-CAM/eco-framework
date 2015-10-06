@@ -56,23 +56,6 @@ public function preRender( $template_buffer, $template_name, &$data ) {
              );
           } }
 
-        $this->load->model('setting/setting');
-        $aThemeSettings = $this->model_setting_setting->getSetting('ecothemecontrol',0);
-
-        $part = explode('.', $aThemeSettings['ecothemecontrol']['layout_module']);
-
-
-        if (isset($part[1])) {
-            $setting_info = $this->model_extension_module->getModule($part[1]);
-
-            if ($setting_info) {
-                $data['layout_footer'] = $this->load->controller('module/' . $part[0], $setting_info);
-            }
-        }
-        else
-        {
-            $data['layout_footer'] = "";
-        }
         // call parent method
         return parent::preRender( $template_buffer, $template_name, $data );
     }

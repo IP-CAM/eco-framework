@@ -5,10 +5,6 @@
  width: 99%;
 }
 
-#layoutbuilder-container .zo2-row{
- overflow: hidden;
-}
-
 #layoutbuilder-container {
   min-height: 500px;
 }
@@ -40,8 +36,8 @@
 }
  #layoutbuilder-container .sortable-row .row-name,
  #layoutbuilder-container .sortable-row .position-name {
-  color: #717171;
-  font-size: 20px;
+  color: #272727;
+  font-size: 18px;
   font-weight: 400;
 }
  #layoutbuilder-container .sortable-row .row-name {
@@ -71,8 +67,8 @@
   padding: 15px 15px 0;
 }
  #layoutbuilder-container .ui-sortable > .sortable-row {
-  background-color: #FBFBFB;
-  border: 1px solid #f0f0f0;
+  background-color: #F5F4F4;
+  border: 1px solid #dddddd;
   margin: 15px;
 }
  #layoutbuilder-container .ui-sortable > .sortable-row:hover {
@@ -279,7 +275,7 @@
 }
  #layoutbuilder-container .row-control-icon,
  #layoutbuilder-container .col-control-icon {
-  color: #A6A4A5;
+  color: #272727;
   cursor: pointer;
   font-size: 20px;
   margin: 0;
@@ -949,4 +945,16 @@ textarea {
   top: 50%;
   width: 44px;
   height: 44px;
+}
+.row-control-buttons{
+    float: right;
+}
+.form-inline .control-label{
+    min-width: 150px;
+}
+.form-inline .control-group {
+    margin-bottom: 10px;
+}
+.zo2-add-new-row{
+    margin: 15px;
 }

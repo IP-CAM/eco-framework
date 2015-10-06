@@ -447,7 +447,7 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
                 placement: 'top',
                 trigger: 'manual',
                 content: function() {
-                    return '<button type="button" id="button-image" data-toggle="modal" data-target="#menuModal" class="btn btn-primary btn-lg"><i class="fa fa-pencil"></i></button>';
+                    return '<button type="button" id="button-image" data-toggle="modal" data-target="#menuModal" class="btn btn-primary btn-lg"><i class="fa fa-save"></i></button>';
                 }
             });
             currentSelected.popover('show');

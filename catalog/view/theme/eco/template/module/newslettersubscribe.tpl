@@ -1,36 +1,36 @@
-<div id="mt_newsletter" class="newletter-container">
-	<div class="box">
-	  <div class="newletter-title">
-		<h2><?php echo $heading_title; ?></h2>
-		<label><?php echo $newletter_lable; ?></label>
-	  </div>
-	  <div class="box-content newleter-content input-box">
-		  <div id="frm_subscribe">
-			  <form name="subscribe">
-				  <table>
-					   <tr>
-						 <td><span class="required">*</span>&nbsp;<span><?php echo $entry_email; ?></span><input type="text" value="" name="subscribe_email" id="subscribe_email"></td>
-					   </tr>
-					   <tr>
-						 <td>
-							<button class="button" onclick="email_subscribe()"><span><?php echo $entry_button; ?></span></button>
-							<?php if($option_unsubscribe) { ?>
-							<button class="button" onclick="email_unsubscribe()"><span><?php echo $entry_unbutton; ?></span></button>
-							<?php } ?>    
-						 </td>
-					   </tr>
-					   
-				  </table>
-			  </form>
-		  </div><!-- /#frm_subscribe -->
-          <div class="block-content">
-              <label class="subcriper_label">
-                  <input type="checkbox">
-                  <?php echo ("Don't show this popup again");?>
-              </label>
-          </div>
-		  <div id="notification"></div>
-		</div><!-- /.box-content -->
+<div class="widget widget-newletter">
+    <h3 class="widget-title">
+        <span><?php echo $heading_title; ?></span>
+    </h3>
+    <div class="widget-content">
+        <div id="mt_newsletter" class="newletter-container">
+            <div id="frm_subscribe">
+                <label><?php echo $newletter_lable; ?></label>
+                <form name="subscribe">
+                      <table>
+                           <tr>
+                             <td><span class="required">*</span>&nbsp;<span><?php echo $entry_email; ?></span><input type="text" value="" name="subscribe_email" id="subscribe_email"></td>
+                           </tr>
+                           <tr>
+                             <td>
+                                <button class="button" onclick="email_subscribe()"><span><?php echo $entry_button; ?></span></button>
+                                <?php if($option_unsubscribe) { ?>
+                                <button class="button" onclick="email_unsubscribe()"><span><?php echo $entry_unbutton; ?></span></button>
+                                <?php } ?>
+                             </td>
+                           </tr>
+                      </table>
+                </form>
+            </div><!-- /#frm_subscribe -->
+            <div class="block-content">
+                  <label class="subcriper_label">
+                      <input type="checkbox">
+                      <?php echo ("Don't show this popup again");?>
+                  </label>
+            </div>
+            <div id="notification"></div>
+        </div>
+    </div>
 </div>
 <div style="width: 2000px;top:-808px; height: 2000px; display: none; opacity: 0.7;" id="mask"> </div>
 
