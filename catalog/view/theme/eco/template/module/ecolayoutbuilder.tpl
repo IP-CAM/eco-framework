@@ -14,9 +14,10 @@ $objlang = $this->registry->get('language');
         $r_hidden_class .= ($row->visibility->sm == false) ? "hidden-sm " : "";
         $r_hidden_class .= ($row->visibility->md == false) ? "hidden-md " : "";
         $r_hidden_class .= ($row->visibility->lg == false) ? "hidden-lg " : "";
+        $background_url = $url.'image/'.$row->background;
     ?>
 	    <?php if ( $row->level==1 ){	 ?>
-	        <div class="eco-container <?php echo $row->customClass; ?> <?php echo $r_hidden_class; ?>">
+	        <div class="eco-container <?php echo $row->customClass; ?> <?php echo $r_hidden_class; ?>" style="background: url('<?php echo $background_url; ?>') no-repeat fixed center;">
 	        	<div class="container">
 	    <?php } ?>  
 	    <div class="row row-level-<?php echo $row->level; ?> <?php if ( $row->level!=1 ) { echo $row->customClass;  echo $r_hidden_class; }	 ?>">

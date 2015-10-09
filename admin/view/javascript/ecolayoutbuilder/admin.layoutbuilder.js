@@ -320,6 +320,9 @@
 
                 var rowName = $row.find('>.row-control>.row-control-container>.row-name').text();
                 var rowCustomClass = $row.attr('data-zo2-customClass');
+                var rowBackground = $row.attr('data-zo2-background');
+                var ext = rowBackground.substring(rowBackground.length - 3,rowBackground.length)
+                rowBackground = rowBackground.substring(0,rowBackground.length - 4) + '-100x100.' + ext;
                 //var rowLayout = $row.attr('data-zo2-layout');
                 var rowId = $row.attr('data-zo2-id');
                 if (!rowCustomClass)
@@ -360,6 +363,7 @@
                 $.data(w.document.body, 'editingEl', $row);
                 $('#txtRowName').val('').val(rowName);
                 $('#txtRowCss').val('').val(rowCustomClass);
+                $('#input-image').find('img').attr('src',urlImage  + rowBackground);
                 $('#txtRowId').val(rowId);
                 //$('#ddlRowLayout').val(rowLayout).trigger("liszt:updated");
                 var $modal = $('#rowSettingsModal');
@@ -460,8 +464,8 @@
                 $row.attr('data-zo2-visibility-sm', $('#btgRowTablet').find('.btn-on').hasClass('active') ? '1' : '0');
                 $row.attr('data-zo2-visibility-md', $('#btgRowDesktop').find('.btn-on').hasClass('active') ? '1' : '0');
                 $row.attr('data-zo2-visibility-lg', $('#btgRowLargeDesktop').find('.btn-on').hasClass('active') ? '1' : '0');
-                $row.attr('data-zo2-fullwidth', $('#btgFullWidth').find('.btn-on').hasClass('active') ? '1' : '0');
-                //$row.attr('data-zo2-layout', $('#ddlRowLayout').val());
+                $row.attr('data-zo2-background','');
+                $row.attr('data-zo2-background', $('#input-image').attr('value'));                
                 $row.attr('data-zo2-id', $('#txtRowId').val());
                 $('#rowSettingsModal').modal('hide');
                 return false;
@@ -503,6 +507,7 @@ $(document).ready( function(){
                 customClass: $item.attr('data-zo2-customClass'),
                 id: $item.attr('data-zo2-id') ? $item.attr('data-zo2-id') : '',
                 fullwidth: $item.attr('data-zo2-fullwidth') == '1',
+                background: $item.attr('data-zo2-background'),
                 visibility: {
                     xs: $item.attr('data-zo2-visibility-xs') == '1',
                     sm: $item.attr('data-zo2-visibility-sm') == '1',

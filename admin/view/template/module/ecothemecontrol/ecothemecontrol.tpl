@@ -569,6 +569,7 @@ In this section, you can change theme colors. To change the color of element jus
         <label class="col-sm-2 control-label" for="input-eco_home_option">Module:</label>
         <div class="col-sm-10">
             <select name="layout_module" class="form-control">
+                <option value="" > (blank)</option>
                 <?php foreach ($extensions as $extension) { ?>
                 <?php if (!$extension['module']) { ?>
                 <?php if ($extension['code'] == $module_code) { ?>

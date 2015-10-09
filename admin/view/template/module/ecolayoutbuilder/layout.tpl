@@ -115,20 +115,14 @@
                             <div class="control-group">
                                 <label class="control-label" for="txtRowCss"><?php echo $objlang->get('text_row_custom_class'); ?></label>
                                 <input type="text" id="txtRowCss" class="form-control" placeholder="<?php echo $objlang->get('text_row_custom_class'); ?>">
+                                <small><br><?php echo $objlang->get('Note: Turn any fixed-width grid layout into a full-width layout by using custom class: full-width'); ?></small>
                             </div>
                             <div class="control-group">
-                                <label class="control-label" for="txtWithCss"><?php echo $objlang->get('text_layout'); ?></label>
-                                <select name="layout" id="input-layout" class="form-control">
-                                    <option value="0" selected="selected"><?php echo $objlang->get('box_width'); ?></option>
-                                    <option value="1"><?php echo $objlang->get('full_width'); ?></option>
-                                </select>
-                            </div>
-                            <div class="control-group">
-                                <label class="control-label" for="txtWithCss"><?php echo $objlang->get('text_layout'); ?></label>
-                                <a href="" id="thumb-image" data-toggle="image" class="img-thumbnail">
-                                    <img src="ecolayoutbuilder_image[image]" alt="" title="" data-placeholder="" />
+                                <label class="control-label" for="thumb-image"><?php echo $objlang->get('text_layout'); ?></label>
+                                <a href="" id="input-image" data-toggle="image" class="img-thumbnail">
+                                    <img src="" alt="" title="" data-placeholder="" />
                                 </a>
-                                <input type="hidden" name="ecolayoutbuilder_image[<?php echo $image_row; ?>][image]" value="<?php echo $ecolayoutbuilder_image['image']; ?>" id="input-image" /></td>
+                                <input type="hidden" name="background" value="" id="input-image" /></td>
                             </div>
                             <div id="column-responsive">
                                 <div class="control-group">
@@ -241,3 +235,6 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    var urlImage = "<?php echo $url.'cache/'; ?>";
+</script>

@@ -86,7 +86,6 @@ class ControllerModuleecolayoutbuilder extends Controller {
             $data['layout_data'] = json_decode($module_info['layout']);
 
 
-
         $data['button_save'] = $this->language->get('button_save');
         $data['button_save_stay'] = $this->language->get('button_save_stay');
         $data['button_cancel'] = $this->language->get('button_cancel');
@@ -144,6 +143,13 @@ class ControllerModuleecolayoutbuilder extends Controller {
         } else {
             $data['name'] = '';
         }
+
+		if ($this->request->server['HTTPS']) {
+			$data['url'] =  HTTPS_CATALOG . 'image/';
+		} else {
+			$data['url'] =  HTTP_CATALOG . 'image/';
+		}
+
 
         $data['extensions'] = $this->_modulesInstalled();
         $data['objlang'] = $this->language;
