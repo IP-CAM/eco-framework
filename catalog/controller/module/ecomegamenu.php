@@ -18,6 +18,9 @@ class ControllerModuleEcomegamenu extends Controller {
 		
 		$this->language->load('module/ecomegamenu');
 
+		// if megamenu is not installed return null;
+		if(!$this->model_menu_ecomegamenu->checkInstall()) return ;
+
 		if (file_exists('catalog/view/theme/' . $this->config->get('config_template') . '/stylesheet/megamenu.css')) {
 			$this->document->addStyle('catalog/view/theme/' . $this->config->get('config_template') . '/stylesheet/megamenu.css');
 		} else {

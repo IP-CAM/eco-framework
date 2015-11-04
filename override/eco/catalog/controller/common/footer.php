@@ -59,9 +59,9 @@ public function preRender( $template_buffer, $template_name, &$data ) {
 
         $this->load->model('setting/setting');
         $aThemeSettings = $this->model_setting_setting->getSetting('ecothemecontrol',0);
-
-        $part = explode('.', $aThemeSettings['ecothemecontrol']['layout_module']);
-
+        if(isset($aThemeSettings['ecothemecontrol'])){
+            $part = explode('.', $aThemeSettings['ecothemecontrol']['layout_module']);
+        }
 
         if (isset($part[1])) {
             $setting_info = $this->model_extension_module->getModule($part[1]);

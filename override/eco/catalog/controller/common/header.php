@@ -137,8 +137,6 @@ class eco_ControllerCommonHeader extends ControllerCommonHeader {
       }
     }
 
-        $data['megamenu'] = $this->load->controller('module/ecomegamenu');
-         
         // call parent method
         return parent::preRender( $template_buffer, $template_name, $data );
     }

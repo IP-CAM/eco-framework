@@ -353,5 +353,13 @@ class ModelMenuEcoMegamenu extends Model {
 		}
 	}
 
+	public function checkInstall(){
+		$sql = " SHOW TABLES LIKE '".DB_PREFIX."megamenu'";
+		$query = $this->db->query( $sql );
+
+		if( count($query->rows) <=0 ) return false;
+		else return true;
+	}
+
 }
 ?>
