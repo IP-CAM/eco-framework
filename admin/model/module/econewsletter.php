@@ -1,5 +1,5 @@
 <?php
-class ModelModuleNewslettersubscribe extends Model {
+class ModelModuleEcoNewsletter extends Model {
 	
 	public function checkmailid($data) {
   	   

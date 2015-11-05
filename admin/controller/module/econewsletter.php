@@ -13,13 +13,13 @@ class ControllerModuleEconewsletter extends Controller {
 		
 		$this->load->model('setting/setting');
 		$this->load->model('extension/module');
-		$this->load->model('module/newslettersubscribe');
+		$this->load->model('module/econewsletter');
 		
-		$this->model_module_newslettersubscribe->check_db();
+		$this->model_module_econewsletter->check_db();
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
 	
 			if (!isset($this->request->get['module_id'])) {
-				$this->model_extension_module->addModule('newslettersubscribe', $this->request->post);
+				$this->model_extension_module->addModule('econewsletter', $this->request->post);
 			} else {
 				$this->model_extension_module->editModule($this->request->get['module_id'], $this->request->post);
 			}
@@ -88,7 +88,9 @@ class ControllerModuleEconewsletter extends Controller {
 		$data['entry_width'] = $this->language->get('entry_width');
 		$data['entry_height'] = $this->language->get('entry_height');
 		$data['entry_name'] = $this->language->get('entry_name');
-		
+		$data['mail_description'] = $this->language->get('mail_description');
+		$data['entry_enable_popup'] = $this->language->get('entry_enable_popup');
+
 		
 		$data['button_save'] = $this->language->get('button_save');
 		$data['button_cancel'] = $this->language->get('button_cancel');
@@ -121,23 +123,23 @@ class ControllerModuleEconewsletter extends Controller {
 		if (!isset($this->request->get['module_id'])) {
 			$data['breadcrumbs'][] = array(
 				'text' => $this->language->get('heading_title'),
-				'href' => $this->url->link('module/newslettersubscribe', 'token=' . $this->session->data['token'], 'SSL')
+				'href' => $this->url->link('module/econewsletter', 'token=' . $this->session->data['token'], 'SSL')
 			);
 		} else {
 			$data['breadcrumbs'][] = array(
 				'text' => $this->language->get('heading_title'),
-				'href' => $this->url->link('module/newslettersubscribe', 'token=' . $this->session->data['token'] . '&module_id=' . $this->request->get['module_id'], 'SSL')
+				'href' => $this->url->link('module/econewsletter', 'token=' . $this->session->data['token'] . '&module_id=' . $this->request->get['module_id'], 'SSL')
 			);			
 		}
 
 		if (!isset($this->request->get['module_id'])) {
-			$data['action'] = $this->url->link('module/newslettersubscribe', 'token=' . $this->session->data['token'], 'SSL');
+			$data['action'] = $this->url->link('module/econewsletter', 'token=' . $this->session->data['token'], 'SSL');
 		} else {
-			$data['action'] = $this->url->link('module/newslettersubscribe', 'token=' . $this->session->data['token'] . '&module_id=' . $this->request->get['module_id'], 'SSL');
+			$data['action'] = $this->url->link('module/econewsletter', 'token=' . $this->session->data['token'] . '&module_id=' . $this->request->get['module_id'], 'SSL');
 		}
-		
+
 		$data['cancel'] = $this->url->link('extension/module', 'token=' . $this->session->data['token'], 'SSL');
-		
+
 		if (isset($this->request->get['module_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
 			$module_info = $this->model_extension_module->getModule($this->request->get['module_id']);
 		}
@@ -149,7 +151,7 @@ class ControllerModuleEconewsletter extends Controller {
 		} else {
 			$data['name'] = '';
 		}
-		
+
 		if (isset($this->request->post['status'])) {
 			$data['status'] = $this->request->post['status'];
 		} elseif (!empty($module_info)) {
@@ -157,7 +159,7 @@ class ControllerModuleEconewsletter extends Controller {
 		} else {
 			$data['status'] = '';
 		}
-		
+
 		if (isset($this->request->post['newslettersubscribe_unsubscribe'])) {
 			$data['newslettersubscribe_unsubscribe'] = $this->request->post['newslettersubscribe_unsubscribe'];
 		} elseif (!empty($module_info)) {
@@ -165,7 +167,7 @@ class ControllerModuleEconewsletter extends Controller {
 		} else {
 			$data['newslettersubscribe_unsubscribe'] = '';
 		}
-		
+
 		if (isset($this->request->post['newslettersubscribe_registered'])) {
 			$data['newslettersubscribe_registered'] = $this->request->post['newslettersubscribe_registered'];
 		}  elseif (!empty($module_info)) {
@@ -173,7 +175,23 @@ class ControllerModuleEconewsletter extends Controller {
 		} else {
 			$data['newslettersubscribe_registered'] = '';
 		}
-		
+
+		if (isset($this->request->post['newslettersubscribe_popup'])) {
+			$data['newslettersubscribe_popup'] = $this->request->post['newslettersubscribe_popup'];
+		}  elseif (!empty($module_info)) {
+			$data['newslettersubscribe_popup'] = $module_info['newslettersubscribe_popup'];
+		} else {
+			$data['newslettersubscribe_popup'] = '';
+		}
+
+		if (isset($this->request->post['newslettersubscribe_mail_description'])) {
+			$data['newslettersubscribe_mail_description'] = $this->request->post['newslettersubscribe_mail_description'];
+		}  elseif (!empty($module_info)) {
+			$data['newslettersubscribe_mail_description'] = $module_info['newslettersubscribe_mail_description'];
+		} else {
+			$data['newslettersubscribe_mail_description'] = '';
+		}
+
 		if (isset($this->request->post['newslettersubscribe_mail_status'])) {
 			$data['newslettersubscribe_mail_status'] = $this->request->post['newslettersubscribe_mail_status'];
 		} elseif (!empty($module_info)) {
@@ -181,7 +199,7 @@ class ControllerModuleEconewsletter extends Controller {
 		} else {
 			$data['newslettersubscribe_mail_status'] = '';
 		}
-		
+
 		if (isset($this->request->post['newslettersubscribe_thickbox'])) {
 			$data['newslettersubscribe_thickbox'] = $this->request->post['newslettersubscribe_thickbox'];
 		}  elseif (!empty($module_info)) {
@@ -189,15 +207,15 @@ class ControllerModuleEconewsletter extends Controller {
 		} else {
 			$data['newslettersubscribe_thickbox'] = '';
 		}
-		
+
 		$this->load->model('design/layout');
-		
+
 		$data['layouts'] = $this->model_design_layout->getLayouts();
-		
-		
+
+
 		//Get User List
-		
-		$user_total = $this->model_module_newslettersubscribe->getTotalUsers();
+
+		$user_total = $this->model_module_econewsletter->getTotalUsers();
 		
 		if (isset($this->request->get['page'])) {
 			
@@ -222,7 +240,7 @@ class ControllerModuleEconewsletter extends Controller {
 			'limit'           => $this->config->get('config_admin_limit')
 		);
 		
-		$results = $this->model_module_newslettersubscribe->getList($data);
+		$results = $this->model_module_econewsletter->getList($data);
 		
 		$data['users'] = array();
 		
@@ -232,7 +250,7 @@ class ControllerModuleEconewsletter extends Controller {
 			
 			$action[] = array(
 				'text' => $this->language->get('text_delete'),
-				'href' => $this->url->link('module/newslettersubscribe/unsubscribe', 'token=' . $this->session->data['token'] . '&user_id=' . $result['id'] . $url, 'SSL')
+				'href' => $this->url->link('module/econewsletter/unsubscribe', 'token=' . $this->session->data['token'] . '&user_id=' . $result['id'] . $url, 'SSL')
 			);
 			
 			$data['users'][] = array(
@@ -269,7 +287,7 @@ class ControllerModuleEconewsletter extends Controller {
 		$pagination->page = $page;
 		$pagination->limit = 100;
 		$pagination->text = $this->language->get('text_pagination');
-		$pagination->url = $this->url->link('module/newslettersubscribe', 'token=' . $this->session->data['token'] . $url . '&page={page}', 'SSL');
+		$pagination->url = $this->url->link('module/econewsletter', 'token=' . $this->session->data['token'] . $url . '&page={page}', 'SSL');
 			
 		$data['pagination'] = $pagination->render();
 		
@@ -284,14 +302,14 @@ class ControllerModuleEconewsletter extends Controller {
 	
 	public function unsubscribe() {
 		
-		$this->load->model('module/newslettersubscribe');
+		$this->load->model('module/econewsletter');
 		
 		$data = '';
 		
 		if (isset($this->request->post['selected']) && $this->validateDelete()) {
 			
 			foreach ($this->request->post['selected'] as $user_id) {
-				$this->model_module_newslettersubscribe->delete($user_id);
+				$this->model_module_econewsletter->delete($user_id);
 	  		}
 			
 			$this->session->data['success'] = $this->language->get('text_success');
@@ -302,13 +320,13 @@ class ControllerModuleEconewsletter extends Controller {
 				$url .= '&page=' . $this->request->get['page'];
 			}
 			
-			$this->redirect($this->url->link('module/newslettersubscribe', 'token=' . $this->session->data['token'] . $url, 'SSL'));
+			$this->redirect($this->url->link('module/econewsletter', 'token=' . $this->session->data['token'] . $url, 'SSL'));
 			
 		} else if( isset($this->request->get['user_id']) ) {
 			
 			$data = $this->request->get['user_id'];
 			
-			$this->model_module_newslettersubscribe->delete($data);
+			$this->model_module_econewsletter->delete($data);
 			
 			if (isset($this->request->get['page'])) {
 				$page = $this->request->get['page'];
@@ -322,7 +340,7 @@ class ControllerModuleEconewsletter extends Controller {
 				$url .= '&page=' . $this->request->get['page'];
 			}
 			
-			$this->response->redirect($this->url->link('module/newslettersubscribe', 'token=' . $this->session->data['token'] . $url, 'SSL'));
+			$this->response->redirect($this->url->link('module/econewsletter', 'token=' . $this->session->data['token'] . $url, 'SSL'));
 			
 		
 		} else {
@@ -337,12 +355,12 @@ class ControllerModuleEconewsletter extends Controller {
 	//Send Mail Function
 	
 	public function send() {
-		$this->language->load('module/newslettersubscribe');
+		$this->language->load('module/econewsletter');
 		
 		$json = array();
 		
 		if ($this->request->server['REQUEST_METHOD'] == 'POST') {
-			if (!$this->user->hasPermission('modify', 'module/newslettersubscribe')) {
+			if (!$this->user->hasPermission('modify', 'module/econewsletter')) {
 				$json['error']['warning'] = $this->language->get('error_permission');
 			}
 					
@@ -374,7 +392,7 @@ class ControllerModuleEconewsletter extends Controller {
 	
 				$this->load->model('sale/order');
 				
-				$this->load->model('module/newslettersubscribe');
+				$this->load->model('module/econewsletter');
 	
 				if (isset($this->request->get['page'])) {
 					$page = $this->request->get['page'];
@@ -414,9 +432,9 @@ class ControllerModuleEconewsletter extends Controller {
 							
 						$results = $this->model_sale_customer->getCustomers($customer_data);
 						
-						$email_total1 = $this->model_module_newslettersubscribe->getTotalUsers();
+						$email_total1 = $this->model_module_econewsletter->getTotalUsers();
 							
-						$results1 = $this->model_module_newslettersubscribe->getList($customer_data);
+						$results1 = $this->model_module_econewsletter->getList($customer_data);
 						
 						$email_total = $email_total + $email_total1;
 						
@@ -438,9 +456,9 @@ class ControllerModuleEconewsletter extends Controller {
 							'limit'             => 10
 						);
 						
-						$email_total = $this->model_module_newslettersubscribe->getTotalUsers();
+						$email_total = $this->model_module_econewsletter->getTotalUsers();
 							
-						$results = $this->model_module_newslettersubscribe->getList($customer_data);
+						$results = $this->model_module_econewsletter->getList($customer_data);
 						
 						foreach ($results as $result) {
 							$emails[] = $result['email_id'];
@@ -536,7 +554,7 @@ class ControllerModuleEconewsletter extends Controller {
 					}				
 						
 					if ($end < $email_total) {
-						$json['next'] = str_replace('&amp;', '&', $this->url->link('module/newslettersubscribe/send', 'token=' . $this->session->data['token'] . '&page=' . ($page + 1), 'SSL'));
+						$json['next'] = str_replace('&amp;', '&', $this->url->link('module/econewsletter/send', 'token=' . $this->session->data['token'] . '&page=' . ($page + 1), 'SSL'));
 					} else {
 						$json['next'] = '';
 					}
@@ -590,7 +608,7 @@ class ControllerModuleEconewsletter extends Controller {
     }  
 		
 	protected function validateDelete() {
-    	if (!$this->user->hasPermission('modify', 'module/newslettersubscribe')) {
+    	if (!$this->user->hasPermission('modify', 'module/econewsletter')) {
       		$this->error['warning'] = $this->language->get('error_permission');  
     	}
 		
@@ -602,7 +620,7 @@ class ControllerModuleEconewsletter extends Controller {
   	}
 	
 	private function validate() {
-		if (!$this->user->hasPermission('modify', 'module/newslettersubscribe')) {
+		if (!$this->user->hasPermission('modify', 'module/econewsletter')) {
 			$this->error['warning'] = $this->language->get('error_permission');
 		}
 		if ((utf8_strlen($this->request->post['name']) < 3) || (utf8_strlen($this->request->post['name']) > 64)) {

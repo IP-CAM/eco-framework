@@ -1,10 +1,11 @@
 <?php  
-class ControllerModuleNewslettersubscribe extends Controller {
+class ControllerModuleEconewsletter extends Controller {
   	private $error = array();
 	
 	public function index($setting) {
 	
 		$this->language->load('module/newslettersubscribe');
+		$this->load->model('account/newslettersubscribe');
 		$this->document->addScript('catalog/view/javascript/jquery/jquery.bpopup.min.js');
 		$this->document->addScript('catalog/view/javascript/jquery/jquery.cookie.js');
 		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/stylesheet/newslettersubscribe.css')) {
@@ -13,8 +14,10 @@ class ControllerModuleNewslettersubscribe extends Controller {
 			$this->document->addStyle('catalog/view/theme/default/stylesheet/newslettersubscribe.css');
 		}
 
-      	$data['heading_title'] = $this->language->get('heading_title');	
-		$data['newletter_lable'] = $this->language->get('newletter_lable');	
+
+      	$data['heading_title'] = $this->language->get('heading_title');
+		$data['newletter_lable'] = $setting['newslettersubscribe_mail_description'] ? $setting['newslettersubscribe_mail_description'] : $this->language->get('newletter_lable');
+		$data['newslettersubscribe_popup'] = $setting['newslettersubscribe_popup'];
 		
       	$data['entry_name'] = $this->language->get('entry_name');	
       	$data['entry_email'] = $this->language->get('entry_email');	
@@ -33,13 +36,12 @@ class ControllerModuleNewslettersubscribe extends Controller {
 			return $this->load->view('default/template/module/newslettersubscribe.tpl', $data);
 		}
 	 
-	   	$this->load->model('account/newslettersubscribe');
+
 	   	//check db
 	   	$this->model_account_newslettersubscribe->check_db();
 	}
 	
 	public function subscribe() {
-	
 		$prefix_eval = "";
 	  
 		$this->language->load('module/newslettersubscribe');
@@ -157,7 +159,8 @@ class ControllerModuleNewslettersubscribe extends Controller {
       	$data['entry_email'] = $this->language->get('entry_email');	
 		$data['entry_button'] = $this->language->get('entry_button');	
 		$data['entry_unbutton'] = $this->language->get('entry_unbutton');	
-		$data['option_unsubscribe'] = $this->config->get('option_unsubscribe');	
+		$data['option_unsubscribe'] = $this->config->get('option_unsubscribe');
+		$data['newsletter_label'] = $this->config->get('option_unsubscribe');
 		$data['thickbox'] = $this->config->get('newslettersubscribe_thickbox');	
 		
 		$data['text_subscribe'] = $this->language->get('text_subscribe');	

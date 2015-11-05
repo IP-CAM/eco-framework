@@ -67,7 +67,7 @@
 						  </div>
 						   <div class="tab-content">
 								<div class="tab-pane" id ="tab-general">
-										<div class="form-group required">
+										<div class="form-group">
 											<label class="col-sm-2 control-label" for="input-name"><?php echo $entry_unsubscribe; ?></label>
 											 <div class="col-sm-10">
 											  <select class="form-control" name="newslettersubscribe_unsubscribe">
@@ -81,7 +81,27 @@
 												</select>
 											</div>
 										</div>
-										<div class="form-group required">
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="input-name"><?php echo $entry_enable_popup; ?></label>
+											<div class="col-sm-10">
+												<select class="form-control" name="newslettersubscribe_popup">
+													<?php if ($newslettersubscribe_popup) { ?>
+													<option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+													<option value="0"><?php echo $text_disabled; ?></option>
+													<?php } else { ?>
+													<option value="1"><?php echo $text_enabled; ?></option>
+													<option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+													<?php } ?>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="input-name"><?php echo $mail_description; ?></label>
+											<div class="col-sm-10">
+												<input type="text" class="form-control" name="newslettersubscribe_mail_description" value="<?php echo $newslettersubscribe_mail_description; ?>" >
+											</div>
+										</div>
+										<div class="form-group">
 											<label class="col-sm-2 control-label" for="input-name"><?php echo $entry_mail; ?></label>
 											 <div class="col-sm-10">
 											  <select class="form-control" name="newslettersubscribe_mail_status">
@@ -96,7 +116,7 @@
 											</div>
 										</div>
 
-										<div class="form-group required">
+										<div class="form-group">
 											<label class="col-sm-2 control-label" for="input-name"><?php echo $entry_thickbox; ?></label>
 											 <div class="col-sm-10">
 											  <select class="form-control" name="newslettersubscribe_thickbox">
@@ -110,7 +130,7 @@
 												</select>
 											</div>
 										</div>
-										<div class="form-group required">
+										<div class="form-group">
 											<label class="col-sm-2 control-label" for="input-name"><?php echo $entry_registered; ?></label>
 											 <div class="col-sm-10">
 											 <select class="form-control" name="newslettersubscribe_registered">

@@ -51,6 +51,9 @@ $_['entry_product']        	= 'Products:<br /><span class="help">Send only to cu
 $_['entry_subject']        	= 'Subject:';
 $_['entry_message']        	= 'Message:';
 $_['entry_name']        	= 'Name Module:';
+$_['mail_description']      = 'Newsletter Label';
+$_['entry_enable_popup']    = 'Newsletter Popup';
+
 
 //Button
 $_['button_delete']       	= 'Delete';

@@ -1,33 +1,36 @@
-<div class="widget widget-newletter">
+<div class="widget widget-newletter" <?php if($newslettersubscribe_popup) echo "style='display:none'";?> >
     <h3 class="widget-title">
         <span><?php echo $heading_title; ?></span>
     </h3>
     <div class="widget-content">
-        <div id="mt_newsletter" class="newletter-container">
+        <div id="mt_newsletter" class="newletter-container" >
             <div id="frm_subscribe">
                 <label><?php echo $newletter_lable; ?></label>
-                <form name="subscribe">
+                <form name="subscribe" id="subscribe">
                       <table>
                            <tr>
+                               <?php if($thickbox): ?><td><span class="required">*</span>&nbsp;<span><?php echo $entry_name; ?></span><input type="text" value="" name="subscribe_name" id="subscribe_name"></td><?php endif;?>
                              <td><span class="required">*</span>&nbsp;<span><?php echo $entry_email; ?></span><input type="text" value="" name="subscribe_email" id="subscribe_email"></td>
                            </tr>
                            <tr>
                              <td>
-                                <button class="button" onclick="email_subscribe()"><span><?php echo $entry_button; ?></span></button>
+                                 <a class="button" onclick="email_subscribe()"><span><?php echo $entry_button; ?></span></a>
                                 <?php if($option_unsubscribe) { ?>
-                                <button class="button" onclick="email_unsubscribe()"><span><?php echo $entry_unbutton; ?></span></button>
+                                 <a class="button" onclick="email_unsubscribe()"><span><?php echo $entry_unbutton; ?></span></a>
                                 <?php } ?>
                              </td>
                            </tr>
                       </table>
                 </form>
             </div><!-- /#frm_subscribe -->
+            <?php if($newslettersubscribe_popup):?>
             <div class="block-content">
                   <label class="subcriper_label">
                       <input type="checkbox">
                       <?php echo ("Don't show this popup again");?>
                   </label>
             </div>
+            <?php endif;?>
             <div id="notification"></div>
         </div>
     </div>
@@ -39,10 +42,11 @@
 function email_subscribe(){
 	$.ajax({
 			type: 'post',
-			url: 'index.php?route=module/newslettersubscribe/subscribe',
+			url: 'index.php?route=module/econewsletter/subscribe',
 			dataType: 'html',
             data:$("#subscribe").serialize(),
 			success: function (html) {
+                //console.log(html);
 				eval(html);
 			}}); 
 	
@@ -51,7 +55,7 @@ function email_subscribe(){
 function email_unsubscribe(){
 	$.ajax({
 			type: 'post',
-			url: 'index.php?route=module/newslettersubscribe/unsubscribe',
+			url: 'index.php?route=module/econewsletter/unsubscribe',
 			dataType: 'html',
             data:$("#subscribe").serialize(),
 			success: function (html) {
@@ -63,7 +67,6 @@ function email_unsubscribe(){
 </script>
 <script type="text/javascript">
     $(document).ready(function() {
-        //var isSuccess = $('ul.messages li.success-msg').length;
         var subscribeFlag = $.cookie('mtNewsletterSubscribeFlag');
         function subsSetcookie(){
             $.cookie('mtNewsletterSubscribe', 'true', {
@@ -78,17 +81,17 @@ function email_unsubscribe(){
                 $.removeCookie('mtNewsletterSubscribe', { path: '/' });
             }
         });
-        $('#mt_newsletter .input-box button.button').on('click', function(){
-            var button = $(this);
+        $('#mt_newsletter .button').on('click', function(){
             setTimeout(function(){
-                if(!button.parent().find('input#newsletter').hasClass('validation-failed')){
+                if($('#notification .success').length){
                     $.cookie('mtNewsletterSubscribeFlag', 'true', {
                         path: '/'
                     });
                 }
             }, 500);
         });
-        if(!(subscribeFlag) && true){
+        <?php if($newslettersubscribe_popup):?>
+        if(!(subscribeFlag) && !$.cookie('mtNewsletterSubscribe')){
             $.colorbox({
                 inline:true,
                 href:$('#mt_newsletter'),
@@ -114,6 +117,7 @@ function email_unsubscribe(){
             $.removeCookie('mtNewsletterSubscribeFlag', { path: '/' });
             subsSetcookie();
         }
+        <?php endif; ?>
     });
 </script>
 
